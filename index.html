@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>고장금 레시피</title>
+
+    <!-- =========================
+         Cropper.js CSS
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+    >
+
+    <!-- 우리 홈페이지 CSS -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================================
+         헤더
+    =================================================== -->
+
+    <header class="main-header">
+
+        <div class="header-inner">
+
+            <div class="logo-area">
+
+                <h1>
+                    🍳 고장금 레시피
+                </h1>
+
+                <p>
+                    고장금의 맛집
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="favoriteButton"
+                class="favorite-filter-button"
+            >
+                ♡ 즐겨찾기
+            </button>
+
+
+            <button
+                type="button"
+                id="loginButton"
+                class="auth-button"
+            >
+                🔐 관리자 로그인
+            </button>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="auth-button hidden"
+            >
+                로그아웃
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         메인
+    =================================================== -->
+
+    <main>
+
+
+        <!-- =========================
+             검색
+        ========================== -->
+
+        <section class="search-section">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="요리 이름이나 재료를 검색해보세요"
+            >
+
+
+            <button
+                type="button"
+                id="searchButton"
+            >
+                🔍 검색
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================
+             카테고리
+        ========================== -->
+
+        <section
+            class="category-section"
+            id="categorySection"
+        >
+
+            <!--
+                전체 버튼을 제외한 카테고리는
+                Supabase에서 불러와
+                JavaScript가 자동으로 생성합니다.
+            -->
+
+            <button
+                type="button"
+                class="category active"
+                data-category="전체"
+            >
+                전체
+            </button>
+
+
+            <!-- 관리자만 보이는 버튼 -->
+
+            <button
+                type="button"
+                id="addCategoryButton"
+                class="category add-category-button hidden"
+            >
+                ＋ 카테고리 추가
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================
+             레시피 목록
+        ========================== -->
+
+        <section class="recipe-section">
+
+
+            <div class="recipe-title-row">
+
+                <div>
+
+                    <h2>
+                        오늘 뭐 먹지?
+                    </h2>
+
+                    <p
+                        id="recipeCount"
+                        class="recipe-count"
+                    >
+                        레시피 0개
+                    </p>
+
+                </div>
+
+
+                <select
+                    id="sortSelect"
+                    class="sort-select"
+                >
+
+                    <option value="latest">
+                        최신순
+                    </option>
+
+                    <option value="oldest">
+                        오래된순
+                    </option>
+
+                    <option value="name">
+                        이름순
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- 레시피 카드가 들어오는 곳 -->
+
+            <div
+                class="recipe-list"
+                id="recipeList"
+            >
+            </div>
+
+
+
+            <!-- 레시피가 없을 때 -->
+
+            <div
+                class="empty-state hidden"
+                id="emptyState"
+            >
+
+                <div class="empty-icon">
+                    🍽️
+                </div>
+
+                <h3>
+                    레시피가 없어요
+                </h3>
+
+                <p>
+                    새로운 레시피를 등록해보세요.
+                </p>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ==================================================
+         레시피 등록 버튼
+    =================================================== -->
+
+    <button
+        type="button"
+        class="add-recipe-button"
+        id="addRecipeButton"
+    >
+        ＋ 레시피 등록
+    </button>
+
+
+
+    <!-- ==================================================
+         레시피 등록 / 수정 모달
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="recipeModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="modalTitle">
+                        새 레시피 등록
+                    </h2>
+
+                    <p>
+                        고장금의 요리를 기록해보세요.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeModalButton"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <form id="recipeForm">
+
+
+                <input
+                    type="hidden"
+                    id="recipeId"
+                >
+
+
+
+                <!-- 요리 이름 -->
+
+                <div class="form-group">
+
+                    <label for="recipeName">
+                        요리 이름
+                    </label>
+
+                    <input
+                        type="text"
+                        id="recipeName"
+                        placeholder="예: 고장금표 김치찌개"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- 카테고리 / 조리시간 -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="recipeCategory">
+                            카테고리
+                        </label>
+
+
+                        <select
+                            id="recipeCategory"
+                            required
+                        >
+
+                            <option value="">
+                                선택해주세요
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="recipeTime">
+                            조리시간
+                        </label>
+
+                        <input
+                            type="text"
+                            id="recipeTime"
+                            placeholder="예: 30분"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 한 줄 소개 -->
+
+                <div class="form-group">
+
+                    <label for="recipeDescription">
+                        한 줄 소개
+                    </label>
+
+                    <input
+                        type="text"
+                        id="recipeDescription"
+                        placeholder="어떤 요리인지 간단히 적어주세요"
+                    >
+
+                </div>
+
+
+
+                <!-- 재료 -->
+
+                <div class="form-group">
+
+                    <label for="recipeIngredients">
+                        재료
+                    </label>
+
+                    <textarea
+                        id="recipeIngredients"
+                        rows="6"
+                        placeholder="한 줄에 하나씩 적어주세요.
+
+예)
+돼지고기 300g
+김치 1/4포기
+두부 반 모
+대파 1대"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- 조리방법 -->
+
+                <div class="form-group">
+
+                    <label for="recipeSteps">
+                        만드는 방법
+                    </label>
+
+                    <textarea
+                        id="recipeSteps"
+                        rows="9"
+                        placeholder="한 줄에 한 단계씩 적어주세요.
+
+예)
+돼지고기를 먹기 좋은 크기로 썰어요.
+김치를 넣고 함께 볶아요.
+물을 넣고 20분간 끓여요."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- 팁 -->
+
+                <div class="form-group">
+
+                    <label for="recipeTip">
+                        고장금의 요리 팁
+                    </label>
+
+                    <textarea
+                        id="recipeTip"
+                        rows="4"
+                        placeholder="더 맛있게 만드는 비법이 있다면 적어주세요."
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     대표 사진
+                =================================================== -->
+
+                <div class="form-group">
+
+                    <label for="recipeImage">
+                        대표 사진
+                    </label>
+
+
+                    <p class="image-help-text">
+                        사진을 선택하면 4:3 비율로 원하는 부분을 자를 수 있어요.
+                    </p>
+
+
+                    <div class="image-upload-box">
+
+
+                        <input
+                            type="file"
+                            id="recipeImage"
+                            accept="image/*"
+                        >
+
+
+                        <!-- 편집 완료된 사진 미리보기 -->
+
+                        <div
+                            class="image-preview hidden"
+                            id="imagePreviewWrapper"
+                        >
+
+                            <div class="image-preview-frame">
+
+                                <img
+                                    id="imagePreview"
+                                    src=""
+                                    alt="레시피 사진 미리보기"
+                                >
+
+                            </div>
+
+
+                            <div class="image-preview-buttons">
+
+                                <button
+                                    type="button"
+                                    id="editImageButton"
+                                    class="edit-image-button"
+                                >
+                                    ✂️ 다시 편집
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    id="removeImageButton"
+                                    class="remove-image-button"
+                                >
+                                    사진 삭제
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 저장 버튼 -->
+
+                <div class="form-buttons">
+
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        id="cancelButton"
+                    >
+                        취소
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        저장하기
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         📸 대표 사진 편집 모달
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="cropModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content crop-modal-content">
+
+
+            <!-- 편집창 제목 -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        📸 대표 사진 편집
+                    </h2>
+
+                    <p>
+                        사진을 움직이거나 확대해서 원하는 부분을 맞춰주세요.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeCropModalButton"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- =========================
+                 사진 편집 영역
+            ========================== -->
+
+            <div class="crop-editor">
+
+
+                <div class="crop-image-container">
+
+                    <img
+                        id="cropImage"
+                        src=""
+                        alt="편집할 사진"
+                    >
+
+                </div>
+
+
+
+                <!-- =========================
+                     확대 / 축소
+                ========================== -->
+
+                <div class="crop-controls">
+
+
+                    <div class="zoom-control">
+
+                        <span class="zoom-icon">
+                            🔍−
+                        </span>
+
+
+                        <input
+                            type="range"
+                            id="zoomSlider"
+                            min="0"
+                            max="100"
+                            value="0"
+                            step="1"
+                        >
+
+
+                        <span class="zoom-icon">
+                            🔍＋
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         보조 버튼
+                    ========================== -->
+
+                    <div class="crop-tool-buttons">
+
+
+                        <button
+                            type="button"
+                            id="rotateLeftButton"
+                            class="crop-tool-button"
+                        >
+                            ↶ 왼쪽 회전
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="rotateRightButton"
+                            class="crop-tool-button"
+                        >
+                            ↷ 오른쪽 회전
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="resetCropButton"
+                            class="crop-tool-button"
+                        >
+                            ↺ 처음으로
+                        </button>
+
+
+                    </div>
+
+
+                    <p class="crop-guide-text">
+                        💡 사진을 마우스나 손가락으로 움직여 위치를 조절할 수 있어요.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 편집창 아래 버튼
+            ========================== -->
+
+            <div class="form-buttons crop-form-buttons">
+
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    id="cancelCropButton"
+                >
+                    취소
+                </button>
+
+
+                <button
+                    type="button"
+                    class="save-button"
+                    id="applyCropButton"
+                >
+                    ✂️ 자르기 완료
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         카테고리 추가 모달
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="categoryModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content category-modal-content">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <h2>
+                        카테고리 추가
+                    </h2>
+
+                    <p>
+                        새로운 요리 분류를 만들어보세요.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeCategoryModalButton"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <form id="categoryForm">
+
+
+                <div class="form-group">
+
+                    <label for="newCategoryName">
+                        카테고리 이름
+                    </label>
+
+                    <input
+                        type="text"
+                        id="newCategoryName"
+                        placeholder="예: 샐러드"
+                        maxlength="30"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-buttons">
+
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        id="cancelCategoryButton"
+                    >
+                        취소
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        추가하기
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         레시피 상세보기
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="detailModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="detail-content">
+
+
+            <button
+                type="button"
+                class="close-button detail-close"
+                id="closeDetailButton"
+            >
+                ×
+            </button>
+
+
+            <div id="detailBody">
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         관리자 로그인
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="loginModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content login-modal-content">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <h2>
+                        관리자 로그인
+                    </h2>
+
+                    <p>
+                        레시피를 관리하려면 로그인해주세요.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeLoginButton"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <form id="loginForm">
+
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        이메일
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        비밀번호
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="save-button login-submit-button"
+                >
+                    로그인
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         토스트 알림
+    =================================================== -->
+
+    <div
+        class="toast"
+        id="toast"
+    >
+    </div>
+
+
+
+    <!-- ==================================================
+         JavaScript 라이브러리
+    =================================================== -->
+
+
+    <!-- Supabase -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- Cropper.js -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"
+    ></script>
+
+
+    <!-- 우리 JavaScript -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
