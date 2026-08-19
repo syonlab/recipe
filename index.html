@@ -10,18 +10,12 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>고장금 레시피</title>
-
-    <!-- =========================
-         Cropper.js CSS
-    ========================== -->
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+    <meta
+        name="description"
+        content="강사 고장금의 자격, 경력 그리고 레시피 기록"
     >
 
-    <!-- 우리 홈페이지 CSS -->
+    <title>고장금의 요리기록 | 요리와 함께한 기록</title>
 
     <link
         rel="stylesheet"
@@ -42,44 +36,73 @@
 
         <div class="header-inner">
 
-            <div class="logo-area">
 
-                <h1>
-                    🍳 고장금 레시피
-                </h1>
+            <!-- 로고 -->
 
-                <p>
-                    고장금의 맛집
-                </p>
+            <a
+                href="#home"
+                class="main-logo"
+            >
+
+                <span class="logo-icon">
+                    🍴
+                </span>
+
+                <span>
+                    고장금의 요리 기록
+                </span>
+
+            </a>
+
+
+
+            <!-- 메뉴 -->
+
+            <nav class="main-nav">
+
+                <a href="#about">
+                    소개
+                </a>
+
+                <a href="#certifications">
+                    자격
+                </a>
+
+                <a href="#career">
+                    경력
+                </a>
+
+                <a href="recipes/">
+                    레시피
+                </a>
+
+            </nav>
+
+
+
+            <!-- 로그인 -->
+
+            <div class="header-actions">
+
+                <button
+                    type="button"
+                    id="loginButton"
+                    class="admin-login-button"
+                >
+                    🔐 관리자 로그인
+                </button>
+
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="admin-login-button hidden"
+                >
+                    로그아웃
+                </button>
 
             </div>
 
-
-            <button
-                type="button"
-                id="favoriteButton"
-                class="favorite-filter-button"
-            >
-                ♡ 즐겨찾기
-            </button>
-
-
-            <button
-                type="button"
-                id="loginButton"
-                class="auth-button"
-            >
-                🔐 관리자 로그인
-            </button>
-
-
-            <button
-                type="button"
-                id="logoutButton"
-                class="auth-button hidden"
-            >
-                로그아웃
-            </button>
 
         </div>
 
@@ -94,791 +117,500 @@
     <main>
 
 
-        <!-- =========================
-             검색
-        ========================== -->
-
-        <section class="search-section">
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="요리 이름이나 재료를 검색해보세요"
-            >
-
-
-            <button
-                type="button"
-                id="searchButton"
-            >
-                🔍 검색
-            </button>
-
-        </section>
-
-
-
-        <!-- =========================
-             카테고리
-        ========================== -->
+        <!-- ==================================================
+             HERO
+        =================================================== -->
 
         <section
-            class="category-section"
-            id="categorySection"
+            class="hero-section"
+            id="home"
         >
 
-            <!--
-                전체 버튼을 제외한 카테고리는
-                Supabase에서 불러와
-                JavaScript가 자동으로 생성합니다.
-            -->
 
-            <button
-                type="button"
-                class="category active"
-                data-category="전체"
-            >
-                전체
-            </button>
+            <!-- 장식 -->
+
+            <div class="hero-decoration hero-decoration-one">
+            </div>
+
+            <div class="hero-decoration hero-decoration-two">
+            </div>
 
 
-            <!-- 관리자만 보이는 버튼 -->
 
-            <button
-                type="button"
-                id="addCategoryButton"
-                class="category add-category-button hidden"
-            >
-                ＋ 카테고리 추가
-            </button>
+            <div class="hero-inner">
+
+
+                <!-- 왼쪽 소개 -->
+
+                <div class="hero-text">
+
+
+                    <p class="hero-eyebrow">
+                        COOK · TEACH · RECORD
+                    </p>
+
+
+                    <h1>
+
+                        요리를 가르치고,<br>
+
+                        맛있는 순간을
+
+                        <span>
+                            기록합니다.
+                        </span>
+
+                    </h1>
+
+
+                    <p class="hero-description">
+
+                        강사 고장금의<br class="mobile-break">
+
+                        배움과 경험, 그리고 오래 간직하고 싶은<br>
+
+                        레시피를 담은 공간입니다.
+
+                    </p>
+
+
+
+                    <div class="hero-buttons">
+
+
+                        <a
+                            href="#about"
+                            class="primary-button"
+                        >
+                            고장금 소개
+                        </a>
+
+
+                        <a
+                            href="recipes/"
+                            class="secondary-button"
+                        >
+                            🍳 레시피 보러가기
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- 오른쪽 프로필 -->
+
+                <div class="hero-profile-card">
+
+
+                    <div
+                        class="profile-image-wrapper"
+                        id="profileImageWrapper"
+                    >
+
+
+                        <!--
+                            프로필 사진이 있으면
+                            JS가 이 이미지 src를 변경합니다.
+                        -->
+
+                        <img
+                            id="profileImage"
+                            class="profile-image hidden"
+                            src=""
+                            alt="고장금 프로필 사진"
+                        >
+
+
+                        <div
+                            id="profileImagePlaceholder"
+                            class="profile-image-placeholder"
+                        >
+                            👩🏻‍🍳
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="hero-profile-info">
+
+
+                        <p class="profile-label">
+                            CHEF & INSTRUCTOR
+                        </p>
+
+
+                        <h2 id="heroProfileName">
+                            고장금
+                        </h2>
+
+
+                        <p id="heroProfileTitle">
+                            강사
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
 
         </section>
 
 
 
-        <!-- =========================
-             레시피 목록
-        ========================== -->
+        <!-- ==================================================
+             소개
+        =================================================== -->
 
-        <section class="recipe-section">
+        <section
+            class="content-section about-section"
+            id="about"
+        >
 
 
-            <div class="recipe-title-row">
+            <div class="section-inner">
 
-                <div>
 
-                    <h2>
-                        오늘 뭐 먹지?
-                    </h2>
+                <div class="section-heading">
 
-                    <p
-                        id="recipeCount"
-                        class="recipe-count"
+
+                    <div>
+
+                        <p class="section-eyebrow">
+                            ABOUT
+                        </p>
+
+
+                        <h2>
+                            고장금을 소개합니다
+                        </h2>
+
+                    </div>
+
+
+                    <!-- 관리자만 표시 -->
+
+                    <button
+                        type="button"
+                        id="editProfileButton"
+                        class="admin-action-button hidden"
                     >
-                        레시피 0개
+                        ✏️ 소개 수정
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="about-card">
+
+
+                    <div class="about-icon">
+                        🍽️
+                    </div>
+
+
+                    <div class="about-content">
+
+
+                        <h3 id="profileName">
+                            고장금
+                        </h3>
+
+
+                        <p
+                            id="profileTitle"
+                            class="about-title"
+                        >
+                            강사
+                        </p>
+
+
+                        <p
+                            id="profileIntro"
+                            class="about-description"
+                        >
+                            현재 광주제일직업전문학원에서
+                            강사로 활동하고 있습니다.
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             자격증
+        =================================================== -->
+
+        <section
+            class="content-section certification-section"
+            id="certifications"
+        >
+
+
+            <div class="section-inner">
+
+
+                <div class="section-heading">
+
+
+                    <div>
+
+                        <p class="section-eyebrow">
+                            CERTIFICATIONS
+                        </p>
+
+
+                        <h2>
+                            보유 자격
+                        </h2>
+
+
+                        <p class="section-description">
+                            요리를 배우며 하나씩 쌓아온 기록입니다.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- 관리자만 표시 -->
+
+                    <button
+                        type="button"
+                        id="addCertificationButton"
+                        class="admin-action-button hidden"
+                    >
+                        ＋ 자격증 추가
+                    </button>
+
+
+                </div>
+
+
+
+                <!--
+                    Supabase certifications 데이터가
+                    JavaScript로 이 안에 생성됩니다.
+                -->
+
+                <div
+                    class="certification-grid"
+                    id="certificationList"
+                >
+                </div>
+
+
+
+                <!-- 자격증 없음 -->
+
+                <div
+                    class="empty-message hidden"
+                    id="certificationEmpty"
+                >
+
+                    <span>
+                        🏅
+                    </span>
+
+                    <p>
+                        등록된 자격증이 없습니다.
                     </p>
 
                 </div>
 
 
-                <select
-                    id="sortSelect"
-                    class="sort-select"
-                >
-
-                    <option value="latest">
-                        최신순
-                    </option>
-
-                    <option value="oldest">
-                        오래된순
-                    </option>
-
-                    <option value="name">
-                        이름순
-                    </option>
-
-                </select>
-
             </div>
-
-
-
-            <!-- 레시피 카드가 들어오는 곳 -->
-
-            <div
-                class="recipe-list"
-                id="recipeList"
-            >
-            </div>
-
-
-
-            <!-- 레시피가 없을 때 -->
-
-            <div
-                class="empty-state hidden"
-                id="emptyState"
-            >
-
-                <div class="empty-icon">
-                    🍽️
-                </div>
-
-                <h3>
-                    레시피가 없어요
-                </h3>
-
-                <p>
-                    새로운 레시피를 등록해보세요.
-                </p>
-
-            </div>
-
 
         </section>
+
+
+
+        <!-- ==================================================
+             경력
+        =================================================== -->
+
+        <section
+            class="content-section career-section"
+            id="career"
+        >
+
+
+            <div class="section-inner">
+
+
+                <div class="section-heading">
+
+
+                    <div>
+
+                        <p class="section-eyebrow">
+                            CAREER
+                        </p>
+
+
+                        <h2>
+                            경력
+                        </h2>
+
+
+                        <p class="section-description">
+                            배운 것을 다시 나누며 이어가고 있습니다.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- 관리자만 표시 -->
+
+                    <button
+                        type="button"
+                        id="addCareerButton"
+                        class="admin-action-button hidden"
+                    >
+                        ＋ 경력 추가
+                    </button>
+
+
+                </div>
+
+
+
+                <!--
+                    Supabase careers 데이터가
+                    JavaScript로 생성됩니다.
+                -->
+
+                <div
+                    class="career-list"
+                    id="careerList"
+                >
+                </div>
+
+
+
+                <!-- 경력 없음 -->
+
+                <div
+                    class="empty-message hidden"
+                    id="careerEmpty"
+                >
+
+                    <span>
+                        💼
+                    </span>
+
+                    <p>
+                        등록된 경력이 없습니다.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             레시피 이동
+        =================================================== -->
+
+        <section class="recipe-banner-section">
+
+
+            <div class="recipe-banner">
+
+
+                <div class="recipe-banner-decoration">
+                    🍳
+                </div>
+
+
+                <div class="recipe-banner-text">
+
+
+                    <p class="section-eyebrow">
+                        GO JANG GEUM'S RECIPES
+                    </p>
+
+
+                    <h2>
+                        고장금 레시피
+                    </h2>
+
+
+                    <p>
+                        직접 만들고 가르치며 쌓아온<br>
+                        다양한 요리 레시피를 만나보세요.
+                    </p>
+
+
+                </div>
+
+
+
+                <a
+                    href="recipes/"
+                    class="recipe-banner-button"
+                >
+                    레시피 보러가기
+                    <span>
+                        →
+                    </span>
+                </a>
+
+
+            </div>
+
+        </section>
+
 
     </main>
 
 
 
     <!-- ==================================================
-         레시피 등록 버튼
+         Footer
     =================================================== -->
 
-    <button
-        type="button"
-        class="add-recipe-button"
-        id="addRecipeButton"
-    >
-        ＋ 레시피 등록
-    </button>
+    <footer class="main-footer">
+
+        <p>
+            🍳 고장금의 요리 기록
+        </p>
+
+        <span>
+            Cook · Teach · Record
+        </span>
+
+    </footer>
 
 
 
     <!-- ==================================================
-         레시피 등록 / 수정 모달
-    =================================================== -->
-
-    <div
-        class="modal hidden"
-        id="recipeModal"
-    >
-
-
-        <div class="modal-overlay"></div>
-
-
-        <div class="modal-content">
-
-
-            <div class="modal-header">
-
-                <div>
-
-                    <h2 id="modalTitle">
-                        새 레시피 등록
-                    </h2>
-
-                    <p>
-                        고장금의 요리를 기록해보세요.
-                    </p>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="close-button"
-                    id="closeModalButton"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-
-            <form id="recipeForm">
-
-
-                <input
-                    type="hidden"
-                    id="recipeId"
-                >
-
-
-
-                <!-- 요리 이름 -->
-
-                <div class="form-group">
-
-                    <label for="recipeName">
-                        요리 이름
-                    </label>
-
-                    <input
-                        type="text"
-                        id="recipeName"
-                        placeholder="예: 고장금표 김치찌개"
-                        required
-                    >
-
-                </div>
-
-
-
-                <!-- 카테고리 / 조리시간 -->
-
-                <div class="form-row">
-
-
-                    <div class="form-group">
-
-                        <label for="recipeCategory">
-                            카테고리
-                        </label>
-
-
-                        <select
-                            id="recipeCategory"
-                            required
-                        >
-
-                            <option value="">
-                                선택해주세요
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-
-                    <div class="form-group">
-
-                        <label for="recipeTime">
-                            조리시간
-                        </label>
-
-                        <input
-                            type="text"
-                            id="recipeTime"
-                            placeholder="예: 30분"
-                        >
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- 한 줄 소개 -->
-
-                <div class="form-group">
-
-                    <label for="recipeDescription">
-                        한 줄 소개
-                    </label>
-
-                    <input
-                        type="text"
-                        id="recipeDescription"
-                        placeholder="어떤 요리인지 간단히 적어주세요"
-                    >
-
-                </div>
-
-
-
-                <!-- 재료 -->
-
-                <div class="form-group">
-
-                    <label for="recipeIngredients">
-                        재료
-                    </label>
-
-                    <textarea
-                        id="recipeIngredients"
-                        rows="6"
-                        placeholder="한 줄에 하나씩 적어주세요.
-
-예)
-돼지고기 300g
-김치 1/4포기
-두부 반 모
-대파 1대"
-                        required
-                    ></textarea>
-
-                </div>
-
-
-
-                <!-- 조리방법 -->
-
-                <div class="form-group">
-
-                    <label for="recipeSteps">
-                        만드는 방법
-                    </label>
-
-                    <textarea
-                        id="recipeSteps"
-                        rows="9"
-                        placeholder="한 줄에 한 단계씩 적어주세요.
-
-예)
-돼지고기를 먹기 좋은 크기로 썰어요.
-김치를 넣고 함께 볶아요.
-물을 넣고 20분간 끓여요."
-                        required
-                    ></textarea>
-
-                </div>
-
-
-
-                <!-- 팁 -->
-
-                <div class="form-group">
-
-                    <label for="recipeTip">
-                        고장금의 요리 팁
-                    </label>
-
-                    <textarea
-                        id="recipeTip"
-                        rows="4"
-                        placeholder="더 맛있게 만드는 비법이 있다면 적어주세요."
-                    ></textarea>
-
-                </div>
-
-
-
-                <!-- ==================================================
-                     대표 사진
-                =================================================== -->
-
-                <div class="form-group">
-
-                    <label for="recipeImage">
-                        대표 사진
-                    </label>
-
-
-                    <p class="image-help-text">
-                        사진을 선택하면 4:3 비율로 원하는 부분을 자를 수 있어요.
-                    </p>
-
-
-                    <div class="image-upload-box">
-
-
-                        <input
-                            type="file"
-                            id="recipeImage"
-                            accept="image/*"
-                        >
-
-
-                        <!-- 편집 완료된 사진 미리보기 -->
-
-                        <div
-                            class="image-preview hidden"
-                            id="imagePreviewWrapper"
-                        >
-
-                            <div class="image-preview-frame">
-
-                                <img
-                                    id="imagePreview"
-                                    src=""
-                                    alt="레시피 사진 미리보기"
-                                >
-
-                            </div>
-
-
-                            <div class="image-preview-buttons">
-
-                                <button
-                                    type="button"
-                                    id="editImageButton"
-                                    class="edit-image-button"
-                                >
-                                    ✂️ 다시 편집
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    id="removeImageButton"
-                                    class="remove-image-button"
-                                >
-                                    사진 삭제
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- 저장 버튼 -->
-
-                <div class="form-buttons">
-
-
-                    <button
-                        type="button"
-                        class="cancel-button"
-                        id="cancelButton"
-                    >
-                        취소
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="save-button"
-                    >
-                        저장하기
-                    </button>
-
-
-                </div>
-
-
-            </form>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         📸 대표 사진 편집 모달
-    =================================================== -->
-
-    <div
-        class="modal hidden"
-        id="cropModal"
-    >
-
-
-        <div class="modal-overlay"></div>
-
-
-        <div class="modal-content crop-modal-content">
-
-
-            <!-- 편집창 제목 -->
-
-            <div class="modal-header">
-
-                <div>
-
-                    <h2>
-                        📸 대표 사진 편집
-                    </h2>
-
-                    <p>
-                        사진을 움직이거나 확대해서 원하는 부분을 맞춰주세요.
-                    </p>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="close-button"
-                    id="closeCropModalButton"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-
-            <!-- =========================
-                 사진 편집 영역
-            ========================== -->
-
-            <div class="crop-editor">
-
-
-                <div class="crop-image-container">
-
-                    <img
-                        id="cropImage"
-                        src=""
-                        alt="편집할 사진"
-                    >
-
-                </div>
-
-
-
-                <!-- =========================
-                     확대 / 축소
-                ========================== -->
-
-                <div class="crop-controls">
-
-
-                    <div class="zoom-control">
-
-                        <span class="zoom-icon">
-                            🔍−
-                        </span>
-
-
-                        <input
-                            type="range"
-                            id="zoomSlider"
-                            min="0"
-                            max="100"
-                            value="0"
-                            step="1"
-                        >
-
-
-                        <span class="zoom-icon">
-                            🔍＋
-                        </span>
-
-                    </div>
-
-
-
-                    <!-- =========================
-                         보조 버튼
-                    ========================== -->
-
-                    <div class="crop-tool-buttons">
-
-
-                        <button
-                            type="button"
-                            id="rotateLeftButton"
-                            class="crop-tool-button"
-                        >
-                            ↶ 왼쪽 회전
-                        </button>
-
-
-                        <button
-                            type="button"
-                            id="rotateRightButton"
-                            class="crop-tool-button"
-                        >
-                            ↷ 오른쪽 회전
-                        </button>
-
-
-                        <button
-                            type="button"
-                            id="resetCropButton"
-                            class="crop-tool-button"
-                        >
-                            ↺ 처음으로
-                        </button>
-
-
-                    </div>
-
-
-                    <p class="crop-guide-text">
-                        💡 사진을 마우스나 손가락으로 움직여 위치를 조절할 수 있어요.
-                    </p>
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =========================
-                 편집창 아래 버튼
-            ========================== -->
-
-            <div class="form-buttons crop-form-buttons">
-
-
-                <button
-                    type="button"
-                    class="cancel-button"
-                    id="cancelCropButton"
-                >
-                    취소
-                </button>
-
-
-                <button
-                    type="button"
-                    class="save-button"
-                    id="applyCropButton"
-                >
-                    ✂️ 자르기 완료
-                </button>
-
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         카테고리 추가 모달
-    =================================================== -->
-
-    <div
-        class="modal hidden"
-        id="categoryModal"
-    >
-
-
-        <div class="modal-overlay"></div>
-
-
-        <div class="modal-content category-modal-content">
-
-
-            <div class="modal-header">
-
-
-                <div>
-
-                    <h2>
-                        카테고리 추가
-                    </h2>
-
-                    <p>
-                        새로운 요리 분류를 만들어보세요.
-                    </p>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="close-button"
-                    id="closeCategoryModalButton"
-                >
-                    ×
-                </button>
-
-
-            </div>
-
-
-
-            <form id="categoryForm">
-
-
-                <div class="form-group">
-
-                    <label for="newCategoryName">
-                        카테고리 이름
-                    </label>
-
-                    <input
-                        type="text"
-                        id="newCategoryName"
-                        placeholder="예: 샐러드"
-                        maxlength="30"
-                        required
-                    >
-
-                </div>
-
-
-
-                <div class="form-buttons">
-
-
-                    <button
-                        type="button"
-                        class="cancel-button"
-                        id="cancelCategoryButton"
-                    >
-                        취소
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="save-button"
-                    >
-                        추가하기
-                    </button>
-
-
-                </div>
-
-
-            </form>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         레시피 상세보기
-    =================================================== -->
-
-    <div
-        class="modal hidden"
-        id="detailModal"
-    >
-
-
-        <div class="modal-overlay"></div>
-
-
-        <div class="detail-content">
-
-
-            <button
-                type="button"
-                class="close-button detail-close"
-                id="closeDetailButton"
-            >
-                ×
-            </button>
-
-
-            <div id="detailBody">
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ==================================================
-         관리자 로그인
+         🔐 관리자 로그인 모달
     =================================================== -->
 
     <div
@@ -890,7 +622,7 @@
         <div class="modal-overlay"></div>
 
 
-        <div class="modal-content login-modal-content">
+        <div class="modal-content small-modal">
 
 
             <div class="modal-header">
@@ -898,15 +630,22 @@
 
                 <div>
 
+                    <p class="modal-eyebrow">
+                        ADMIN
+                    </p>
+
+
                     <h2>
                         관리자 로그인
                     </h2>
 
+
                     <p>
-                        레시피를 관리하려면 로그인해주세요.
+                        홈페이지 내용을 관리하려면 로그인해주세요.
                     </p>
 
                 </div>
+
 
 
                 <button
@@ -931,6 +670,7 @@
                         이메일
                     </label>
 
+
                     <input
                         type="email"
                         id="loginEmail"
@@ -948,6 +688,7 @@
                         비밀번호
                     </label>
 
+
                     <input
                         type="password"
                         id="loginPassword"
@@ -961,7 +702,7 @@
 
                 <button
                     type="submit"
-                    class="save-button login-submit-button"
+                    class="modal-save-button full-button"
                 >
                     로그인
                 </button>
@@ -977,7 +718,528 @@
 
 
     <!-- ==================================================
-         토스트 알림
+         ✏️ 프로필 수정 모달
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="profileModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <p class="modal-eyebrow">
+                        PROFILE
+                    </p>
+
+
+                    <h2>
+                        소개 수정
+                    </h2>
+
+
+                    <p>
+                        메인 홈페이지에 표시될 내용을 수정합니다.
+                    </p>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeProfileModalButton"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <form id="profileForm">
+
+
+                <div class="form-group">
+
+                    <label for="profileNameInput">
+                        이름
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="profileNameInput"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="profileTitleInput">
+                        소개 제목
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="profileTitleInput"
+                        placeholder="예: 강사"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="profileIntroInput">
+                        소개글
+                    </label>
+
+
+                    <textarea
+                        id="profileIntroInput"
+                        rows="6"
+                        placeholder="소개 내용을 입력해주세요."
+                    ></textarea>
+
+                </div>
+
+
+
+                <!--
+                    현재 profile 테이블의 image_url을
+                    수정할 수 있도록 준비해둔 필드.
+
+                    나중에 이미지 직접 업로드 기능으로
+                    바꿀 수도 있습니다.
+                -->
+
+                <div class="form-group">
+
+                    <label for="profileImageInput">
+                        프로필 사진 주소
+                    </label>
+
+
+                    <input
+                        type="url"
+                        id="profileImageInput"
+                        placeholder="https://..."
+                    >
+
+
+                    <p class="form-help">
+                        사진 기능은 나중에 직접 업로드 방식으로도 바꿀 수 있어요.
+                    </p>
+
+                </div>
+
+
+
+                <div class="modal-buttons">
+
+
+                    <button
+                        type="button"
+                        class="modal-cancel-button"
+                        id="cancelProfileButton"
+                    >
+                        취소
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="modal-save-button"
+                    >
+                        저장
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         🏅 자격증 추가 / 수정 모달
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="certificationModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content small-modal">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <p class="modal-eyebrow">
+                        CERTIFICATION
+                    </p>
+
+
+                    <h2 id="certificationModalTitle">
+                        자격증 추가
+                    </h2>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeCertificationModalButton"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <form id="certificationForm">
+
+
+                <!-- 수정 시 id 저장 -->
+
+                <input
+                    type="hidden"
+                    id="certificationId"
+                >
+
+
+
+                <div class="form-group">
+
+                    <label for="certificationName">
+                        자격증명
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="certificationName"
+                        placeholder="예: 한식조리기능사"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="certificationDate">
+                        취득일
+                    </label>
+
+
+                    <input
+                        type="date"
+                        id="certificationDate"
+                    >
+
+
+                    <p class="form-help">
+                        정확한 날짜를 모르면 비워두어도 됩니다.
+                    </p>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="certificationOrder">
+                        표시 순서
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="certificationOrder"
+                        min="0"
+                        placeholder="예: 1"
+                    >
+
+                </div>
+
+
+
+                <div class="modal-buttons">
+
+
+                    <button
+                        type="button"
+                        class="modal-cancel-button"
+                        id="cancelCertificationButton"
+                    >
+                        취소
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="modal-save-button"
+                    >
+                        저장
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         💼 경력 추가 / 수정 모달
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="careerModal"
+    >
+
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+
+                <div>
+
+                    <p class="modal-eyebrow">
+                        CAREER
+                    </p>
+
+
+                    <h2 id="careerModalTitle">
+                        경력 추가
+                    </h2>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeCareerModalButton"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <form id="careerForm">
+
+
+                <!-- 수정용 id -->
+
+                <input
+                    type="hidden"
+                    id="careerId"
+                >
+
+
+
+                <div class="form-group">
+
+                    <label for="careerCompany">
+                        기관 / 회사
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="careerCompany"
+                        placeholder="예: 광주제일직업전문학원"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="careerPosition">
+                        직책 / 역할
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="careerPosition"
+                        placeholder="예: 강사"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="careerStartDate">
+                            시작일
+                        </label>
+
+
+                        <input
+                            type="date"
+                            id="careerStartDate"
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="careerEndDate">
+                            종료일
+                        </label>
+
+
+                        <input
+                            type="date"
+                            id="careerEndDate"
+                        >
+
+
+                        <p class="form-help">
+                            현재 재직 중이면 비워주세요.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="careerDescription">
+                        설명
+                    </label>
+
+
+                    <textarea
+                        id="careerDescription"
+                        rows="5"
+                        placeholder="담당 업무나 경력 내용을 적어주세요."
+                    ></textarea>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="careerOrder">
+                        표시 순서
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="careerOrder"
+                        min="0"
+                        placeholder="예: 1"
+                    >
+
+                </div>
+
+
+
+                <div class="modal-buttons">
+
+
+                    <button
+                        type="button"
+                        class="modal-cancel-button"
+                        id="cancelCareerButton"
+                    >
+                        취소
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="modal-save-button"
+                    >
+                        저장
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         알림
     =================================================== -->
 
     <div
@@ -989,25 +1251,17 @@
 
 
     <!-- ==================================================
-         JavaScript 라이브러리
+         JavaScript
     =================================================== -->
 
-
-    <!-- Supabase -->
+    <!--
+        레시피 사이트와 같은 Supabase를 사용합니다.
+    -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
 
-
-    <!-- Cropper.js -->
-
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"
-    ></script>
-
-
-    <!-- 우리 JavaScript -->
 
     <script src="script.js"></script>
 
