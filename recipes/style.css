@@ -498,6 +498,7 @@ main {
 
     display: -webkit-box;
 
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 
@@ -2471,30 +2472,24 @@ strong {
 }
 
 
-/* 댓글 제목 */
+/* ==================================================
+   댓글 제목
+================================================== */
 
 .comment-section-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-
-    gap: 12px;
-
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
-
 .comment-eyebrow {
-    margin-bottom: 2px;
+    margin-bottom: 3px;
 
-    color: #a89a91;
+    color: #b09f93;
 
     font-size: 10px;
     font-weight: 800;
 
     letter-spacing: 0.14em;
 }
-
 
 .comment-section-header h3 {
     display: flex;
@@ -2507,14 +2502,13 @@ strong {
     font-size: 19px;
 }
 
-
 .comment-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    min-width: 24px;
-    height: 24px;
+    min-width: 23px;
+    height: 23px;
 
     padding: 0 7px;
 
@@ -2533,7 +2527,7 @@ strong {
 ================================================== */
 
 .comment-form {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 
     padding: 18px;
 
@@ -2543,11 +2537,9 @@ strong {
     background: #fffaf7;
 }
 
-
 .comment-form-group + .comment-form-group {
     margin-top: 13px;
 }
-
 
 .comment-form-group label {
     display: block;
@@ -2559,7 +2551,6 @@ strong {
     font-size: 12px;
     font-weight: 750;
 }
-
 
 .comment-form-group input,
 .comment-form-group textarea,
@@ -2579,11 +2570,9 @@ strong {
         box-shadow 0.2s;
 }
 
-
 .comment-form-group input {
     padding: 11px 12px;
 }
-
 
 .comment-form-group textarea,
 .comment-reply-input {
@@ -2596,7 +2585,6 @@ strong {
     line-height: 1.6;
 }
 
-
 .comment-form-group input:focus,
 .comment-form-group textarea:focus,
 .comment-reply-input:focus {
@@ -2608,10 +2596,10 @@ strong {
 }
 
 
-/* 관리자 닉네임 고장금 */
+/* 관리자 로그인 상태 닉네임 */
 
 .comment-form-group input[readonly] {
-    background: #fff8df;
+    background: #fff9df;
 
     border-color: #eadcae;
 
@@ -2620,6 +2608,10 @@ strong {
     font-weight: 800;
 }
 
+
+/* ==================================================
+   댓글 작성창 하단
+================================================== */
 
 .comment-form-bottom {
     display: flex;
@@ -2631,7 +2623,6 @@ strong {
     margin-top: 13px;
 }
 
-
 .comment-guide {
     color: #a09289;
 
@@ -2641,7 +2632,9 @@ strong {
 }
 
 
-/* 댓글 등록 버튼 */
+/* ==================================================
+   댓글 등록 / 답글 등록 버튼
+================================================== */
 
 .comment-submit-button,
 .comment-reply-submit {
@@ -2661,20 +2654,17 @@ strong {
         transform 0.2s;
 }
 
-
 .comment-submit-button {
     padding: 10px 15px;
 
     font-size: 12px;
 }
 
-
 .comment-reply-submit {
     padding: 9px 13px;
 
     font-size: 12px;
 }
-
 
 .comment-submit-button:hover,
 .comment-reply-submit:hover {
@@ -2689,80 +2679,143 @@ strong {
 ================================================== */
 
 .comment-list {
-    display: grid;
-
-    gap: 13px;
-}
-
-
-.comment-item {
-    padding: 16px 17px;
-
-    border: 1px solid #eee5de;
-    border-radius: 15px;
-
-    background: white;
-
-    box-shadow:
-        0 3px 12px
-        rgba(75, 56, 43, 0.035);
-}
-
-
-.comment-item-header,
-.comment-reply-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 10px;
-}
-
-
-.comment-author-area {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-
-    gap: 7px;
-}
-
-
-.comment-author {
-    color: #4f433c;
-
-    font-size: 13px;
-    font-weight: 800;
-}
-
-
-.comment-date {
-    color: #aaa097;
-
-    font-size: 10px;
-}
-
-
-.comment-text {
-    margin-top: 9px;
-
-    color: #655850;
-
-    font-size: 13px;
-
-    line-height: 1.7;
-
-    white-space: pre-wrap;
-    word-break: break-word;
+    display: block;
 }
 
 
 /* ==================================================
-   댓글 삭제
+   일반 댓글
+================================================== */
+
+.comment-item {
+    display: block;
+
+    width: 100%;
+
+    min-height: 0;
+
+    margin: 0;
+
+    padding:
+        16px 0
+        18px;
+
+    border: none;
+    border-bottom: 1px solid #eee5de;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    text-align: left;
+}
+
+.comment-item:first-child {
+    border-top: 1px solid #eee5de;
+}
+
+
+/* 작성자 / 날짜 / 삭제버튼 한 줄 */
+
+.comment-item-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    width: 100%;
+
+    gap: 10px;
+
+    margin: 0;
+    padding: 0;
+
+    text-align: left;
+}
+
+.comment-author-area {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin: 0;
+    padding: 0;
+
+    text-align: left;
+}
+
+.comment-author {
+    color: #40362f;
+
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.comment-date {
+    color: #a79b92;
+
+    font-size: 11px;
+}
+
+
+/* ==================================================
+   댓글 내용
+================================================== */
+
+.comment-text {
+    display: block;
+
+    width: 100%;
+    max-width: none;
+
+    min-height: 0;
+
+    margin:
+        3px 0 0;
+
+    padding: 0;
+
+    color: #5f5148;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    text-align: left;
+
+    /*
+       작성자가 직접 넣은 줄바꿈은 살리고
+       JS 코드의 들여쓰기 공백은 화면에 나타나지 않게 함
+    */
+    white-space: pre-line;
+
+    word-break: break-word;
+
+    overflow: visible;
+
+    line-clamp: unset;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: unset;
+
+    transform: none;
+}
+
+
+/* ==================================================
+   댓글 삭제 버튼
 ================================================== */
 
 .comment-delete-button {
     flex-shrink: 0;
+
+    margin-left: auto;
 
     border: none;
 
@@ -2770,12 +2823,11 @@ strong {
 
     color: #bd7668;
 
-    padding: 3px 5px;
+    padding: 2px 3px;
 
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
 }
-
 
 .comment-delete-button:hover {
     color: #a9574a;
@@ -2785,51 +2837,49 @@ strong {
 
 
 /* ==================================================
-   관리자 답글 달기
+   관리자 답글 달기 버튼
 ================================================== */
 
 .comment-reply-button {
-    margin-top: 10px;
+    display: inline-block;
 
-    border: 1px solid #dbe5d7;
+    margin-top: 4px;
 
-    border-radius: 999px;
+    border: none;
 
-    background: #f4f8f2;
-    color: #70886b;
+    background: transparent;
 
-    padding: 6px 10px;
+    color: #789472;
+
+    padding: 2px 0;
 
     font-size: 11px;
     font-weight: 750;
 
+    line-height: 1.4;
+
+    text-align: left;
+
     transition:
-        background 0.2s,
-        border-color 0.2s,
+        color 0.2s,
         transform 0.2s;
 }
 
-
 .comment-reply-button:hover {
-    background: #eaf2e7;
+    color: #5f7d59;
 
-    border-color: #c8d9c3;
-
-    transform: translateY(-1px);
+    transform: translateX(2px);
 }
-
-
-/* 답글 작성창 */
+/* ==================================================
+   답글 작성창
+================================================== */
 
 .comment-reply-form {
-    margin-top: 11px;
+    margin-top: 10px;
 
     padding: 13px;
 
-    border:
-        1px dashed
-        #cfdcc9;
-
+    border: 1px dashed #cfdcc9;
     border-radius: 13px;
 
     background: #f8fbf7;
@@ -2838,6 +2888,8 @@ strong {
 
 .comment-reply-input {
     min-height: 84px;
+
+    font-size: 13px;
 }
 
 
@@ -2863,112 +2915,205 @@ strong {
 
     font-size: 12px;
     font-weight: 700;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
 }
 
 
 .comment-reply-cancel:hover {
     background: #e5dcd5;
+
+    transform: translateY(-1px);
 }
 
 
 /* ==================================================
-   👑 고장금 답글
+   👑 고장금 답글 목록
 ================================================== */
 
 .comment-replies {
-    display: grid;
+    display: block;
 
-    gap: 9px;
+    width: 100%;
 
-    margin-top: 13px;
-    padding-left: 18px;
+    margin-top: 7px;
+
+    padding-left: 24px;
+
+    text-align: left;
 }
 
+
+/* ==================================================
+   👑 고장금 답글 박스
+
+   색을 여러 겹 사용하지 않고
+   아주 연한 아이보리 배경 하나만 사용
+================================================== */
 
 .comment-reply {
     position: relative;
 
-    padding: 13px 14px;
+    display: block;
 
-    border:
-        1px solid
-        #e6dcb9;
+    width: 100%;
 
+    min-height: 0;
+
+    margin: 0;
+
+    padding: 10px 13px;
+
+    border: 1px solid #eee4d5;
     border-radius: 13px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #fff9e8,
-            #f7faf3
-        );
+    background: #fffdf8;
+
+    box-shadow: none;
+
+    text-align: left;
 }
 
 
-/* 원댓글과 답글 연결 느낌 */
+/* 답글 앞의 작은 연결 화살표 */
 
 .comment-reply::before {
     content: "↳";
 
     position: absolute;
 
-    left: -17px;
+    left: -20px;
     top: 11px;
 
-    color: #b4a576;
+    color: #b7aa9b;
 
     font-size: 15px;
 }
 
 
-/* 👑 고장금 전용 뱃지 */
+/* ==================================================
+   👑 고장금 이름 / 날짜 / 삭제
+================================================== */
+
+.comment-reply-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    gap: 8px;
+
+    margin: 0;
+    padding: 0;
+
+    text-align: left;
+}
+
+
+/* ==================================================
+   👑 고장금 이름
+
+   기존 노란 캡슐 디자인 제거
+================================================== */
 
 .comment-admin-badge {
     display: inline-flex;
     align-items: center;
 
-    gap: 4px;
+    gap: 5px;
 
-    padding: 4px 9px;
+    margin: 0;
 
-    border:
-        1px solid
-        #e6d7ad;
+    /*
+       이름 주위에 별도의 색 박스를 만들지 않음
+    */
+    padding: 0;
 
-    border-radius: 999px;
+    border: none;
+    border-radius: 0;
 
-    background:
-        linear-gradient(
-            135deg,
-            #fff6ce,
-            #fffaf0
-        );
+    background: transparent;
 
-    color: #806928;
+    color: #625548;
 
-    font-size: 11px;
-    font-weight: 850;
+    font-size: 14px;
+    font-weight: 800;
 
-    box-shadow:
-        0 2px 7px
-        rgba(157, 128, 44, 0.08);
+    line-height: 1.4;
+
+    box-shadow: none;
 }
 
 
 /* ==================================================
-   댓글 없을 때
+   👑 고장금 답글 내용
+================================================== */
+
+.comment-reply > .comment-text {
+    display: block;
+
+    width: 100%;
+
+    min-height: 0;
+
+    margin:
+        3px 0 0;
+
+    padding: 0;
+
+    color: #5f554b;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    text-align: left;
+
+    white-space: pre-line;
+
+    word-break: break-word;
+
+    overflow: visible;
+
+    line-clamp: unset;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: unset;
+
+    transform: none;
+}
+
+
+/* ==================================================
+   고장금 답글 안 삭제 버튼
+================================================== */
+
+.comment-reply
+.comment-delete-button {
+    flex-shrink: 0;
+
+    margin-left: auto;
+
+    padding: 2px 3px;
+
+    font-size: 11px;
+}
+
+
+/* ==================================================
+   댓글이 없을 때
 ================================================== */
 
 .comment-empty {
-    padding: 34px 15px;
+    padding: 30px 15px;
 
-    border:
-        1px dashed
-        #e6ddd6;
+    border-top: 1px solid #eee5de;
+    border-bottom: 1px solid #eee5de;
 
-    border-radius: 15px;
-
-    background: #fcf9f6;
+    background: transparent;
 
     text-align: center;
 
@@ -2981,11 +3126,13 @@ strong {
 
     margin-bottom: 6px;
 
-    font-size: 26px;
+    font-size: 25px;
 }
 
 
 .comment-empty p {
+    margin: 0;
+
     font-size: 12px;
 
     line-height: 1.6;
@@ -2993,10 +3140,176 @@ strong {
 
 
 /* ==================================================
+   댓글 영역 안 버튼 공통 커서
+================================================== */
+
+.comment-section button {
+    cursor: pointer;
+}
+
+
+/* ==================================================
+   댓글 작성 중 disabled
+================================================== */
+
+.comment-submit-button:disabled,
+.comment-reply-submit:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.6;
+
+    transform: none;
+}
+
+
+/* ==================================================
+   댓글 입력 placeholder
+================================================== */
+
+.comment-form-group input::placeholder,
+.comment-form-group textarea::placeholder,
+.comment-reply-input::placeholder {
+    color: #b7aca4;
+}
+
+
+/* ==================================================
+   댓글 textarea 스크롤 / 폰트
+================================================== */
+
+.comment-form-group textarea,
+.comment-reply-input {
+    font-family: inherit;
+}
+
+
+/* ==================================================
+   긴 닉네임 보호
+================================================== */
+
+.comment-author,
+.comment-admin-badge {
+    max-width: 100%;
+
+    word-break: break-word;
+}
+
+
+/* ==================================================
+   긴 날짜나 삭제버튼 때문에
+   작성자 영역이 찌그러지는 것 방지
+================================================== */
+
+.comment-item-header,
+.comment-reply-header {
+    min-width: 0;
+}
+
+
+.comment-author-area {
+    min-width: 0;
+}
+
+
+/* ==================================================
+   댓글 본문 링크 등이 생겼을 경우
+   영역 밖으로 튀어나가지 않게
+================================================== */
+
+.comment-text {
+    overflow-wrap: anywhere;
+}
+
+
+/* ==================================================
+   👑 답글 박스 hover
+
+   너무 튀지 않게 아주 미세하게만
+================================================== */
+
+.comment-reply {
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+}
+
+
+.comment-reply:hover {
+    border-color: #e5d8c5;
+
+    background: #fffdf9;
+}
+
+
+/* ==================================================
+   답글 작성창과 기존 답글 사이
+================================================== */
+
+.comment-reply-form + .comment-replies {
+    margin-top: 9px;
+}
+
+
+/* ==================================================
+   댓글 등록창과 댓글 목록 사이
+================================================== */
+
+.comment-form + .comment-list {
+    margin-top: 0;
+}
+
+
+/* ==================================================
+   댓글 한 개 마지막 요소
+================================================== */
+
+.comment-item:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ==================================================
+   👑 답글이 여러 개일 경우
+================================================== */
+
+.comment-reply + .comment-reply {
+    margin-top: 8px;
+}
+
+
+/* ==================================================
+   상세페이지 댓글 영역 폭 보호
+================================================== */
+
+.comment-section,
+.comment-form,
+.comment-list,
+.comment-item,
+.comment-replies,
+.comment-reply {
+    box-sizing: border-box;
+}
+
+
+/* ==================================================
+   댓글 입력창 자동완성 시
+   브라우저 배경색이 너무 튀는 것 완화
+================================================== */
+
+.comment-form-group input:-webkit-autofill {
+    -webkit-text-fill-color: #453a34;
+
+    transition:
+        background-color
+        9999s ease-out;
+}
+/* ==================================================
    💬 댓글 모바일
 ================================================== */
 
 @media (max-width: 560px) {
+
+    /* 댓글 영역 */
 
     .comment-section {
         margin-top: 32px;
@@ -3005,22 +3318,93 @@ strong {
     }
 
 
+    /* 댓글 제목 */
+
+    .comment-section-header {
+        margin-bottom: 16px;
+    }
+
+
     .comment-section-header h3 {
         font-size: 18px;
     }
 
 
+    .comment-eyebrow {
+        font-size: 9px;
+    }
+
+
+    .comment-count {
+        min-width: 22px;
+        height: 22px;
+
+        padding: 0 6px;
+
+        font-size: 10px;
+    }
+
+
+    /* ==================================================
+       댓글 작성창
+    ================================================== */
+
     .comment-form {
+        margin-bottom: 25px;
+
         padding: 15px;
 
         border-radius: 14px;
     }
 
 
+    .comment-form-group + .comment-form-group {
+        margin-top: 12px;
+    }
+
+
+    .comment-form-group label {
+        margin-bottom: 5px;
+
+        font-size: 11px;
+    }
+
+
+    .comment-form-group input {
+        padding: 10px 11px;
+
+        font-size: 13px;
+    }
+
+
+    .comment-form-group textarea {
+        min-height: 92px;
+
+        padding: 11px;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* 댓글 작성창 아래 안내 + 버튼 */
+
     .comment-form-bottom {
+        flex-direction: column;
+
         align-items: stretch;
 
-        flex-direction: column;
+        gap: 9px;
+
+        margin-top: 11px;
+    }
+
+
+    .comment-guide {
+        font-size: 10px;
+
+        line-height: 1.5;
     }
 
 
@@ -3028,36 +3412,327 @@ strong {
         width: 100%;
 
         min-height: 42px;
+
+        padding: 10px 14px;
+
+        font-size: 12px;
     }
 
 
+    /* ==================================================
+       일반 댓글
+    ================================================== */
+
     .comment-item {
-        padding: 14px;
+        width: 100%;
+
+        min-height: 0;
+
+        padding:
+            14px 0
+            16px;
+
+        margin: 0;
+
+        text-align: left;
+    }
+
+
+    /* 닉네임 / 날짜 / 삭제 */
+
+    .comment-item-header {
+        align-items: flex-start;
+
+        gap: 8px;
+
+        margin: 0;
+        padding: 0;
     }
 
 
     .comment-author-area {
         gap: 5px;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .comment-author {
+        font-size: 13px;
     }
 
 
     .comment-date {
-        width: 100%;
+        font-size: 10px;
     }
 
 
-    .comment-text {
+    /* ==================================================
+       일반 댓글 내용
+
+       ★ 위쪽 간격을 작게 유지
+    ================================================== */
+
+    .comment-item > .comment-text {
+        margin:
+            3px 0 0;
+
+        padding: 0;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+        text-align: left;
+
+        white-space: pre-line;
+    }
+
+
+    /* 삭제 버튼 */
+
+    .comment-delete-button {
+        padding: 2px;
+
+        font-size: 10px;
+    }
+
+
+    /* ==================================================
+       답글 달기
+    ================================================== */
+
+    .comment-reply-button {
+        margin-top: 4px;
+
+        padding: 2px 0;
+
+        font-size: 10px;
+
+        line-height: 1.4;
+    }
+
+
+    /* ==================================================
+       관리자 답글 작성창
+    ================================================== */
+
+    .comment-reply-form {
+        margin-top: 8px;
+
+        padding: 11px;
+
+        border-radius: 11px;
+    }
+
+
+    .comment-reply-input {
+        min-height: 78px;
+
+        padding: 10px;
+
+        font-size: 12px;
+    }
+
+
+    .comment-reply-form-buttons {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 7px;
+
+        margin-top: 7px;
+    }
+
+
+    .comment-reply-cancel,
+    .comment-reply-submit {
+        width: 100%;
+
+        min-height: 38px;
+
+        padding: 8px 10px;
+
+        font-size: 11px;
+    }
+
+
+    /* ==================================================
+       👑 고장금 답글
+    ================================================== */
+
+    .comment-replies {
+        width: 100%;
+
+        margin-top: 7px;
+
+        padding-left: 17px;
+
+        text-align: left;
+    }
+
+
+    .comment-reply {
+        width: 100%;
+
+        min-height: 0;
+
+        margin: 0;
+
+        padding: 10px 12px;
+
+        border: 1px solid #eee4d5;
+        border-radius: 11px;
+
+        background: #fffdf8;
+
+        text-align: left;
+    }
+
+
+    /* 답글 연결 화살표 */
+
+    .comment-reply::before {
+        left: -15px;
+        top: 10px;
+
+        font-size: 13px;
+    }
+
+
+    /* ==================================================
+       👑 고장금 이름줄
+    ================================================== */
+
+    .comment-reply-header {
+        align-items: center;
+
+        gap: 6px;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /* 👑 고장금
+       모바일에서도 캡슐 없음 */
+
+    .comment-admin-badge {
+        gap: 4px;
+
+        margin: 0;
+        padding: 0;
+
+        border: none;
+        border-radius: 0;
+
+        background: transparent;
+
+        color: #625548;
+
+        font-size: 13px;
+        font-weight: 800;
+
+        line-height: 1.4;
+
+        box-shadow: none;
+    }
+
+
+    /* ==================================================
+       👑 고장금 답글 내용
+
+       ★ 이름 바로 아래 붙도록 3px
+    ================================================== */
+
+    .comment-reply > .comment-text {
+        margin:
+            3px 0 0;
+
+        padding: 0;
+
+        color: #5f554b;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+        text-align: left;
+
+        white-space: pre-line;
+    }
+
+
+    /* 답글 여러 개 */
+
+    .comment-reply + .comment-reply {
+        margin-top: 7px;
+    }
+
+
+    /* 댓글 없음 */
+
+    .comment-empty {
+        padding: 26px 12px;
+    }
+
+
+    .comment-empty span {
+        margin-bottom: 5px;
+
+        font-size: 23px;
+    }
+
+
+    .comment-empty p {
+        font-size: 11px;
+    }
+}
+
+
+/* ==================================================
+   📱 아주 작은 화면
+================================================== */
+
+@media (max-width: 370px) {
+
+    .comment-form {
+        padding: 13px;
+    }
+
+
+    .comment-item {
+        padding:
+            13px 0
+            15px;
+    }
+
+
+    .comment-author {
+        font-size: 12px;
+    }
+
+
+    .comment-date {
+        font-size: 9px;
+    }
+
+
+    .comment-item > .comment-text {
         font-size: 12px;
     }
 
 
     .comment-replies {
-        padding-left: 13px;
+        padding-left: 14px;
     }
 
 
     .comment-reply {
-        padding: 12px;
+        padding: 9px 10px;
     }
 
 
@@ -3067,20 +3742,316 @@ strong {
 
 
     .comment-admin-badge {
+        font-size: 12px;
+    }
+
+
+    .comment-reply > .comment-text {
+        font-size: 12px;
+    }
+}
+
+
+/* ==================================================
+   💬 댓글 최종 안전 보정
+
+   이전 CSS에 남아 있는 댓글 스타일이 있어도
+   현재 디자인이 우선 적용되도록 함
+================================================== */
+
+.comment-item > .comment-text {
+    margin-top: 3px !important;
+    margin-bottom: 0 !important;
+
+    text-align: left !important;
+
+    white-space: pre-line !important;
+}
+
+
+.comment-item-header,
+.comment-author-area {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+.comment-reply-button {
+    margin-top: 4px !important;
+}
+
+
+.comment-replies {
+    margin-top: 7px !important;
+}
+
+
+.comment-reply {
+    min-height: 0 !important;
+
+    padding: 10px 13px !important;
+
+    border:
+        1px solid
+        #eee4d5 !important;
+
+    background:
+        #fffdf8 !important;
+
+    box-shadow:
+        none !important;
+}
+
+
+.comment-reply-header {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* 👑 고장금 최종 디자인
+   배경 / 테두리 / 캡슐 전부 제거 */
+
+.comment-admin-badge {
+    padding: 0 !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    background: transparent !important;
+
+    color: #625548 !important;
+
+    font-size: 14px !important;
+    font-weight: 800 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* 고장금 답글 내용 */
+
+.comment-reply > .comment-text {
+    margin-top: 3px !important;
+    margin-bottom: 0 !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.65 !important;
+
+    text-align: left !important;
+
+    white-space: pre-line !important;
+}
+
+
+/* ==================================================
+   모바일 최종 보정
+================================================== */
+
+@media (max-width: 560px) {
+
+    .comment-item > .comment-text {
+        margin-top: 3px !important;
+
+        font-size: 13px !important;
+    }
+
+
+    .comment-replies {
+        margin-top: 7px !important;
+
+        padding-left: 17px !important;
+    }
+
+
+    .comment-reply {
+        padding: 10px 12px !important;
+    }
+
+
+    .comment-admin-badge {
+        font-size: 13px !important;
+    }
+
+
+    .comment-reply > .comment-text {
+        margin-top: 3px !important;
+
+        font-size: 13px !important;
+    }
+}
+
+/* ==================================================
+   💬 카드 댓글 개수
+   좋아요 버튼과 같은 디자인
+================================================== */
+
+.recipe-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+
+/* 댓글 전체 박스 */
+
+.recipe-comment-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-height: 36px;
+
+    padding: 7px 12px;
+
+    border: 1px solid #eadfd7;
+    border-radius: 999px;
+
+    background: #fffaf7;
+
+    color: #7f7168;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+
+/* 💬 아이콘 */
+
+.recipe-comment-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+
+    line-height: 1;
+}
+
+
+/* 댓글 글자 */
+
+.recipe-comment-text {
+    color: #7f7168;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* 댓글 숫자 */
+
+.recipe-comment-count strong {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 5px;
+
+    border-radius: 999px;
+
+    background: #edf3eb;
+
+    color: #71886c;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* ==================================================
+   📱 모바일
+================================================== */
+
+@media (max-width: 560px) {
+
+    .recipe-comment-count {
+        gap: 5px;
+
+        min-height: 34px;
+
+        padding: 6px 10px;
+
+        font-size: 11px;
+    }
+
+
+    .recipe-comment-icon {
+        font-size: 12px;
+    }
+
+
+    .recipe-comment-text {
+        font-size: 11px;
+    }
+
+
+    .recipe-comment-count strong {
+        min-width: 19px;
+        height: 19px;
+
+        padding: 0 4px;
+
         font-size: 10px;
     }
+}
+
+/* ==================================================
+   좋아요 / 댓글 버튼 완전 대칭
+================================================== */
+
+.recipe-like-button,
+.recipe-comment-count {
+    width: 104px;
+    height: 36px;
+
+    min-width: 104px;
+
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    box-sizing: border-box;
+
+    border-radius: 999px;
+
+    white-space: nowrap;
+}
 
 
-    .comment-reply-form-buttons {
-        display: grid;
+/* 좋아요 안의 모든 글자 줄바꿈 금지 */
 
-        grid-template-columns:
-            1fr 1fr;
-    }
+.recipe-like-button span,
+.recipe-like-button .like-text,
+.recipe-like-button .like-count {
+    white-space: nowrap;
+    word-break: keep-all;
+}
 
 
-    .comment-reply-cancel,
-    .comment-reply-submit {
-        width: 100%;
-    }
+/* 댓글도 줄바꿈 금지 */
+
+.recipe-comment-count span,
+.recipe-comment-count strong {
+    white-space: nowrap;
+    word-break: keep-all;
 }
