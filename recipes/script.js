@@ -25,6 +25,61 @@ const ADMIN_UIDS = [
 ];
 
 let isAdmin = false;
+let currentUser = null;
+
+
+// ==================================================
+// ⭐ 개인 즐겨찾기
+// 브라우저마다 따로 저장
+// ==================================================
+
+const FAVORITES_STORAGE_KEY =
+    "gojanggeum_recipe_favorites_v1";
+
+let favoriteIds =
+    new Set();
+
+let favoriteOnly =
+    false;
+
+
+// ==================================================
+// ❤️ 공개 좋아요
+// ==================================================
+
+let likeCounts =
+    new Map();
+
+let likedRecipeIds =
+    new Set();
+
+let likeBusyIds =
+    new Set();
+
+
+// ==================================================
+// 💬 댓글
+// ==================================================
+
+let commentsByRecipe =
+    new Map();
+
+let commentBusy =
+    false;
+
+let replyBusy =
+    false;
+
+
+// ==================================================
+// 현재 데이터
+// ==================================================
+
+let recipes = [];
+let categories = [];
+
+let selectedCategory =
+    "전체";
 
 
 // ==================================================
@@ -32,40 +87,64 @@ let isAdmin = false;
 // ==================================================
 
 const recipeList =
-    document.getElementById("recipeList");
+    document.getElementById(
+        "recipeList"
+    );
 
 const recipeCount =
-    document.getElementById("recipeCount");
+    document.getElementById(
+        "recipeCount"
+    );
 
 const emptyState =
-    document.getElementById("emptyState");
+    document.getElementById(
+        "emptyState"
+    );
 
 const addRecipeButton =
-    document.getElementById("addRecipeButton");
+    document.getElementById(
+        "addRecipeButton"
+    );
 
 const recipeModal =
-    document.getElementById("recipeModal");
+    document.getElementById(
+        "recipeModal"
+    );
 
 const closeModalButton =
-    document.getElementById("closeModalButton");
+    document.getElementById(
+        "closeModalButton"
+    );
 
 const cancelButton =
-    document.getElementById("cancelButton");
+    document.getElementById(
+        "cancelButton"
+    );
 
 const recipeForm =
-    document.getElementById("recipeForm");
+    document.getElementById(
+        "recipeForm"
+    );
 
 const recipeId =
-    document.getElementById("recipeId");
+    document.getElementById(
+        "recipeId"
+    );
 
 const recipeName =
-    document.getElementById("recipeName");
+    document.getElementById(
+        "recipeName"
+    );
 
 const recipeCategory =
-    document.getElementById("recipeCategory");
+    document.getElementById(
+        "recipeCategory"
+    );
 
 const recipeTime =
-    document.getElementById("recipeTime");
+    document.getElementById(
+        "recipeTime"
+    );
 
 const recipeDescription =
     document.getElementById(
@@ -78,13 +157,19 @@ const recipeIngredients =
     );
 
 const recipeSteps =
-    document.getElementById("recipeSteps");
+    document.getElementById(
+        "recipeSteps"
+    );
 
 const recipeTip =
-    document.getElementById("recipeTip");
+    document.getElementById(
+        "recipeTip"
+    );
 
 const recipeImage =
-    document.getElementById("recipeImage");
+    document.getElementById(
+        "recipeImage"
+    );
 
 const imagePreviewWrapper =
     document.getElementById(
@@ -92,7 +177,9 @@ const imagePreviewWrapper =
     );
 
 const imagePreview =
-    document.getElementById("imagePreview");
+    document.getElementById(
+        "imagePreview"
+    );
 
 const editImageButton =
     document.getElementById(
@@ -105,13 +192,19 @@ const removeImageButton =
     );
 
 const modalTitle =
-    document.getElementById("modalTitle");
+    document.getElementById(
+        "modalTitle"
+    );
 
 const searchInput =
-    document.getElementById("searchInput");
+    document.getElementById(
+        "searchInput"
+    );
 
 const searchButton =
-    document.getElementById("searchButton");
+    document.getElementById(
+        "searchButton"
+    );
 
 const categorySection =
     document.getElementById(
@@ -119,7 +212,9 @@ const categorySection =
     );
 
 const sortSelect =
-    document.getElementById("sortSelect");
+    document.getElementById(
+        "sortSelect"
+    );
 
 const favoriteButton =
     document.getElementById(
@@ -127,10 +222,14 @@ const favoriteButton =
     );
 
 const detailModal =
-    document.getElementById("detailModal");
+    document.getElementById(
+        "detailModal"
+    );
 
 const detailBody =
-    document.getElementById("detailBody");
+    document.getElementById(
+        "detailBody"
+    );
 
 const closeDetailButton =
     document.getElementById(
@@ -138,11 +237,13 @@ const closeDetailButton =
     );
 
 const toast =
-    document.getElementById("toast");
+    document.getElementById(
+        "toast"
+    );
 
 
 // ==================================================
-// 카테고리 관련 요소
+// 카테고리 관련
 // ==================================================
 
 const addCategoryButton =
@@ -177,17 +278,23 @@ const newCategoryName =
 
 
 // ==================================================
-// 로그인 관련 요소
+// 로그인 관련
 // ==================================================
 
 const loginButton =
-    document.getElementById("loginButton");
+    document.getElementById(
+        "loginButton"
+    );
 
 const logoutButton =
-    document.getElementById("logoutButton");
+    document.getElementById(
+        "logoutButton"
+    );
 
 const loginModal =
-    document.getElementById("loginModal");
+    document.getElementById(
+        "loginModal"
+    );
 
 const closeLoginButton =
     document.getElementById(
@@ -195,10 +302,14 @@ const closeLoginButton =
     );
 
 const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+        "loginForm"
+    );
 
 const loginEmail =
-    document.getElementById("loginEmail");
+    document.getElementById(
+        "loginEmail"
+    );
 
 const loginPassword =
     document.getElementById(
@@ -207,14 +318,18 @@ const loginPassword =
 
 
 // ==================================================
-// 📸 사진 크롭 관련 요소
+// 📸 사진 Cropper
 // ==================================================
 
 const cropModal =
-    document.getElementById("cropModal");
+    document.getElementById(
+        "cropModal"
+    );
 
 const cropImage =
-    document.getElementById("cropImage");
+    document.getElementById(
+        "cropImage"
+    );
 
 const closeCropModalButton =
     document.getElementById(
@@ -232,7 +347,9 @@ const applyCropButton =
     );
 
 const zoomSlider =
-    document.getElementById("zoomSlider");
+    document.getElementById(
+        "zoomSlider"
+    );
 
 const rotateLeftButton =
     document.getElementById(
@@ -251,63 +368,21 @@ const resetCropButton =
 
 
 // ==================================================
-// 현재 상태
+// 사진 편집 상태
 // ==================================================
-
-let recipes = [];
-
-let categories = [];
-
-let selectedCategory = "전체";
-
-let favoriteOnly = false;
-
-
-// ==================================================
-// 사진 상태
-// ==================================================
-
-// 최종적으로 Supabase에 업로드할 사진
 
 let selectedImageFile = null;
-
-
-// 수정 중인 기존 사진 URL
+let originalImageFile = null;
 
 let currentImage = "";
-
-
-// 수정 중인 기존 Storage 경로
-
 let currentImagePath = "";
-
-
-// 기존 사진을 삭제하기로 했는지
 
 let removeExistingImage = false;
 
-
-// Cropper 객체
-
 let cropper = null;
 
-
-// 사용자가 고른 원본
-
-let originalImageFile = null;
-
-
-// Cropper에 사용하는 임시 URL
-
 let cropObjectURL = "";
-
-
-// 잘린 사진 미리보기 임시 URL
-
 let croppedPreviewURL = "";
-
-
-// 확대 슬라이더 이전 값
 
 let lastZoomSliderValue = 0;
 
@@ -319,19 +394,73 @@ let lastZoomSliderValue = 0;
 function escapeHTML(value = "") {
 
     return String(value)
-
         .replaceAll("&", "&amp;")
-
         .replaceAll("<", "&lt;")
-
         .replaceAll(">", "&gt;")
-
         .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
 
-        .replaceAll(
-            "'",
-            "&#039;"
+
+// ==================================================
+// ⭐ 개인 즐겨찾기 불러오기
+// ==================================================
+
+function loadFavoriteIds() {
+
+    try {
+
+        const saved =
+            JSON.parse(
+                localStorage.getItem(
+                    FAVORITES_STORAGE_KEY
+                ) || "[]"
+            );
+
+
+        favoriteIds =
+            new Set(
+                Array.isArray(saved)
+                    ? saved.map(Number)
+                    : []
+            );
+
+    } catch (error) {
+
+        console.error(
+            "즐겨찾기 불러오기 실패:",
+            error
         );
+
+
+        favoriteIds =
+            new Set();
+    }
+}
+
+
+// ==================================================
+// ⭐ 개인 즐겨찾기 저장
+// ==================================================
+
+function saveFavoriteIds() {
+
+    try {
+
+        localStorage.setItem(
+            FAVORITES_STORAGE_KEY,
+            JSON.stringify(
+                [...favoriteIds]
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            "즐겨찾기 저장 실패:",
+            error
+        );
+    }
 }
 
 
@@ -344,21 +473,13 @@ function getCategoryIcon(name) {
     const icons = {
 
         "한식": "🍚",
-
         "양식": "🍝",
-
         "중식": "🥟",
-
         "일식": "🍣",
-
         "복어": "🐡",
-
         "떡": "🍡",
-
         "브런치실무": "🥐",
-
         "한식디저트실무": "🍵",
-
         "집밥": "🏠"
 
     };
@@ -369,22 +490,140 @@ function getCategoryIcon(name) {
 
 
 // ==================================================
+// 👤 방문자 세션 준비
+//
+// 관리자 로그인 상태 → 그대로 사용
+// 로그인 안 된 방문자 → 익명 로그인
+// ==================================================
+
+async function ensureUserSession() {
+
+    const {
+        data: {
+            session
+        },
+        error
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+    if (error) {
+
+        console.error(
+            "세션 확인 실패:",
+            error
+        );
+
+
+        currentUser = null;
+        isAdmin = false;
+
+
+        updateAdminScreen();
+
+
+        return false;
+    }
+
+
+    if (
+        session?.user
+    ) {
+
+        currentUser =
+            session.user;
+
+
+        isAdmin =
+            ADMIN_UIDS.includes(
+                currentUser.id
+            );
+
+
+        updateAdminScreen();
+
+
+        return true;
+    }
+
+
+    const {
+        data,
+        error: anonymousError
+    } =
+        await supabaseClient
+            .auth
+            .signInAnonymously();
+
+
+    if (anonymousError) {
+
+        console.error(
+            "익명 로그인 실패:",
+            anonymousError
+        );
+
+
+        currentUser = null;
+        isAdmin = false;
+
+
+        updateAdminScreen();
+
+
+        return false;
+    }
+
+
+    currentUser =
+        data.user ||
+        data.session?.user ||
+        null;
+
+
+    isAdmin =
+        Boolean(
+            currentUser &&
+            ADMIN_UIDS.includes(
+                currentUser.id
+            )
+        );
+
+
+    updateAdminScreen();
+
+
+    return Boolean(
+        currentUser
+    );
+}
+
+
+// ==================================================
 // 📂 카테고리 불러오기
 // ==================================================
 
 async function loadCategories() {
 
-    const { data, error } =
+    const {
+        data,
+        error
+    } =
         await supabaseClient
 
-            .from("categories")
+            .from(
+                "categories"
+            )
 
             .select("*")
 
             .order(
                 "id",
                 {
-                    ascending: true
+                    ascending:
+                        true
                 }
             );
 
@@ -460,11 +699,9 @@ function renderCategories() {
 
 
             button.textContent =
-                `${
-                    getCategoryIcon(
-                        category.name
-                    )
-                } ${category.name}`;
+                `${getCategoryIcon(
+                    category.name
+                )} ${category.name}`;
 
 
             if (
@@ -472,48 +709,53 @@ function renderCategories() {
                 category.name
             ) {
 
-                button.classList.add(
-                    "active"
-                );
+                button
+                    .classList
+                    .add(
+                        "active"
+                    );
             }
 
 
-            categorySection.insertBefore(
-                button,
-                addCategoryButton
-            );
+            categorySection
+                .insertBefore(
+                    button,
+                    addCategoryButton
+                );
         }
     );
 
 
     if (
-        selectedCategory === "전체"
+        selectedCategory ===
+        "전체"
     ) {
 
-        allButton?.classList.add(
-            "active"
-        );
+        allButton
+            ?.classList
+            .add(
+                "active"
+            );
 
     } else {
 
-        allButton?.classList.remove(
-            "active"
-        );
+        allButton
+            ?.classList
+            .remove(
+                "active"
+            );
     }
 
-
-    // 레시피 등록창 select 생성
 
     const oldValue =
         recipeCategory.value;
 
 
-    recipeCategory.innerHTML =
-        `
-            <option value="">
-                선택해주세요
-            </option>
-        `;
+    recipeCategory.innerHTML = `
+        <option value="">
+            선택해주세요
+        </option>
+    `;
 
 
     categories.forEach(
@@ -533,9 +775,10 @@ function renderCategories() {
                 category.name;
 
 
-            recipeCategory.appendChild(
-                option
-            );
+            recipeCategory
+                .appendChild(
+                    option
+                );
         }
     );
 
@@ -566,13 +809,16 @@ function openCategoryModal() {
             "관리자 로그인이 필요해요."
         );
 
+
         return;
     }
 
 
     categoryModal
         .classList
-        .remove("hidden");
+        .remove(
+            "hidden"
+        );
 
 
     document.body.style.overflow =
@@ -585,7 +831,6 @@ function openCategoryModal() {
             newCategoryName.focus();
 
         },
-
         100
     );
 }
@@ -595,7 +840,9 @@ function closeCategoryModal() {
 
     categoryModal
         .classList
-        .add("hidden");
+        .add(
+            "hidden"
+        );
 
 
     categoryForm.reset();
@@ -622,6 +869,7 @@ categoryForm.addEventListener(
                 "관리자만 추가할 수 있어요."
             );
 
+
             return;
         }
 
@@ -637,6 +885,7 @@ categoryForm.addEventListener(
             showToast(
                 "카테고리 이름을 입력해주세요."
             );
+
 
             return;
         }
@@ -657,14 +906,19 @@ categoryForm.addEventListener(
                 "이미 있는 카테고리예요."
             );
 
+
             return;
         }
 
 
-        const { error } =
+        const {
+            error
+        } =
             await supabaseClient
 
-                .from("categories")
+                .from(
+                    "categories"
+                )
 
                 .insert({
                     name
@@ -680,7 +934,8 @@ categoryForm.addEventListener(
 
 
             if (
-                error.code === "23505"
+                error.code ===
+                "23505"
             ) {
 
                 showToast(
@@ -718,17 +973,23 @@ categoryForm.addEventListener(
 
 async function loadRecipes() {
 
-    const { data, error } =
+    const {
+        data,
+        error
+    } =
         await supabaseClient
 
-            .from("recipes")
+            .from(
+                "recipes"
+            )
 
             .select("*")
 
             .order(
                 "created_at",
                 {
-                    ascending: false
+                    ascending:
+                        false
                 }
             );
 
@@ -751,62 +1012,151 @@ async function loadRecipes() {
 
 
     recipes =
-        (data || []).map(
-            recipe => ({
+        (data || [])
+            .map(
+                recipe => ({
 
-                id:
-                    recipe.id,
+                    id:
+                        Number(
+                            recipe.id
+                        ),
 
-                name:
-                    recipe.name || "",
+                    name:
+                        recipe.name || "",
 
-                category:
-                    recipe.category || "",
+                    category:
+                        recipe.category || "",
 
-                time:
-                    recipe.cooking_time || "",
+                    time:
+                        recipe.cooking_time || "",
 
-                description:
-                    recipe.description || "",
+                    description:
+                        recipe.description || "",
 
-                ingredients:
-                    Array.isArray(
-                        recipe.ingredients
-                    )
-                        ? recipe.ingredients
-                        : [],
+                    ingredients:
+                        Array.isArray(
+                            recipe.ingredients
+                        )
+                            ? recipe.ingredients
+                            : [],
 
-                steps:
-                    Array.isArray(
-                        recipe.steps
-                    )
-                        ? recipe.steps
-                        : [],
+                    steps:
+                        Array.isArray(
+                            recipe.steps
+                        )
+                            ? recipe.steps
+                            : [],
 
-                tip:
-                    recipe.tip || "",
+                    tip:
+                        recipe.tip || "",
 
-                image:
-                    recipe.image_url || "",
+                    image:
+                        recipe.image_url || "",
 
-                imagePath:
-                    recipe.image_path || "",
+                    imagePath:
+                        recipe.image_path || "",
 
-                favorite:
-                    Boolean(
-                        recipe.favorite
-                    ),
+                    favorite:
+                        favoriteIds.has(
+                            Number(
+                                recipe.id
+                            )
+                        ),
 
-                createdAt:
-                    recipe.created_at
+                    createdAt:
+                        recipe.created_at
 
-                        ? new Date(
-                            recipe.created_at
-                        ).getTime()
+                            ? new Date(
+                                recipe.created_at
+                            ).getTime()
 
-                        : 0
+                            : 0
+                })
+            );
 
-            })
+
+    renderRecipes();
+}
+
+
+// ==================================================
+// ❤️ 전체 좋아요 불러오기
+// ==================================================
+
+async function loadLikes() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from(
+                "recipe_likes"
+            )
+
+            .select(
+                "recipe_id, user_id"
+            );
+
+
+    if (error) {
+
+        console.error(
+            "좋아요 불러오기 실패:",
+            error
+        );
+
+
+        showToast(
+            "좋아요 정보를 불러오지 못했어요."
+        );
+
+
+        return;
+    }
+
+
+    likeCounts =
+        new Map();
+
+
+    likedRecipeIds =
+        new Set();
+
+
+    (data || [])
+        .forEach(
+            like => {
+
+                const id =
+                    Number(
+                        like.recipe_id
+                    );
+
+
+                likeCounts.set(
+                    id,
+                    (
+                        likeCounts.get(
+                            id
+                        ) || 0
+                    ) + 1
+                );
+
+
+                if (
+                    currentUser &&
+                    like.user_id ===
+                        currentUser.id
+                ) {
+
+                    likedRecipeIds
+                        .add(
+                            id
+                        );
+                }
+            }
         );
 
 
@@ -814,6 +1164,1432 @@ async function loadRecipes() {
 }
 
 
+// ==================================================
+// ❤️ 좋아요 추가 / 취소
+// ==================================================
+
+async function toggleLike(id) {
+
+    id =
+        Number(id);
+
+
+    if (
+        likeBusyIds.has(
+            id
+        )
+    ) {
+
+        return;
+    }
+
+
+    if (!currentUser) {
+
+        const ready =
+            await ensureUserSession();
+
+
+        if (!ready) {
+
+            showToast(
+                "좋아요 기능을 준비하지 못했어요."
+            );
+
+
+            return;
+        }
+    }
+
+
+    likeBusyIds.add(
+        id
+    );
+
+
+    try {
+
+        const alreadyLiked =
+            likedRecipeIds.has(
+                id
+            );
+
+
+        if (alreadyLiked) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+
+                    .from(
+                        "recipe_likes"
+                    )
+
+                    .delete()
+
+                    .eq(
+                        "recipe_id",
+                        id
+                    )
+
+                    .eq(
+                        "user_id",
+                        currentUser.id
+                    );
+
+
+            if (error) {
+
+                throw error;
+            }
+
+
+            likedRecipeIds
+                .delete(
+                    id
+                );
+
+
+            likeCounts.set(
+                id,
+                Math.max(
+                    0,
+                    (
+                        likeCounts.get(
+                            id
+                        ) || 1
+                    ) - 1
+                )
+            );
+
+        } else {
+
+            const {
+                error
+            } =
+                await supabaseClient
+
+                    .from(
+                        "recipe_likes"
+                    )
+
+                    .insert({
+                        recipe_id:
+                            id,
+
+                        user_id:
+                            currentUser.id
+                    });
+
+
+            if (error) {
+
+                if (
+                    error.code ===
+                    "23505"
+                ) {
+
+                    await loadLikes();
+
+
+                    return;
+                }
+
+
+                throw error;
+            }
+
+
+            likedRecipeIds
+                .add(
+                    id
+                );
+
+
+            likeCounts.set(
+                id,
+                (
+                    likeCounts.get(
+                        id
+                    ) || 0
+                ) + 1
+            );
+        }
+
+
+        renderRecipes();
+
+
+        if (
+            !detailModal
+                .classList
+                .contains(
+                    "hidden"
+                )
+        ) {
+
+            renderDetail(
+                id
+            );
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "좋아요 변경 실패:",
+            error
+        );
+
+
+        showToast(
+            "좋아요를 변경하지 못했어요."
+        );
+
+
+    } finally {
+
+        likeBusyIds.delete(
+            id
+        );
+    }
+}
+
+
+// ==================================================
+// ⭐ 개인 즐겨찾기 변경
+// ==================================================
+
+function toggleFavorite(id) {
+
+    id =
+        Number(id);
+
+
+    const recipe =
+        recipes.find(
+            recipe =>
+                recipe.id ===
+                id
+        );
+
+
+    if (!recipe) {
+
+        return;
+    }
+
+
+    if (
+        favoriteIds.has(
+            id
+        )
+    ) {
+
+        favoriteIds.delete(
+            id
+        );
+
+
+        recipe.favorite =
+            false;
+
+
+        showToast(
+            "즐겨찾기에서 뺐어요."
+        );
+
+    } else {
+
+        favoriteIds.add(
+            id
+        );
+
+
+        recipe.favorite =
+            true;
+
+
+        showToast(
+            "즐겨찾기에 담았어요 ⭐"
+        );
+    }
+
+
+    saveFavoriteIds();
+
+
+    renderRecipes();
+}
+
+
+// ==================================================
+// 💬 댓글 날짜 표시
+// ==================================================
+
+function formatCommentDate(value) {
+
+    if (!value) {
+
+        return "";
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+    }
+
+
+    return new Intl.DateTimeFormat(
+        "ko-KR",
+        {
+            year:
+                "numeric",
+
+            month:
+                "2-digit",
+
+            day:
+                "2-digit",
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit"
+        }
+    ).format(
+        date
+    );
+}
+
+
+// ==================================================
+// 💬 특정 레시피 댓글 불러오기
+// ==================================================
+
+async function loadComments(recipeId) {
+
+    recipeId =
+        Number(
+            recipeId
+        );
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+
+            .from(
+                "recipe_comments"
+            )
+
+            .select(
+                "id, created_at, recipe_id, user_id, nickname, content, parent_id"
+            )
+
+            .eq(
+                "recipe_id",
+                recipeId
+            )
+
+            .order(
+                "created_at",
+                {
+                    ascending:
+                        true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "댓글 불러오기 실패:",
+            error
+        );
+
+
+        commentsByRecipe.set(
+            recipeId,
+            []
+        );
+
+
+        return [];
+    }
+
+
+    const comments =
+        data || [];
+
+
+    commentsByRecipe.set(
+        recipeId,
+        comments
+    );
+
+
+    return comments;
+}
+
+
+// ==================================================
+// 💬 댓글 HTML 만들기
+// ==================================================
+
+function createCommentsHTML(recipeId) {
+
+    recipeId =
+        Number(
+            recipeId
+        );
+
+
+    const comments =
+        commentsByRecipe.get(
+            recipeId
+        ) || [];
+
+
+    const parentComments =
+        comments.filter(
+            comment =>
+                comment.parent_id ===
+                null
+        );
+
+
+    const replies =
+        comments.filter(
+            comment =>
+                comment.parent_id !==
+                null
+        );
+
+
+    const commentsHTML =
+        parentComments
+
+            .map(
+                comment => {
+
+                    const childReplies =
+                        replies.filter(
+                            reply =>
+                                Number(
+                                    reply.parent_id
+                                ) ===
+                                Number(
+                                    comment.id
+                                )
+                        );
+
+
+                    const canDelete =
+                        Boolean(
+                            currentUser &&
+                            (
+                                comment.user_id ===
+                                currentUser.id
+                                ||
+                                isAdmin
+                            )
+                        );
+
+
+                    const replyHTML =
+                        childReplies
+
+                            .map(
+                                reply => {
+
+                                    const canDeleteReply =
+                                        Boolean(
+                                            currentUser &&
+                                            (
+                                                reply.user_id ===
+                                                currentUser.id
+                                                ||
+                                                isAdmin
+                                            )
+                                        );
+
+
+                                    return `
+                                        <div class="comment-reply">
+
+                                            <div class="comment-reply-header">
+
+                                                <div class="comment-author-area">
+
+                                                    <span class="comment-admin-badge">
+                                                        👑 고장금
+                                                    </span>
+
+
+                                                    <span class="comment-date">
+                                                        ${escapeHTML(
+                                                            formatCommentDate(
+                                                                reply.created_at
+                                                            )
+                                                        )}
+                                                    </span>
+
+                                                </div>
+
+
+                                                ${
+                                                    canDeleteReply
+
+                                                        ? `
+                                                            <button
+                                                                type="button"
+                                                                class="comment-delete-button"
+                                                                data-comment-delete="${reply.id}"
+                                                            >
+                                                                삭제
+                                                            </button>
+                                                        `
+
+                                                        : ""
+                                                }
+
+                                            </div>
+
+
+                                            <p class="comment-text">
+                                                ${escapeHTML(
+                                                    reply.content
+                                                )}
+                                            </p>
+
+                                        </div>
+                                    `;
+                                }
+                            )
+
+                            .join(
+                                ""
+                            );
+
+
+                    return `
+                        <article
+                            class="comment-item"
+                            data-comment-id="${comment.id}"
+                        >
+
+                            <div class="comment-item-header">
+
+                                <div class="comment-author-area">
+
+                                    <strong class="comment-author">
+                                        ${escapeHTML(
+                                            comment.nickname
+                                        )}
+                                    </strong>
+
+
+                                    <span class="comment-date">
+                                        ${escapeHTML(
+                                            formatCommentDate(
+                                                comment.created_at
+                                            )
+                                        )}
+                                    </span>
+
+                                </div>
+
+
+                                ${
+                                    canDelete
+
+                                        ? `
+                                            <button
+                                                type="button"
+                                                class="comment-delete-button"
+                                                data-comment-delete="${comment.id}"
+                                            >
+                                                삭제
+                                            </button>
+                                        `
+
+                                        : ""
+                                }
+
+                            </div>
+
+
+                            <p class="comment-text">
+                                ${escapeHTML(
+                                    comment.content
+                                )}
+                            </p>
+
+
+                            ${
+                                isAdmin
+
+                                    ? `
+                                        <button
+                                            type="button"
+                                            class="comment-reply-button"
+                                            data-reply-open="${comment.id}"
+                                        >
+                                            ↳ 답글 달기
+                                        </button>
+
+
+                                        <form
+                                            class="comment-reply-form hidden"
+                                            data-reply-form="${comment.id}"
+                                        >
+
+                                            <textarea
+                                                class="comment-reply-input"
+                                                maxlength="500"
+                                                placeholder="고장금님의 답글을 입력해주세요."
+                                                required
+                                            ></textarea>
+
+
+                                            <div class="comment-reply-form-buttons">
+
+                                                <button
+                                                    type="button"
+                                                    class="comment-reply-cancel"
+                                                    data-reply-cancel="${comment.id}"
+                                                >
+                                                    취소
+                                                </button>
+
+
+                                                <button
+                                                    type="submit"
+                                                    class="comment-reply-submit"
+                                                >
+                                                    답글 등록
+                                                </button>
+
+                                            </div>
+
+                                        </form>
+                                    `
+
+                                    : ""
+                            }
+
+
+                            ${
+                                replyHTML
+
+                                    ? `
+                                        <div class="comment-replies">
+                                            ${replyHTML}
+                                        </div>
+                                    `
+
+                                    : ""
+                            }
+
+                        </article>
+                    `;
+                }
+            )
+
+            .join(
+                ""
+            );
+
+
+    return `
+        <section
+            class="comment-section"
+            id="commentSection"
+        >
+
+            <div class="comment-section-header">
+
+                <div>
+
+                    <p class="comment-eyebrow">
+                        COMMENT
+                    </p>
+
+
+                    <h3>
+                        💬 댓글
+
+                        <span class="comment-count">
+                            ${parentComments.length}
+                        </span>
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <form
+                class="comment-form"
+                id="commentForm"
+            >
+
+                <div class="comment-form-group">
+
+                    <label for="commentNickname">
+                        닉네임
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="commentNickname"
+                        maxlength="20"
+                        placeholder="닉네임을 입력해주세요"
+                        ${
+                            isAdmin
+                                ? 'value="고장금" readonly'
+                                : ""
+                        }
+                        required
+                    >
+
+                </div>
+
+
+                <div class="comment-form-group">
+
+                    <label for="commentContent">
+                        댓글
+                    </label>
+
+
+                    <textarea
+                        id="commentContent"
+                        rows="4"
+                        maxlength="500"
+                        placeholder="이 레시피에 한마디 남겨주세요 😊"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="comment-form-bottom">
+
+                    <span class="comment-guide">
+                        작성한 댓글은 본인과 관리자만 삭제할 수 있어요.
+                    </span>
+
+
+                    <button
+                        type="submit"
+                        class="comment-submit-button"
+                    >
+                        댓글 남기기
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <div class="comment-list">
+
+                ${
+                    commentsHTML
+
+                        ? commentsHTML
+
+                        : `
+                            <div class="comment-empty">
+
+                                <span>
+                                    💭
+                                </span>
+
+
+                                <p>
+                                    아직 댓글이 없어요.<br>
+                                    첫 댓글을 남겨보세요!
+                                </p>
+
+                            </div>
+                        `
+                }
+
+            </div>
+
+        </section>
+    `;
+}
+
+
+// ==================================================
+// 💬 댓글 이벤트 연결
+// ==================================================
+
+function bindCommentEvents(recipeId) {
+
+    recipeId =
+        Number(
+            recipeId
+        );
+
+
+    const commentForm =
+        document.getElementById(
+            "commentForm"
+        );
+
+
+    commentForm
+        ?.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                await submitComment(
+                    recipeId
+                );
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            "[data-comment-delete]"
+        )
+
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async () => {
+
+                        const commentId =
+                            Number(
+                                button
+                                    .dataset
+                                    .commentDelete
+                            );
+
+
+                        await deleteComment(
+                            recipeId,
+                            commentId
+                        );
+                    }
+                );
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            "[data-reply-open]"
+        )
+
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const parentId =
+                            button
+                                .dataset
+                                .replyOpen;
+
+
+                        document
+                            .querySelector(
+                                `[data-reply-form="${parentId}"]`
+                            )
+                            ?.classList
+                            .remove(
+                                "hidden"
+                            );
+
+
+                        button
+                            .classList
+                            .add(
+                                "hidden"
+                            );
+                    }
+                );
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            "[data-reply-cancel]"
+        )
+
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const parentId =
+                            button
+                                .dataset
+                                .replyCancel;
+
+
+                        const form =
+                            document.querySelector(
+                                `[data-reply-form="${parentId}"]`
+                            );
+
+
+                        form
+                            ?.classList
+                            .add(
+                                "hidden"
+                            );
+
+
+                        form
+                            ?.reset();
+
+
+                        document
+                            .querySelector(
+                                `[data-reply-open="${parentId}"]`
+                            )
+                            ?.classList
+                            .remove(
+                                "hidden"
+                            );
+                    }
+                );
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            "[data-reply-form]"
+        )
+
+        .forEach(
+            form => {
+
+                form.addEventListener(
+                    "submit",
+                    async event => {
+
+                        event.preventDefault();
+
+
+                        const parentId =
+                            Number(
+                                form
+                                    .dataset
+                                    .replyForm
+                            );
+
+
+                        const textarea =
+                            form.querySelector(
+                                ".comment-reply-input"
+                            );
+
+
+                        await submitReply(
+                            recipeId,
+                            parentId,
+                            textarea
+                        );
+                    }
+                );
+            }
+        );
+}
+
+
+// ==================================================
+// 💬 원댓글 작성
+// ==================================================
+
+async function submitComment(recipeId) {
+
+    if (
+        commentBusy
+    ) {
+
+        return;
+    }
+
+
+    if (!currentUser) {
+
+        const ready =
+            await ensureUserSession();
+
+
+        if (!ready) {
+
+            showToast(
+                "댓글 기능을 준비하지 못했어요."
+            );
+
+
+            return;
+        }
+    }
+
+
+    const nicknameInput =
+        document.getElementById(
+            "commentNickname"
+        );
+
+
+    const contentInput =
+        document.getElementById(
+            "commentContent"
+        );
+
+
+    const nickname =
+        (
+            isAdmin
+                ? "고장금"
+                : nicknameInput
+                    ?.value
+                    .trim()
+        ) || "";
+
+
+    const content =
+        contentInput
+            ?.value
+            .trim() ||
+        "";
+
+
+    if (!nickname) {
+
+        showToast(
+            "닉네임을 입력해주세요."
+        );
+
+
+        nicknameInput
+            ?.focus();
+
+
+        return;
+    }
+
+
+    if (
+        nickname ===
+            "고장금" &&
+        !isAdmin
+    ) {
+
+        showToast(
+            "'고장금'은 관리자 전용 닉네임이에요."
+        );
+
+
+        nicknameInput
+            ?.focus();
+
+
+        return;
+    }
+
+
+    if (!content) {
+
+        showToast(
+            "댓글 내용을 입력해주세요."
+        );
+
+
+        contentInput
+            ?.focus();
+
+
+        return;
+    }
+
+
+    commentBusy =
+        true;
+
+
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient
+
+                .from(
+                    "recipe_comments"
+                )
+
+                .insert({
+
+                    recipe_id:
+                        Number(
+                            recipeId
+                        ),
+
+                    user_id:
+                        currentUser.id,
+
+                    nickname:
+                        nickname,
+
+                    content:
+                        content,
+
+                    parent_id:
+                        null
+                });
+
+
+        if (error) {
+
+            throw error;
+        }
+
+
+        showToast(
+            "댓글을 남겼어요 💬"
+        );
+
+
+        await refreshComments(
+            recipeId
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "댓글 작성 실패:",
+            error
+        );
+
+
+        showToast(
+            "댓글을 등록하지 못했어요."
+        );
+
+
+    } finally {
+
+        commentBusy =
+            false;
+    }
+}
+
+
+// ==================================================
+// 👩🏻‍🍳 관리자 답글 작성
+// ==================================================
+
+async function submitReply(
+    recipeId,
+    parentId,
+    textarea
+) {
+
+    if (
+        replyBusy
+    ) {
+
+        return;
+    }
+
+
+    if (
+        !isAdmin ||
+        !currentUser
+    ) {
+
+        showToast(
+            "관리자만 답글을 작성할 수 있어요."
+        );
+
+
+        return;
+    }
+
+
+    const content =
+        textarea
+            ?.value
+            .trim() ||
+        "";
+
+
+    if (!content) {
+
+        showToast(
+            "답글 내용을 입력해주세요."
+        );
+
+
+        textarea
+            ?.focus();
+
+
+        return;
+    }
+
+
+    replyBusy =
+        true;
+
+
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient
+
+                .from(
+                    "recipe_comments"
+                )
+
+                .insert({
+
+                    recipe_id:
+                        Number(
+                            recipeId
+                        ),
+
+                    user_id:
+                        currentUser.id,
+
+                    nickname:
+                        "고장금",
+
+                    content:
+                        content,
+
+                    parent_id:
+                        Number(
+                            parentId
+                        )
+                });
+
+
+        if (error) {
+
+            throw error;
+        }
+
+
+        showToast(
+            "답글을 남겼어요 ⭐"
+        );
+
+
+        await refreshComments(
+            recipeId
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "답글 작성 실패:",
+            error
+        );
+
+
+        showToast(
+            "답글을 등록하지 못했어요."
+        );
+
+
+    } finally {
+
+        replyBusy =
+            false;
+    }
+}
+
+
+// ==================================================
+// 🗑️ 댓글 삭제
+// ==================================================
+
+async function deleteComment(
+    recipeId,
+    commentId
+) {
+
+    const comments =
+        commentsByRecipe.get(
+            Number(
+                recipeId
+            )
+        ) || [];
+
+
+    const comment =
+        comments.find(
+            item =>
+                Number(
+                    item.id
+                ) ===
+                Number(
+                    commentId
+                )
+        );
+
+
+    if (!comment) {
+
+        showToast(
+            "댓글 정보를 찾지 못했어요."
+        );
+
+
+        return;
+    }
+
+
+    const canDelete =
+        Boolean(
+            currentUser &&
+            (
+                comment.user_id ===
+                currentUser.id
+                ||
+                isAdmin
+            )
+        );
+
+
+    if (!canDelete) {
+
+        showToast(
+            "이 댓글을 삭제할 권한이 없어요."
+        );
+
+
+        return;
+    }
+
+
+    const answer =
+        confirm(
+            comment.parent_id ===
+                null
+
+                ? "이 댓글을 삭제할까요?\n답글이 있다면 함께 삭제돼요."
+
+                : "이 답글을 삭제할까요?"
+        );
+
+
+    if (!answer) {
+
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .from(
+                "recipe_comments"
+            )
+
+            .delete()
+
+            .eq(
+                "id",
+                Number(
+                    commentId
+                )
+            );
+
+
+    if (error) {
+
+        console.error(
+            "댓글 삭제 실패:",
+            error
+        );
+
+
+        showToast(
+            "댓글을 삭제하지 못했어요."
+        );
+
+
+        return;
+    }
+
+
+    showToast(
+        comment.parent_id ===
+            null
+            ? "댓글을 삭제했어요."
+            : "답글을 삭제했어요."
+    );
+
+
+    await refreshComments(
+        recipeId
+    );
+}
+
+
+// ==================================================
+// 💬 댓글만 새로고침
+// ==================================================
+
+async function refreshComments(recipeId) {
+
+    await loadComments(
+        recipeId
+    );
+
+
+    renderDetail(
+        recipeId
+    );
+}
 // ==================================================
 // 📸 새 사진 선택
 // ==================================================
@@ -823,39 +2599,28 @@ recipeImage.addEventListener(
     event => {
 
         const file =
-            event.target.files[0];
-
+            event.target.files?.[0];
 
         if (!file) {
             return;
         }
 
-
-        if (
-            !file.type.startsWith(
-                "image/"
-            )
-        ) {
+        if (!file.type.startsWith("image/")) {
 
             showToast(
                 "이미지 파일만 선택해주세요."
             );
 
-
-            recipeImage.value =
-                "";
-
+            recipeImage.value = "";
 
             return;
         }
 
-
         originalImageFile =
             file;
 
-
         openCropModal(
-            originalImageFile
+            file
         );
     }
 );
@@ -871,128 +2636,97 @@ function openCropModal(file) {
         return;
     }
 
-
     destroyCropper();
-
-
     revokeCropObjectURL();
-
 
     cropObjectURL =
         URL.createObjectURL(
             file
         );
 
-
     cropImage.src =
         cropObjectURL;
 
-
     cropModal
         .classList
-        .remove("hidden");
-
+        .remove(
+            "hidden"
+        );
 
     document.body.style.overflow =
         "hidden";
 
-
     zoomSlider.value =
         0;
 
-
     lastZoomSliderValue =
         0;
-
 
     cropImage.onload =
         () => {
 
             destroyCropper();
 
-
             cropper =
                 new Cropper(
                     cropImage,
                     {
-
-                        // ⭐ 고정 4:3
-
                         aspectRatio:
                             4 / 3,
-
 
                         viewMode:
                             1,
 
-
                         dragMode:
                             "move",
-
 
                         autoCropArea:
                             0.95,
 
-
                         responsive:
                             true,
-
 
                         restore:
                             false,
 
-
                         guides:
                             true,
-
 
                         center:
                             true,
 
-
                         highlight:
                             false,
-
 
                         background:
                             false,
 
-
                         movable:
                             true,
-
 
                         rotatable:
                             true,
 
-
                         scalable:
                             false,
-
 
                         zoomable:
                             true,
 
-
                         zoomOnTouch:
                             true,
-
 
                         zoomOnWheel:
                             true,
 
-
                         cropBoxMovable:
                             false,
-
 
                         cropBoxResizable:
                             false,
 
-
                         toggleDragModeOnDblclick:
                             false
-
                     }
                 );
         };
@@ -1009,9 +2743,7 @@ function destroyCropper() {
         return;
     }
 
-
     cropper.destroy();
-
 
     cropper =
         null;
@@ -1028,11 +2760,9 @@ function revokeCropObjectURL() {
         return;
     }
 
-
     URL.revokeObjectURL(
         cropObjectURL
     );
-
 
     cropObjectURL =
         "";
@@ -1049,11 +2779,9 @@ function revokeCroppedPreviewURL() {
         return;
     }
 
-
     URL.revokeObjectURL(
         croppedPreviewURL
     );
-
 
     croppedPreviewURL =
         "";
@@ -1068,30 +2796,25 @@ function closeCropModal() {
 
     destroyCropper();
 
-
     cropImage.onload =
         null;
-
 
     cropImage.src =
         "";
 
-
     revokeCropObjectURL();
-
 
     cropModal
         .classList
-        .add("hidden");
-
+        .add(
+            "hidden"
+        );
 
     zoomSlider.value =
         0;
 
-
     lastZoomSliderValue =
         0;
-
 
     restoreBodyScroll();
 }
@@ -1106,28 +2829,21 @@ function cancelCropEditing() {
     recipeImage.value =
         "";
 
-
     closeCropModal();
-
-
-    // 기존 사진이 있으면 다시 보여주기
 
     if (currentImage) {
 
         imagePreview.src =
             currentImage;
 
-
         imagePreviewWrapper
             .classList
-            .remove("hidden");
-
+            .remove(
+                "hidden"
+            );
 
         return;
     }
-
-
-    // 이미 잘라둔 새 사진이 있다면 유지
 
     if (
         selectedImageFile &&
@@ -1137,23 +2853,23 @@ function cancelCropEditing() {
         imagePreview.src =
             croppedPreviewURL;
 
-
         imagePreviewWrapper
             .classList
-            .remove("hidden");
-
+            .remove(
+                "hidden"
+            );
 
         return;
     }
 
-
     imagePreview.src =
         "";
 
-
     imagePreviewWrapper
         .classList
-        .add("hidden");
+        .add(
+            "hidden"
+        );
 }
 
 
@@ -1169,27 +2885,19 @@ zoomSlider.addEventListener(
             return;
         }
 
-
         const value =
             Number(
                 event.target.value
             );
 
-
         const difference =
             value -
             lastZoomSliderValue;
 
-
-        /*
-            이전 값과 차이만큼
-            조금씩 확대/축소
-        */
-
         cropper.zoom(
-            difference * 0.01
+            difference *
+            0.01
         );
-
 
         lastZoomSliderValue =
             value;
@@ -1198,19 +2906,14 @@ zoomSlider.addEventListener(
 
 
 // ==================================================
-// 사진 회전
+// 회전
 // ==================================================
 
 rotateLeftButton.addEventListener(
     "click",
     () => {
 
-        if (!cropper) {
-            return;
-        }
-
-
-        cropper.rotate(
+        cropper?.rotate(
             -90
         );
     }
@@ -1221,12 +2924,7 @@ rotateRightButton.addEventListener(
     "click",
     () => {
 
-        if (!cropper) {
-            return;
-        }
-
-
-        cropper.rotate(
+        cropper?.rotate(
             90
         );
     }
@@ -1245,13 +2943,10 @@ resetCropButton.addEventListener(
             return;
         }
 
-
         cropper.reset();
-
 
         zoomSlider.value =
             0;
-
 
         lastZoomSliderValue =
             0;
@@ -1276,7 +2971,6 @@ applyCropButton.addEventListener(
             return;
         }
 
-
         const canvas =
             cropper.getCroppedCanvas({
                 width:
@@ -1292,7 +2986,6 @@ applyCropButton.addEventListener(
                     "high"
             });
 
-
         if (!canvas) {
 
             showToast(
@@ -1302,9 +2995,7 @@ applyCropButton.addEventListener(
             return;
         }
 
-
         canvas.toBlob(
-
             blob => {
 
                 if (!blob) {
@@ -1316,59 +3007,45 @@ applyCropButton.addEventListener(
                     return;
                 }
 
-
                 selectedImageFile =
                     new File(
                         [blob],
-
-                        `recipe-${
-                            Date.now()
-                        }.webp`,
-
+                        `recipe-${Date.now()}.webp`,
                         {
                             type:
                                 "image/webp"
                         }
                     );
 
-
                 removeExistingImage =
                     false;
 
-
                 revokeCroppedPreviewURL();
-
 
                 croppedPreviewURL =
                     URL.createObjectURL(
                         blob
                     );
 
-
                 imagePreview.src =
                     croppedPreviewURL;
 
-
                 imagePreviewWrapper
                     .classList
-                    .remove("hidden");
-
+                    .remove(
+                        "hidden"
+                    );
 
                 recipeImage.value =
                     "";
 
-
                 closeCropModal();
-
 
                 showToast(
                     "사진 편집 완료 ✨"
                 );
-
             },
-
             "image/webp",
-
             0.88
         );
     }
@@ -1383,10 +3060,9 @@ editImageButton.addEventListener(
     "click",
     async () => {
 
-        // 방금 선택한 원본이 있으면
-        // 원본으로 다시 편집
-
-        if (originalImageFile) {
+        if (
+            originalImageFile
+        ) {
 
             openCropModal(
                 originalImageFile
@@ -1395,10 +3071,9 @@ editImageButton.addEventListener(
             return;
         }
 
-
-        // 기존 Supabase 사진 수정
-
-        if (currentImage) {
+        if (
+            currentImage
+        ) {
 
             try {
 
@@ -1406,12 +3081,10 @@ editImageButton.addEventListener(
                     "사진을 불러오고 있어요 📸"
                 );
 
-
                 const response =
                     await fetch(
                         currentImage
                     );
-
 
                 if (!response.ok) {
 
@@ -1420,19 +3093,13 @@ editImageButton.addEventListener(
                     );
                 }
 
-
                 const blob =
                     await response.blob();
-
 
                 originalImageFile =
                     new File(
                         [blob],
-
-                        `recipe-edit-${
-                            Date.now()
-                        }`,
-
+                        `recipe-edit-${Date.now()}`,
                         {
                             type:
                                 blob.type ||
@@ -1440,30 +3107,24 @@ editImageButton.addEventListener(
                         }
                     );
 
-
                 openCropModal(
                     originalImageFile
                 );
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(
                     "기존 사진 편집 실패:",
                     error
                 );
 
-
                 showToast(
                     "사진을 다시 불러오지 못했어요."
                 );
             }
 
-
             return;
         }
-
 
         showToast(
             "편집할 사진을 먼저 선택해주세요."
@@ -1483,17 +3144,13 @@ removeImageButton.addEventListener(
         selectedImageFile =
             null;
 
-
         originalImageFile =
             null;
-
 
         recipeImage.value =
             "";
 
-
         revokeCroppedPreviewURL();
-
 
         if (
             currentImage ||
@@ -1504,19 +3161,17 @@ removeImageButton.addEventListener(
                 true;
         }
 
-
         currentImage =
             "";
-
 
         imagePreview.src =
             "";
 
-
         imagePreviewWrapper
             .classList
-            .add("hidden");
-
+            .add(
+                "hidden"
+            );
 
         showToast(
             "사진을 삭제했어요. 저장하면 반영돼요."
@@ -1526,7 +3181,7 @@ removeImageButton.addEventListener(
 
 
 // ==================================================
-// 사진 편집창 버튼
+// 사진 편집 모달 버튼
 // ==================================================
 
 cancelCropButton.addEventListener(
@@ -1557,28 +3212,22 @@ cropModal
 
 async function compressImage(file) {
 
-    /*
-        Cropper에서 나온 사진은
-        이미 1200x900 WebP라 거의 그대로 사용.
-
-        기존 이미지 업로드 호환을 위해
-        일반 사진일 경우만 압축.
-    */
-
     if (
-        file.type === "image/webp"
+        file.type ===
+        "image/webp"
     ) {
 
         return file;
     }
 
-
     return new Promise(
-        (resolve, reject) => {
+        (
+            resolve,
+            reject
+        ) => {
 
             const reader =
                 new FileReader();
-
 
             reader.onload =
                 event => {
@@ -1586,44 +3235,39 @@ async function compressImage(file) {
                     const img =
                         new Image();
 
-
                     img.onload =
                         () => {
 
                             const MAX_SIZE =
                                 1600;
 
-
                             let width =
                                 img.width;
-
 
                             let height =
                                 img.height;
 
-
                             if (
-                                width > MAX_SIZE ||
-                                height > MAX_SIZE
+                                width >
+                                    MAX_SIZE ||
+                                height >
+                                    MAX_SIZE
                             ) {
 
                                 const ratio =
                                     Math.min(
+                                        MAX_SIZE /
+                                        width,
 
                                         MAX_SIZE /
-                                            width,
-
-                                        MAX_SIZE /
-                                            height
+                                        height
                                     );
-
 
                                 width =
                                     Math.round(
                                         width *
                                         ratio
                                     );
-
 
                                 height =
                                     Math.round(
@@ -1632,26 +3276,21 @@ async function compressImage(file) {
                                     );
                             }
 
-
                             const canvas =
                                 document.createElement(
                                     "canvas"
                                 );
 
-
                             canvas.width =
                                 width;
 
-
                             canvas.height =
                                 height;
-
 
                             const context =
                                 canvas.getContext(
                                     "2d"
                                 );
-
 
                             context.drawImage(
                                 img,
@@ -1661,9 +3300,7 @@ async function compressImage(file) {
                                 height
                             );
 
-
                             canvas.toBlob(
-
                                 blob => {
 
                                     if (!blob) {
@@ -1677,32 +3314,24 @@ async function compressImage(file) {
                                         return;
                                     }
 
-
                                     resolve(
                                         blob
                                     );
-
                                 },
-
                                 "image/webp",
-
                                 0.82
                             );
                         };
 
-
                     img.onerror =
                         reject;
-
 
                     img.src =
                         event.target.result;
                 };
 
-
             reader.onerror =
                 reject;
-
 
             reader.readAsDataURL(
                 file
@@ -1716,39 +3345,27 @@ async function compressImage(file) {
 // ☁️ 사진 업로드
 // ==================================================
 
-async function uploadRecipeImage(
-    file
-) {
+async function uploadRecipeImage(file) {
 
     const compressed =
         await compressImage(
             file
         );
 
-
     const fileName =
-        `${
-            Date.now()
-        }-${
-            crypto.randomUUID()
-        }.webp`;
-
+        `${Date.now()}-${crypto.randomUUID()}.webp`;
 
     const filePath =
         `recipes/${fileName}`;
 
-
     const {
-        error: uploadError
+        error
     } =
         await supabaseClient
-
             .storage
-
             .from(
                 "recipe-images"
             )
-
             .upload(
                 filePath,
                 compressed,
@@ -1764,39 +3381,31 @@ async function uploadRecipeImage(
                 }
             );
 
-
-    if (uploadError) {
+    if (error) {
 
         console.error(
             "사진 업로드 실패:",
-            uploadError
+            error
         );
 
-
-        throw uploadError;
+        throw error;
     }
 
-
     const {
-        data: publicData
+        data
     } =
         supabaseClient
-
             .storage
-
             .from(
                 "recipe-images"
             )
-
             .getPublicUrl(
                 filePath
             );
 
-
     return {
-
         url:
-            publicData.publicUrl,
+            data.publicUrl,
 
         path:
             filePath
@@ -1808,28 +3417,23 @@ async function uploadRecipeImage(
 // Storage 사진 삭제
 // ==================================================
 
-async function deleteStorageImage(
-    path
-) {
+async function deleteStorageImage(path) {
 
     if (!path) {
         return;
     }
 
-
-    const { error } =
+    const {
+        error
+    } =
         await supabaseClient
-
             .storage
-
             .from(
                 "recipe-images"
             )
-
             .remove([
                 path
             ]);
-
 
     if (error) {
 
@@ -1842,7 +3446,7 @@ async function deleteStorageImage(
 
 
 // ==================================================
-// 레시피 화면 출력
+// 🍳 레시피 카드 출력
 // ==================================================
 
 function renderRecipes() {
@@ -1851,7 +3455,7 @@ function renderRecipes() {
         [...recipes];
 
 
-    // 카테고리
+    // 카테고리 필터
 
     if (
         selectedCategory !==
@@ -1875,55 +3479,38 @@ function renderRecipes() {
             .trim()
             .toLowerCase();
 
-
     if (keyword) {
 
         filteredRecipes =
             filteredRecipes.filter(
                 recipe => {
 
-                    const name =
-                        recipe.name
-                            .toLowerCase();
-
-
-                    const description =
-                        recipe.description
-                            .toLowerCase();
-
-
-                    const ingredients =
-                        recipe.ingredients
-                            .join(" ")
-                            .toLowerCase();
-
-
-                    return (
-
-                        name.includes(
-                            keyword
+                    const text =
+                        [
+                            recipe.name,
+                            recipe.description,
+                            recipe.ingredients.join(
+                                " "
+                            )
+                        ]
+                        .join(
+                            " "
                         )
+                        .toLowerCase();
 
-                        ||
-
-                        description.includes(
-                            keyword
-                        )
-
-                        ||
-
-                        ingredients.includes(
-                            keyword
-                        )
+                    return text.includes(
+                        keyword
                     );
                 }
             );
     }
 
 
-    // 즐겨찾기 필터
+    // 즐겨찾기만
 
-    if (favoriteOnly) {
+    if (
+        favoriteOnly
+    ) {
 
         filteredRecipes =
             filteredRecipes.filter(
@@ -1941,12 +3528,14 @@ function renderRecipes() {
     ) {
 
         filteredRecipes.sort(
-            (a, b) =>
+            (
+                a,
+                b
+            ) =>
                 b.createdAt -
                 a.createdAt
         );
     }
-
 
     if (
         sortSelect.value ===
@@ -1954,12 +3543,14 @@ function renderRecipes() {
     ) {
 
         filteredRecipes.sort(
-            (a, b) =>
+            (
+                a,
+                b
+            ) =>
                 a.createdAt -
                 b.createdAt
         );
     }
-
 
     if (
         sortSelect.value ===
@@ -1967,7 +3558,10 @@ function renderRecipes() {
     ) {
 
         filteredRecipes.sort(
-            (a, b) =>
+            (
+                a,
+                b
+            ) =>
                 a.name.localeCompare(
                     b.name,
                     "ko"
@@ -1978,7 +3572,6 @@ function renderRecipes() {
 
     recipeList.innerHTML =
         "";
-
 
     recipeCount.textContent =
         `레시피 ${filteredRecipes.length}개`;
@@ -1991,16 +3584,18 @@ function renderRecipes() {
 
         emptyState
             .classList
-            .remove("hidden");
-
+            .remove(
+                "hidden"
+            );
 
         return;
     }
 
-
     emptyState
         .classList
-        .add("hidden");
+        .add(
+            "hidden"
+        );
 
 
     filteredRecipes.forEach(
@@ -2011,9 +3606,19 @@ function renderRecipes() {
                     "article"
                 );
 
-
             card.className =
                 "recipe-card";
+
+
+            const liked =
+                likedRecipeIds.has(
+                    recipe.id
+                );
+
+            const likeCount =
+                likeCounts.get(
+                    recipe.id
+                ) || 0;
 
 
             const imageHTML =
@@ -2021,30 +3626,17 @@ function renderRecipes() {
 
                     ? `
                         <img
-                            src="${
-                                escapeHTML(
-                                    recipe.image
-                                )
-                            }"
-                            alt="${
-                                escapeHTML(
-                                    recipe.name
-                                )
-                            }"
+                            src="${escapeHTML(
+                                recipe.image
+                            )}"
+                            alt="${escapeHTML(
+                                recipe.name
+                            )}"
                         >
                     `
 
                     : `
-                        <div
-                            style="
-                                width:100%;
-                                height:100%;
-                                display:flex;
-                                justify-content:center;
-                                align-items:center;
-                                font-size:60px;
-                            "
-                        >
+                        <div class="recipe-image-placeholder">
                             🍳
                         </div>
                     `;
@@ -2056,7 +3648,6 @@ function renderRecipes() {
 
                     ${imageHTML}
 
-
                     <button
                         type="button"
                         class="
@@ -2067,6 +3658,8 @@ function renderRecipes() {
                                     : ""
                             }
                         "
+                        aria-label="즐겨찾기"
+                        title="내 즐겨찾기"
                     >
                         ${
                             recipe.favorite
@@ -2083,55 +3676,78 @@ function renderRecipes() {
                     <div class="recipe-top-info">
 
                         <span class="recipe-category">
-
-                            ${
-                                getCategoryIcon(
-                                    recipe.category
-                                )
-                            }
-
-                            ${
-                                escapeHTML(
-                                    recipe.category
-                                )
-                            }
-
+                            ${getCategoryIcon(
+                                recipe.category
+                            )}
+                            ${escapeHTML(
+                                recipe.category
+                            )}
                         </span>
 
 
                         <span class="recipe-time">
-
                             ${
                                 recipe.time
-                                    ? "⏱ " +
-                                      escapeHTML(
-                                          recipe.time
-                                      )
+
+                                    ? `⏱ ${escapeHTML(
+                                        recipe.time
+                                    )}`
+
                                     : ""
                             }
-
                         </span>
 
                     </div>
 
 
                     <h3>
-                        ${
-                            escapeHTML(
-                                recipe.name
-                            )
-                        }
+                        ${escapeHTML(
+                            recipe.name
+                        )}
                     </h3>
 
 
                     <p>
-                        ${
-                            escapeHTML(
-                                recipe.description ||
-                                "고장금의 맛있는 레시피"
-                            )
-                        }
+                        ${escapeHTML(
+                            recipe.description ||
+                            "고장금의 맛있는 레시피"
+                        )}
                     </p>
+
+
+                    <div class="recipe-card-bottom">
+
+                        <button
+                            type="button"
+                            class="
+                                recipe-like-button
+                                ${
+                                    liked
+                                        ? "active"
+                                        : ""
+                                }
+                            "
+                            data-recipe-id="${recipe.id}"
+                            aria-pressed="${liked}"
+                        >
+                            <span class="like-heart">
+                                ${
+                                    liked
+                                        ? "♥"
+                                        : "♡"
+                                }
+                            </span>
+
+                            <span class="like-text">
+                                좋아요
+                            </span>
+
+                            <span class="like-count">
+                                ${likeCount}
+                            </span>
+                        </button>
+
+                    </div>
 
                 </div>
             `;
@@ -2148,24 +3764,42 @@ function renderRecipes() {
             );
 
 
-            const heart =
+            const favorite =
                 card.querySelector(
                     ".favorite-button"
                 );
 
+            favorite
+                ?.addEventListener(
+                    "click",
+                    event => {
 
-            heart.addEventListener(
-                "click",
-                event => {
+                        event.stopPropagation();
 
-                    event.stopPropagation();
+                        toggleFavorite(
+                            recipe.id
+                        );
+                    }
+                );
 
 
-                    toggleFavorite(
-                        recipe.id
-                    );
-                }
-            );
+            const likeButton =
+                card.querySelector(
+                    ".recipe-like-button"
+                );
+
+            likeButton
+                ?.addEventListener(
+                    "click",
+                    async event => {
+
+                        event.stopPropagation();
+
+                        await toggleLike(
+                            recipe.id
+                        );
+                    }
+                );
 
 
             recipeList.appendChild(
@@ -2184,8 +3818,9 @@ function openRecipeModal() {
 
     recipeModal
         .classList
-        .remove("hidden");
-
+        .remove(
+            "hidden"
+        );
 
     document.body.style.overflow =
         "hidden";
@@ -2196,11 +3831,11 @@ function closeRecipeModal() {
 
     recipeModal
         .classList
-        .add("hidden");
-
+        .add(
+            "hidden"
+        );
 
     resetForm();
-
 
     restoreBodyScroll();
 }
@@ -2221,13 +3856,10 @@ function openNewRecipe() {
         return;
     }
 
-
     resetForm();
-
 
     modalTitle.textContent =
         "새 레시피 등록";
-
 
     openRecipeModal();
 }
@@ -2241,45 +3873,36 @@ function resetForm() {
 
     recipeForm.reset();
 
-
     recipeId.value =
         "";
-
 
     selectedImageFile =
         null;
 
-
     originalImageFile =
         null;
-
 
     currentImage =
         "";
 
-
     currentImagePath =
         "";
-
 
     removeExistingImage =
         false;
 
-
     imagePreview.src =
         "";
 
-
     imagePreviewWrapper
         .classList
-        .add("hidden");
-
+        .add(
+            "hidden"
+        );
 
     destroyCropper();
 
-
     revokeCropObjectURL();
-
 
     revokeCroppedPreviewURL();
 }
@@ -2313,36 +3936,38 @@ recipeForm.addEventListener(
         const ingredients =
             recipeIngredients
                 .value
-                .split("\n")
-
+                .split(
+                    "\n"
+                )
                 .map(
                     item =>
                         item.trim()
                 )
-
-                .filter(Boolean);
+                .filter(
+                    Boolean
+                );
 
 
         const steps =
             recipeSteps
                 .value
-                .split("\n")
-
+                .split(
+                    "\n"
+                )
                 .map(
                     item =>
                         item.trim()
                 )
-
-                .filter(Boolean);
+                .filter(
+                    Boolean
+                );
 
 
         let imageUrl =
             currentImage;
 
-
         let imagePath =
             currentImagePath;
-
 
         let newlyUploadedPath =
             "";
@@ -2350,35 +3975,29 @@ recipeForm.addEventListener(
 
         try {
 
-            // 새 사진이 있으면 업로드
-
-            if (selectedImageFile) {
+            if (
+                selectedImageFile
+            ) {
 
                 showToast(
                     "사진을 업로드하고 있어요 📸"
                 );
-
 
                 const uploaded =
                     await uploadRecipeImage(
                         selectedImageFile
                     );
 
-
                 imageUrl =
                     uploaded.url;
 
-
                 imagePath =
                     uploaded.path;
-
 
                 newlyUploadedPath =
                     uploaded.path;
             }
 
-
-            // 사진 삭제 선택
 
             if (
                 removeExistingImage &&
@@ -2387,7 +4006,6 @@ recipeForm.addEventListener(
 
                 imageUrl =
                     null;
-
 
                 imagePath =
                     null;
@@ -2402,7 +4020,8 @@ recipeForm.addEventListener(
                         .trim(),
 
                 category:
-                    recipeCategory.value,
+                    recipeCategory
+                        .value,
 
                 cooking_time:
                     recipeTime
@@ -2416,11 +4035,9 @@ recipeForm.addEventListener(
                         .trim() ||
                     null,
 
-                ingredients:
-                    ingredients,
+                ingredients,
 
-                steps:
-                    steps,
+                steps,
 
                 tip:
                     recipeTip
@@ -2438,43 +4055,39 @@ recipeForm.addEventListener(
             };
 
 
-            // =========================
-            // 수정
-            // =========================
-
             if (id) {
+
+                const numericId =
+                    Number(id);
 
                 const oldRecipe =
                     recipes.find(
                         recipe =>
                             recipe.id ===
-                            Number(id)
+                            numericId
                     );
 
 
-                const { error } =
+                const {
+                    error
+                } =
                     await supabaseClient
-
-                        .from("recipes")
-
+                        .from(
+                            "recipes"
+                        )
                         .update(
                             recipeData
                         )
-
                         .eq(
                             "id",
-                            Number(id)
+                            numericId
                         );
 
 
                 if (error) {
-
                     throw error;
                 }
 
-
-                // 새 사진으로 변경했다면
-                // 기존 Storage 사진 삭제
 
                 if (
                     selectedImageFile &&
@@ -2488,8 +4101,6 @@ recipeForm.addEventListener(
                     );
                 }
 
-
-                // 사진 삭제 선택
 
                 if (
                     removeExistingImage &&
@@ -2506,27 +4117,22 @@ recipeForm.addEventListener(
                 showToast(
                     "레시피를 수정했어요 ✨"
                 );
-            }
 
+            } else {
 
-            // =========================
-            // 새 레시피
-            // =========================
-
-            else {
-
-                const { error } =
+                const {
+                    error
+                } =
                     await supabaseClient
-
-                        .from("recipes")
-
+                        .from(
+                            "recipes"
+                        )
                         .insert(
                             recipeData
                         );
 
 
                 if (error) {
-
                     throw error;
                 }
 
@@ -2539,21 +4145,18 @@ recipeForm.addEventListener(
 
             closeRecipeModal();
 
-
             await loadRecipes();
-        }
+
+            await loadLikes();
 
 
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "레시피 저장 실패:",
                 error
             );
 
-
-            // DB 저장 실패했는데
-            // 새 사진만 올라갔다면 회수
 
             if (
                 newlyUploadedPath
@@ -2574,15 +4177,53 @@ recipeForm.addEventListener(
 
 
 // ==================================================
-// 상세보기
+// 💬 상세보기 열기
+// 댓글을 먼저 불러온 뒤 상세화면 표시
 // ==================================================
 
-function openDetail(id) {
+async function openDetail(id) {
+
+    id =
+        Number(id);
+
+
+    await loadComments(
+        id
+    );
+
+
+    renderDetail(
+        id
+    );
+
+
+    detailModal
+        .classList
+        .remove(
+            "hidden"
+        );
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+// ==================================================
+// 상세 내용 출력
+// ==================================================
+
+function renderDetail(id) {
+
+    id =
+        Number(id);
+
 
     const recipe =
         recipes.find(
             recipe =>
-                recipe.id === id
+                recipe.id ===
+                id
         );
 
 
@@ -2591,29 +4232,35 @@ function openDetail(id) {
     }
 
 
+    const liked =
+        likedRecipeIds.has(
+            id
+        );
+
+
+    const likeCount =
+        likeCounts.get(
+            id
+        ) || 0;
+
+
     const imageHTML =
         recipe.image
 
             ? `
                 <img
                     class="detail-image"
-                    src="${
-                        escapeHTML(
-                            recipe.image
-                        )
-                    }"
-                    alt="${
-                        escapeHTML(
-                            recipe.name
-                        )
-                    }"
+                    src="${escapeHTML(
+                        recipe.image
+                    )}"
+                    alt="${escapeHTML(
+                        recipe.name
+                    )}"
                 >
             `
 
             : `
-                <div
-                    class="detail-placeholder"
-                >
+                <div class="detail-placeholder">
                     🍳
                 </div>
             `;
@@ -2621,40 +4268,34 @@ function openDetail(id) {
 
     const ingredientsHTML =
         recipe.ingredients
-
             .map(
                 ingredient => `
-
                     <li>
-                        ${
-                            escapeHTML(
-                                ingredient
-                            )
-                        }
+                        ${escapeHTML(
+                            ingredient
+                        )}
                     </li>
                 `
             )
-
-            .join("");
+            .join(
+                ""
+            );
 
 
     const stepsHTML =
         recipe.steps
-
             .map(
                 step => `
-
                     <li>
-                        ${
-                            escapeHTML(
-                                step
-                            )
-                        }
+                        ${escapeHTML(
+                            step
+                        )}
                     </li>
                 `
             )
-
-            .join("");
+            .join(
+                ""
+            );
 
 
     detailBody.innerHTML = `
@@ -2664,23 +4305,15 @@ function openDetail(id) {
 
         <div class="detail-inner">
 
-
             <div class="detail-badges">
 
                 <span class="detail-badge">
-
-                    ${
-                        getCategoryIcon(
-                            recipe.category
-                        )
-                    }
-
-                    ${
-                        escapeHTML(
-                            recipe.category
-                        )
-                    }
-
+                    ${getCategoryIcon(
+                        recipe.category
+                    )}
+                    ${escapeHTML(
+                        recipe.category
+                    )}
                 </span>
 
 
@@ -2689,11 +4322,10 @@ function openDetail(id) {
 
                         ? `
                             <span class="detail-badge">
-                                ⏱ ${
-                                    escapeHTML(
-                                        recipe.time
-                                    )
-                                }
+                                ⏱
+                                ${escapeHTML(
+                                    recipe.time
+                                )}
                             </span>
                         `
 
@@ -2704,21 +4336,74 @@ function openDetail(id) {
 
 
             <h2>
-                ${
-                    escapeHTML(
-                        recipe.name
-                    )
-                }
+                ${escapeHTML(
+                    recipe.name
+                )}
             </h2>
 
 
             <p class="detail-description">
-                ${
-                    escapeHTML(
-                        recipe.description
-                    )
-                }
+                ${escapeHTML(
+                    recipe.description
+                )}
             </p>
+
+
+            <div class="detail-reaction-row">
+
+                <button
+                    type="button"
+                    id="detailFavoriteButton"
+                    class="
+                        detail-favorite-button
+                        ${
+                            recipe.favorite
+                                ? "active"
+                                : ""
+                        }
+                    "
+                >
+                    ${
+                        recipe.favorite
+                            ? "♥ 즐겨찾기됨"
+                            : "♡ 즐겨찾기"
+                    }
+                </button>
+
+
+                <button
+                    type="button"
+                    id="detailLikeButton"
+                    class="
+                        detail-like-button
+                        ${
+                            liked
+                                ? "active"
+                                : ""
+                        }
+                    "
+                    aria-pressed="${liked}"
+                >
+
+                    <span>
+                        ${
+                            liked
+                                ? "♥"
+                                : "♡"
+                        }
+                    </span>
+
+                    <span>
+                        좋아요
+                    </span>
+
+                    <strong>
+                        ${likeCount}
+                    </strong>
+
+                </button>
+
+            </div>
 
 
             <section class="detail-section">
@@ -2751,20 +4436,16 @@ function openDetail(id) {
                 recipe.tip
 
                     ? `
-                        <section
-                            class="detail-section"
-                        >
+                        <section class="detail-section">
 
                             <h3>
                                 💡 고장금의 요리 팁
                             </h3>
 
                             <div class="tip-box">
-                                ${
-                                    escapeHTML(
-                                        recipe.tip
-                                    )
-                                }
+                                ${escapeHTML(
+                                    recipe.tip
+                                )}
                             </div>
 
                         </section>
@@ -2772,6 +4453,9 @@ function openDetail(id) {
 
                     : ""
             }
+
+
+            ${createCommentsHTML(id)}
 
 
             ${
@@ -2807,14 +4491,55 @@ function openDetail(id) {
     `;
 
 
-    detailModal
-        .classList
-        .remove("hidden");
+    // ==================================================
+    // 상세 즐겨찾기
+    // ==================================================
+
+    document
+        .getElementById(
+            "detailFavoriteButton"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                toggleFavorite(
+                    id
+                );
+
+                renderDetail(
+                    id
+                );
+            }
+        );
 
 
-    document.body.style.overflow =
-        "hidden";
+    // ==================================================
+    // 상세 좋아요
+    // ==================================================
 
+    document
+        .getElementById(
+            "detailLikeButton"
+        )
+        ?.addEventListener(
+            "click",
+            async event => {
+
+                event.stopPropagation();
+
+                await toggleLike(
+                    id
+                );
+            }
+        );
+
+
+    // ==================================================
+    // 관리자 레시피 수정 / 삭제
+    // ==================================================
 
     if (isAdmin) {
 
@@ -2825,7 +4550,9 @@ function openDetail(id) {
             ?.addEventListener(
                 "click",
                 () =>
-                    editRecipe(id)
+                    editRecipe(
+                        id
+                    )
             );
 
 
@@ -2836,9 +4563,20 @@ function openDetail(id) {
             ?.addEventListener(
                 "click",
                 () =>
-                    deleteRecipe(id)
+                    deleteRecipe(
+                        id
+                    )
             );
     }
+
+
+    // ==================================================
+    // 💬 댓글 / 관리자 답글 이벤트 연결
+    // ==================================================
+
+    bindCommentEvents(
+        id
+    );
 }
 
 
@@ -2850,8 +4588,9 @@ function closeDetail() {
 
     detailModal
         .classList
-        .add("hidden");
-
+        .add(
+            "hidden"
+        );
 
     restoreBodyScroll();
 }
@@ -2876,7 +4615,8 @@ function editRecipe(id) {
     const recipe =
         recipes.find(
             recipe =>
-                recipe.id === id
+                recipe.id ===
+                Number(id)
         );
 
 
@@ -2891,85 +4631,77 @@ function editRecipe(id) {
     recipeId.value =
         recipe.id;
 
-
     recipeName.value =
         recipe.name;
-
 
     recipeCategory.value =
         recipe.category;
 
-
     recipeTime.value =
         recipe.time;
-
 
     recipeDescription.value =
         recipe.description;
 
-
     recipeIngredients.value =
-        recipe.ingredients
-            .join("\n");
-
+        recipe.ingredients.join(
+            "\n"
+        );
 
     recipeSteps.value =
-        recipe.steps
-            .join("\n");
-
+        recipe.steps.join(
+            "\n"
+        );
 
     recipeTip.value =
         recipe.tip;
 
-
     currentImage =
         recipe.image || "";
-
 
     currentImagePath =
         recipe.imagePath || "";
 
-
     selectedImageFile =
         null;
-
 
     originalImageFile =
         null;
 
-
     removeExistingImage =
         false;
-
 
     revokeCroppedPreviewURL();
 
 
-    if (currentImage) {
+    if (
+        currentImage
+    ) {
 
         imagePreview.src =
             currentImage;
 
-
         imagePreviewWrapper
             .classList
-            .remove("hidden");
+            .remove(
+                "hidden"
+            );
 
     } else {
 
         imagePreview.src =
             "";
 
-
         imagePreviewWrapper
             .classList
-            .add("hidden");
+            .add(
+                "hidden"
+            );
     }
 
 
     modalTitle.textContent =
         "레시피 수정";
-
 
     openRecipeModal();
 }
@@ -2977,6 +4709,7 @@ function editRecipe(id) {
 
 // ==================================================
 // 🗑️ 레시피 삭제
+// 댓글은 DB ON DELETE CASCADE로 같이 삭제
 // ==================================================
 
 async function deleteRecipe(id) {
@@ -2991,10 +4724,15 @@ async function deleteRecipe(id) {
     }
 
 
+    id =
+        Number(id);
+
+
     const recipe =
         recipes.find(
             recipe =>
-                recipe.id === id
+                recipe.id ===
+                id
         );
 
 
@@ -3014,13 +4752,14 @@ async function deleteRecipe(id) {
     }
 
 
-    const { error } =
+    const {
+        error
+    } =
         await supabaseClient
-
-            .from("recipes")
-
+            .from(
+                "recipes"
+            )
             .delete()
-
             .eq(
                 "id",
                 id
@@ -3034,11 +4773,9 @@ async function deleteRecipe(id) {
             error
         );
 
-
         showToast(
             "삭제하지 못했어요."
         );
-
 
         return;
     }
@@ -3054,6 +4791,18 @@ async function deleteRecipe(id) {
     }
 
 
+    favoriteIds.delete(
+        id
+    );
+
+    saveFavoriteIds();
+
+
+    commentsByRecipe.delete(
+        id
+    );
+
+
     closeDetail();
 
 
@@ -3063,79 +4812,8 @@ async function deleteRecipe(id) {
 
 
     await loadRecipes();
-}
 
-
-// ==================================================
-// ♥ 즐겨찾기 변경
-// ==================================================
-
-async function toggleFavorite(id) {
-
-    if (!isAdmin) {
-
-        showToast(
-            "즐겨찾기 변경은 관리자만 가능해요."
-        );
-
-        return;
-    }
-
-
-    const recipe =
-        recipes.find(
-            recipe =>
-                recipe.id === id
-        );
-
-
-    if (!recipe) {
-        return;
-    }
-
-
-    const newValue =
-        !recipe.favorite;
-
-
-    const { error } =
-        await supabaseClient
-
-            .from("recipes")
-
-            .update({
-                favorite:
-                    newValue
-            })
-
-            .eq(
-                "id",
-                id
-            );
-
-
-    if (error) {
-
-        console.error(
-            "즐겨찾기 수정 실패:",
-            error
-        );
-
-
-        showToast(
-            "즐겨찾기를 변경하지 못했어요."
-        );
-
-
-        return;
-    }
-
-
-    recipe.favorite =
-        newValue;
-
-
-    renderRecipes();
+    await loadLikes();
 }
 
 
@@ -3216,7 +4894,9 @@ categorySection.addEventListener(
 
         button
             .classList
-            .add("active");
+            .add(
+                "active"
+            );
 
 
         selectedCategory =
@@ -3238,24 +4918,21 @@ addCategoryButton.addEventListener(
 
         event.stopPropagation();
 
-
         openCategoryModal();
     }
 );
 
 
-closeCategoryModalButton
-    .addEventListener(
-        "click",
-        closeCategoryModal
-    );
+closeCategoryModalButton.addEventListener(
+    "click",
+    closeCategoryModal
+);
 
 
-cancelCategoryButton
-    .addEventListener(
-        "click",
-        closeCategoryModal
-    );
+cancelCategoryButton.addEventListener(
+    "click",
+    closeCategoryModal
+);
 
 
 categoryModal
@@ -3300,7 +4977,9 @@ favoriteButton.addEventListener(
 
         favoriteButton.textContent =
             favoriteOnly
+
                 ? "♥ 즐겨찾기"
+
                 : "♡ 즐겨찾기";
 
 
@@ -3365,7 +5044,9 @@ function openLoginModal() {
 
     loginModal
         .classList
-        .remove("hidden");
+        .remove(
+            "hidden"
+        );
 
 
     document.body.style.overflow =
@@ -3377,7 +5058,9 @@ function closeLoginModal() {
 
     loginModal
         .classList
-        .add("hidden");
+        .add(
+            "hidden"
+        );
 
 
     loginForm.reset();
@@ -3388,12 +5071,10 @@ function closeLoginModal() {
 
 
 // ==================================================
-// 로그인
+// 🔐 관리자 로그인
 // ==================================================
 
-async function loginAdmin(
-    event
-) {
+async function loginAdmin(event) {
 
     event.preventDefault();
 
@@ -3405,14 +5086,16 @@ async function loginAdmin(
 
 
     const password =
-        loginPassword.value;
+        loginPassword
+            .value;
 
 
-    const { data, error } =
+    const {
+        data,
+        error
+    } =
         await supabaseClient
-
             .auth
-
             .signInWithPassword({
                 email,
                 password
@@ -3452,6 +5135,18 @@ async function loginAdmin(
             .signOut();
 
 
+        currentUser =
+            null;
+
+        isAdmin =
+            false;
+
+
+        await ensureUserSession();
+
+        await loadLikes();
+
+
         showToast(
             "관리자 계정이 아니에요."
         );
@@ -3461,14 +5156,18 @@ async function loginAdmin(
     }
 
 
+    currentUser =
+        user;
+
     isAdmin =
         true;
 
 
     closeLoginModal();
 
-
     updateAdminScreen();
+
+    await loadLikes();
 
 
     showToast(
@@ -3483,11 +5182,11 @@ async function loginAdmin(
 
 async function logoutAdmin() {
 
-    const { error } =
+    const {
+        error
+    } =
         await supabaseClient
-
             .auth
-
             .signOut();
 
 
@@ -3508,6 +5207,9 @@ async function logoutAdmin() {
     }
 
 
+    currentUser =
+        null;
+
     isAdmin =
         false;
 
@@ -3515,44 +5217,17 @@ async function logoutAdmin() {
     updateAdminScreen();
 
 
+    // 관리자 로그아웃 뒤
+    // 새로운 일반 익명 사용자 세션으로 전환
+
+    await ensureUserSession();
+
+    await loadLikes();
+
+
     showToast(
-        "로그아웃했어요."
+        "관리자에서 로그아웃했어요."
     );
-}
-
-
-// ==================================================
-// 로그인 상태 확인
-// ==================================================
-
-async function checkAdminLogin() {
-
-    const {
-        data: {
-            session
-        }
-    } =
-        await supabaseClient
-
-            .auth
-
-            .getSession();
-
-
-    const user =
-        session?.user;
-
-
-    isAdmin =
-        Boolean(
-            user &&
-            ADMIN_UIDS.includes(
-                user.id
-            )
-        );
-
-
-    updateAdminScreen();
 }
 
 
@@ -3566,43 +5241,59 @@ function updateAdminScreen() {
 
         loginButton
             .classList
-            .add("hidden");
+            .add(
+                "hidden"
+            );
 
 
         logoutButton
             .classList
-            .remove("hidden");
+            .remove(
+                "hidden"
+            );
 
 
         addRecipeButton
             .classList
-            .remove("hidden");
+            .remove(
+                "hidden"
+            );
 
 
         addCategoryButton
             .classList
-            .remove("hidden");
+            .remove(
+                "hidden"
+            );
 
     } else {
 
         loginButton
             .classList
-            .remove("hidden");
+            .remove(
+                "hidden"
+            );
 
 
         logoutButton
             .classList
-            .add("hidden");
+            .add(
+                "hidden"
+            );
 
 
         addRecipeButton
             .classList
-            .add("hidden");
+            .add(
+                "hidden"
+            );
 
 
         addCategoryButton
             .classList
-            .add("hidden");
+            .add(
+                "hidden"
+            );
     }
 }
 
@@ -3646,15 +5337,22 @@ loginModal
 
 
 // ==================================================
-// 로그인 상태 변경 감지
+// Supabase 로그인 상태 변경 감지
 // ==================================================
 
 supabaseClient.auth
     .onAuthStateChange(
-        (_event, session) => {
+        (
+            _event,
+            session
+        ) => {
 
             const user =
                 session?.user;
+
+
+            currentUser =
+                user || null;
 
 
             isAdmin =
@@ -3672,7 +5370,7 @@ supabaseClient.auth
 
 
 // ==================================================
-// 현재 열린 모달에 따라 스크롤 복구
+// 현재 열린 모달 확인
 // ==================================================
 
 function restoreBodyScroll() {
@@ -3685,19 +5383,22 @@ function restoreBodyScroll() {
             categoryModal,
             cropModal
         ]
-
         .some(
             modal =>
                 modal &&
-                !modal.classList.contains(
-                    "hidden"
-                )
+                !modal
+                    .classList
+                    .contains(
+                        "hidden"
+                    )
         );
 
 
     document.body.style.overflow =
         anyModalOpen
+
             ? "hidden"
+
             : "";
 }
 
@@ -3719,13 +5420,12 @@ document.addEventListener(
         }
 
 
-        // Cropper가 가장 위에 있으므로
-        // 먼저 닫기
-
         if (
             !cropModal
                 .classList
-                .contains("hidden")
+                .contains(
+                    "hidden"
+                )
         ) {
 
             cancelCropEditing();
@@ -3737,7 +5437,9 @@ document.addEventListener(
         if (
             !recipeModal
                 .classList
-                .contains("hidden")
+                .contains(
+                    "hidden"
+                )
         ) {
 
             closeRecipeModal();
@@ -3749,7 +5451,9 @@ document.addEventListener(
         if (
             !detailModal
                 .classList
-                .contains("hidden")
+                .contains(
+                    "hidden"
+                )
         ) {
 
             closeDetail();
@@ -3761,7 +5465,9 @@ document.addEventListener(
         if (
             !loginModal
                 .classList
-                .contains("hidden")
+                .contains(
+                    "hidden"
+                )
         ) {
 
             closeLoginModal();
@@ -3773,7 +5479,9 @@ document.addEventListener(
         if (
             !categoryModal
                 .classList
-                .contains("hidden")
+                .contains(
+                    "hidden"
+                )
         ) {
 
             closeCategoryModal();
@@ -3783,7 +5491,7 @@ document.addEventListener(
 
 
 // ==================================================
-// 알림
+// 토스트 알림
 // ==================================================
 
 let toastTimer =
@@ -3798,7 +5506,9 @@ function showToast(message) {
 
     toast
         .classList
-        .add("show");
+        .add(
+            "show"
+        );
 
 
     clearTimeout(
@@ -3812,29 +5522,47 @@ function showToast(message) {
 
                 toast
                     .classList
-                    .remove("show");
+                    .remove(
+                        "show"
+                    );
 
             },
-
             2200
         );
 }
 
 
 // ==================================================
-// 🚀 홈페이지 시작
+// 🚀 시작
 // ==================================================
 
 async function startApp() {
 
-    await checkAdminLogin();
+    // 1. 개인 즐겨찾기
 
+    loadFavoriteIds();
+
+
+    // 2. 관리자 또는 익명 사용자 세션
+
+    await ensureUserSession();
+
+
+    // 3. 카테고리
 
     await loadCategories();
 
 
+    // 4. 레시피
+
     await loadRecipes();
+
+
+    // 5. 공개 좋아요
+
+    await loadLikes();
 }
 
 
 startApp();
+

@@ -1885,5 +1885,1202 @@ main {
 
         font-size: 11px;
     }
+}
+/* ==================================================
+   ❤️ 공개 좋아요 기능
+   개인 즐겨찾기와 별도로 표시
+================================================== */
 
+
+/* ==================================================
+   카드 이미지 없을 때 기본 화면
+================================================== */
+
+.recipe-image-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7f0ea,
+            #edf3eb
+        );
+
+    font-size: 58px;
+}
+
+
+/* ==================================================
+   카드 하단 좋아요 영역
+================================================== */
+
+.recipe-card-bottom {
+    display: flex;
+    align-items: center;
+
+    margin-top: 16px;
+    padding-top: 13px;
+
+    border-top:
+        1px solid
+        #f0e7e1;
+}
+
+
+/* ==================================================
+   카드 좋아요 버튼
+================================================== */
+
+.recipe-like-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    min-height: 36px;
+
+    border:
+        1px solid
+        #eadfd8;
+
+    background:
+        #fffaf7;
+
+    color:
+        #8d7b71;
+
+    padding:
+        7px 12px;
+
+    border-radius:
+        999px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.recipe-like-button:hover {
+    background:
+        #fff0eb;
+
+    border-color:
+        #ebc1b4;
+
+    color:
+        #d87968;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 12px
+        rgba(
+            161,
+            92,
+            71,
+            0.09
+        );
+}
+
+
+/* 좋아요 누른 상태 */
+
+.recipe-like-button.active {
+    background:
+        #fff0ec;
+
+    border-color:
+        #e9ae9e;
+
+    color:
+        #df7564;
+}
+
+
+/* 하트 */
+
+.recipe-like-button
+.like-heart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 16px;
+
+    font-size:
+        17px;
+
+    line-height:
+        1;
+
+    transition:
+        transform 0.2s;
+}
+
+
+.recipe-like-button.active
+.like-heart {
+    transform:
+        scale(1.08);
+}
+
+
+/* 좋아요 글씨 */
+
+.recipe-like-button
+.like-text {
+    line-height:
+        1;
+}
+
+
+/* 좋아요 숫자 */
+
+.recipe-like-button
+.like-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width:
+        19px;
+
+    height:
+        19px;
+
+    padding:
+        0 5px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(
+            126,
+            156,
+            120,
+            0.10
+        );
+
+    color:
+        #72886d;
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+}
+
+
+.recipe-like-button.active
+.like-count {
+    background:
+        rgba(
+            223,
+            117,
+            100,
+            0.10
+        );
+
+    color:
+        #d66f60;
+}
+
+
+
+/* ==================================================
+   ⭐ 카드 위 개인 즐겨찾기
+================================================== */
+
+/*
+   기존 favorite-button을 유지하면서
+   "나만의 즐겨찾기" 느낌을 조금 더 분명하게
+*/
+
+.favorite-button {
+    transition:
+        background 0.2s,
+        color 0.2s,
+        transform 0.2s;
+}
+
+
+.favorite-button:hover {
+    transform:
+        scale(1.07);
+}
+
+
+.favorite-button.active {
+    background:
+        #fff0eb;
+
+    color:
+        #e98276;
+}
+
+
+
+/* ==================================================
+   상세보기 반응 버튼 영역
+================================================== */
+
+.detail-reaction-row {
+    display: flex;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-top:
+        20px;
+
+    margin-bottom:
+        4px;
+}
+
+
+
+/* ==================================================
+   상세보기 즐겨찾기 버튼
+================================================== */
+
+.detail-favorite-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height:
+        42px;
+
+    border:
+        1px solid
+        #e5ddd6;
+
+    background:
+        white;
+
+    color:
+        #7b6c63;
+
+    padding:
+        9px 15px;
+
+    border-radius:
+        999px;
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+
+
+.detail-favorite-button:hover {
+    background:
+        #fff2ed;
+
+    border-color:
+        #ebc6ba;
+
+    color:
+        #ce7463;
+
+    transform:
+        translateY(-1px);
+}
+
+
+.detail-favorite-button.active {
+    background:
+        #fff0eb;
+
+    border-color:
+        #e6ae9f;
+
+    color:
+        #df7564;
+}
+
+
+
+/* ==================================================
+   상세보기 좋아요 버튼
+================================================== */
+
+.detail-like-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap:
+        6px;
+
+    min-height:
+        42px;
+
+    border:
+        1px solid
+        #e2ddd8;
+
+    background:
+        #f9fbf8;
+
+    color:
+        #71846c;
+
+    padding:
+        9px 15px;
+
+    border-radius:
+        999px;
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.detail-like-button:hover {
+    background:
+        #fff0ec;
+
+    border-color:
+        #e9b5a7;
+
+    color:
+        #dc7564;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* 좋아요 누른 상세 버튼 */
+
+.detail-like-button.active {
+    background:
+        linear-gradient(
+            135deg,
+            #fff1ed,
+            #fff8f5
+        );
+
+    border-color:
+        #e6a999;
+
+    color:
+        #db7160;
+
+    box-shadow:
+        0 4px 14px
+        rgba(
+            190,
+            105,
+            84,
+            0.09
+        );
+}
+
+
+/* 상세 좋아요 숫자 */
+
+.detail-like-button
+strong {
+    min-width:
+        20px;
+
+    padding:
+        2px 6px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(
+            126,
+            156,
+            120,
+            0.10
+        );
+
+    color:
+        #70856b;
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+}
+
+
+.detail-like-button.active
+strong {
+    background:
+        rgba(
+            219,
+            113,
+            96,
+            0.11
+        );
+
+    color:
+        #d36b5c;
+}
+
+
+
+/* ==================================================
+   모바일 좋아요 디자인
+================================================== */
+
+@media (max-width: 560px) {
+
+    /* 카드 좋아요 */
+
+    .recipe-card-bottom {
+        margin-top:
+            14px;
+
+        padding-top:
+            12px;
+    }
+
+
+    .recipe-like-button {
+        min-height:
+            35px;
+
+        padding:
+            7px 11px;
+
+        font-size:
+            12px;
+    }
+
+
+    .recipe-like-button
+    .like-heart {
+        font-size:
+            16px;
+    }
+
+
+    /* 상세 반응 영역 */
+
+    .detail-reaction-row {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            8px;
+
+        margin-top:
+            18px;
+    }
+
+
+    .detail-favorite-button,
+    .detail-like-button {
+        width:
+            100%;
+
+        min-height:
+            44px;
+
+        padding:
+            9px 10px;
+
+        font-size:
+            12px;
+    }
+
+}
+
+
+
+/* ==================================================
+   아주 작은 모바일
+================================================== */
+
+@media (max-width: 370px) {
+
+    .recipe-like-button
+    .like-text {
+        display:
+            none;
+    }
+
+
+    .detail-reaction-row {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+/* ==================================================
+   💬 댓글 / 답글
+================================================== */
+
+.comment-section {
+    margin-top: 38px;
+    padding-top: 30px;
+
+    border-top: 1px solid #eee5de;
+}
+
+
+/* 댓글 제목 */
+
+.comment-section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+
+.comment-eyebrow {
+    margin-bottom: 2px;
+
+    color: #a89a91;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+
+.comment-section-header h3 {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #4f433c;
+
+    font-size: 19px;
+}
+
+
+.comment-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 24px;
+    height: 24px;
+
+    padding: 0 7px;
+
+    border-radius: 999px;
+
+    background: #edf3eb;
+    color: #71886c;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* ==================================================
+   댓글 작성창
+================================================== */
+
+.comment-form {
+    margin-bottom: 24px;
+
+    padding: 18px;
+
+    border: 1px solid #eadfd7;
+    border-radius: 17px;
+
+    background: #fffaf7;
+}
+
+
+.comment-form-group + .comment-form-group {
+    margin-top: 13px;
+}
+
+
+.comment-form-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #675950;
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+
+.comment-form-group input,
+.comment-form-group textarea,
+.comment-reply-input {
+    width: 100%;
+
+    border: 1px solid #e4d9d1;
+    border-radius: 11px;
+
+    background: white;
+    color: #453a34;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.comment-form-group input {
+    padding: 11px 12px;
+}
+
+
+.comment-form-group textarea,
+.comment-reply-input {
+    min-height: 100px;
+
+    padding: 12px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+.comment-form-group input:focus,
+.comment-form-group textarea:focus,
+.comment-reply-input:focus {
+    border-color: #8ea688;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(126, 156, 120, 0.11);
+}
+
+
+/* 관리자 닉네임 고장금 */
+
+.comment-form-group input[readonly] {
+    background: #fff8df;
+
+    border-color: #eadcae;
+
+    color: #806a2e;
+
+    font-weight: 800;
+}
+
+
+.comment-form-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 13px;
+}
+
+
+.comment-guide {
+    color: #a09289;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* 댓글 등록 버튼 */
+
+.comment-submit-button,
+.comment-reply-submit {
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #7e9c78;
+    color: white;
+
+    font-weight: 750;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.comment-submit-button {
+    padding: 10px 15px;
+
+    font-size: 12px;
+}
+
+
+.comment-reply-submit {
+    padding: 9px 13px;
+
+    font-size: 12px;
+}
+
+
+.comment-submit-button:hover,
+.comment-reply-submit:hover {
+    background: #698763;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==================================================
+   댓글 목록
+================================================== */
+
+.comment-list {
+    display: grid;
+
+    gap: 13px;
+}
+
+
+.comment-item {
+    padding: 16px 17px;
+
+    border: 1px solid #eee5de;
+    border-radius: 15px;
+
+    background: white;
+
+    box-shadow:
+        0 3px 12px
+        rgba(75, 56, 43, 0.035);
+}
+
+
+.comment-item-header,
+.comment-reply-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.comment-author-area {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+
+.comment-author {
+    color: #4f433c;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+
+.comment-date {
+    color: #aaa097;
+
+    font-size: 10px;
+}
+
+
+.comment-text {
+    margin-top: 9px;
+
+    color: #655850;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+
+/* ==================================================
+   댓글 삭제
+================================================== */
+
+.comment-delete-button {
+    flex-shrink: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #bd7668;
+
+    padding: 3px 5px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+.comment-delete-button:hover {
+    color: #a9574a;
+
+    text-decoration: underline;
+}
+
+
+/* ==================================================
+   관리자 답글 달기
+================================================== */
+
+.comment-reply-button {
+    margin-top: 10px;
+
+    border: 1px solid #dbe5d7;
+
+    border-radius: 999px;
+
+    background: #f4f8f2;
+    color: #70886b;
+
+    padding: 6px 10px;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+
+
+.comment-reply-button:hover {
+    background: #eaf2e7;
+
+    border-color: #c8d9c3;
+
+    transform: translateY(-1px);
+}
+
+
+/* 답글 작성창 */
+
+.comment-reply-form {
+    margin-top: 11px;
+
+    padding: 13px;
+
+    border:
+        1px dashed
+        #cfdcc9;
+
+    border-radius: 13px;
+
+    background: #f8fbf7;
+}
+
+
+.comment-reply-input {
+    min-height: 84px;
+}
+
+
+.comment-reply-form-buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 7px;
+
+    margin-top: 8px;
+}
+
+
+.comment-reply-cancel {
+    border: none;
+
+    border-radius: 10px;
+
+    background: #eee7e1;
+    color: #76685f;
+
+    padding: 9px 12px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.comment-reply-cancel:hover {
+    background: #e5dcd5;
+}
+
+
+/* ==================================================
+   👑 고장금 답글
+================================================== */
+
+.comment-replies {
+    display: grid;
+
+    gap: 9px;
+
+    margin-top: 13px;
+    padding-left: 18px;
+}
+
+
+.comment-reply {
+    position: relative;
+
+    padding: 13px 14px;
+
+    border:
+        1px solid
+        #e6dcb9;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff9e8,
+            #f7faf3
+        );
+}
+
+
+/* 원댓글과 답글 연결 느낌 */
+
+.comment-reply::before {
+    content: "↳";
+
+    position: absolute;
+
+    left: -17px;
+    top: 11px;
+
+    color: #b4a576;
+
+    font-size: 15px;
+}
+
+
+/* 👑 고장금 전용 뱃지 */
+
+.comment-admin-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 4px 9px;
+
+    border:
+        1px solid
+        #e6d7ad;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff6ce,
+            #fffaf0
+        );
+
+    color: #806928;
+
+    font-size: 11px;
+    font-weight: 850;
+
+    box-shadow:
+        0 2px 7px
+        rgba(157, 128, 44, 0.08);
+}
+
+
+/* ==================================================
+   댓글 없을 때
+================================================== */
+
+.comment-empty {
+    padding: 34px 15px;
+
+    border:
+        1px dashed
+        #e6ddd6;
+
+    border-radius: 15px;
+
+    background: #fcf9f6;
+
+    text-align: center;
+
+    color: #a0948b;
+}
+
+
+.comment-empty span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 26px;
+}
+
+
+.comment-empty p {
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* ==================================================
+   💬 댓글 모바일
+================================================== */
+
+@media (max-width: 560px) {
+
+    .comment-section {
+        margin-top: 32px;
+
+        padding-top: 25px;
+    }
+
+
+    .comment-section-header h3 {
+        font-size: 18px;
+    }
+
+
+    .comment-form {
+        padding: 15px;
+
+        border-radius: 14px;
+    }
+
+
+    .comment-form-bottom {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+
+    .comment-submit-button {
+        width: 100%;
+
+        min-height: 42px;
+    }
+
+
+    .comment-item {
+        padding: 14px;
+    }
+
+
+    .comment-author-area {
+        gap: 5px;
+    }
+
+
+    .comment-date {
+        width: 100%;
+    }
+
+
+    .comment-text {
+        font-size: 12px;
+    }
+
+
+    .comment-replies {
+        padding-left: 13px;
+    }
+
+
+    .comment-reply {
+        padding: 12px;
+    }
+
+
+    .comment-reply::before {
+        left: -13px;
+    }
+
+
+    .comment-admin-badge {
+        font-size: 10px;
+    }
+
+
+    .comment-reply-form-buttons {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .comment-reply-cancel,
+    .comment-reply-submit {
+        width: 100%;
+    }
 }
