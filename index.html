@@ -2,7 +2,6 @@
 <html lang="ko">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -17,24 +16,29 @@
 
     <title>고장금의 요리기록 | 요리와 함께한 기록</title>
 
+    <!-- Pretendard -->
     <link
         rel="stylesheet"
         as="style"
         crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
-    />
+    >
 
+    <!-- Cropper.js CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+    >
+
+    <!-- 메인 CSS -->
     <link
         rel="stylesheet"
         href="style.css"
-    />
-
-
+    >
 </head>
 
 
 <body>
-
 
     <!-- ==================================================
          헤더
@@ -44,14 +48,10 @@
 
         <div class="header-inner">
 
-
-            <!-- 로고 -->
-
             <a
                 href="#home"
                 class="main-logo"
             >
-
                 <span class="logo-icon">
                     🍴
                 </span>
@@ -59,12 +59,8 @@
                 <span>
                     고장금의 요리기록
                 </span>
-
             </a>
 
-
-
-            <!-- 메뉴 -->
 
             <nav class="main-nav">
 
@@ -87,9 +83,6 @@
             </nav>
 
 
-
-            <!-- 로그인 -->
-
             <div class="header-actions">
 
                 <button
@@ -100,7 +93,6 @@
                     🔐 관리자 로그인
                 </button>
 
-
                 <button
                     type="button"
                     id="logoutButton"
@@ -110,7 +102,6 @@
                 </button>
 
             </div>
-
 
         </div>
 
@@ -124,7 +115,6 @@
 
     <main>
 
-
         <!-- ==================================================
              HERO
         =================================================== -->
@@ -134,24 +124,15 @@
             id="home"
         >
 
-
-            <!-- 장식 -->
-
-            <div class="hero-decoration hero-decoration-one">
-            </div>
-
-            <div class="hero-decoration hero-decoration-two">
-            </div>
-
+            <div class="hero-decoration hero-decoration-one"></div>
+            <div class="hero-decoration hero-decoration-two"></div>
 
 
             <div class="hero-inner">
 
-
                 <!-- 왼쪽 소개 -->
 
                 <div class="hero-text">
-
 
                     <p class="hero-eyebrow">
                         COOK · TEACH · RECORD
@@ -160,8 +141,9 @@
 
                     <h1>
                         요리를 가르치고,<br>
+
                         <span class="hero-second-line">
-                        맛있는 순간을 <strong>기록합니다.</strong>
+                            맛있는 순간을 <strong>기록합니다.</strong>
                         </span>
                     </h1>
 
@@ -177,9 +159,7 @@
                     </p>
 
 
-
                     <div class="hero-buttons">
-
 
                         <a
                             href="#about"
@@ -188,7 +168,6 @@
                             고장금 소개
                         </a>
 
-
                         <a
                             href="recipes/"
                             class="secondary-button"
@@ -196,73 +175,59 @@
                             🍳 레시피 보러가기
                         </a>
 
-
                     </div>
-
 
                 </div>
 
 
 
-                <!-- 오른쪽 프로필 -->
+                <!-- ==================================================
+                     위쪽 대표 프로필 카드
+                =================================================== -->
 
                 <div class="hero-profile-card">
 
-
                     <div
                         class="profile-image-wrapper"
-                        id="profileImageWrapper"
+                        id="heroProfileImageWrapper"
                     >
 
-
-                        <!--
-                            프로필 사진이 있으면
-                            JS가 이 이미지 src를 변경합니다.
-                        -->
-
+                        <!-- 등록된 대표 사진 -->
                         <img
-                            id="profileImage"
+                            id="heroProfileImage"
                             class="profile-image hidden"
                             src=""
-                            alt="고장금 프로필 사진"
+                            alt="고장금 대표 프로필 사진"
                         >
 
-
+                        <!-- 사진 없을 때 기본 -->
                         <div
-                            id="profileImagePlaceholder"
+                            id="heroProfileImagePlaceholder"
                             class="profile-image-placeholder"
                         >
                             👩🏻‍🍳
                         </div>
 
-
                     </div>
 
 
-
                     <div class="hero-profile-info">
-
 
                         <p class="profile-label">
                             CHEF & INSTRUCTOR
                         </p>
 
-
                         <h2 id="heroProfileName">
                             고장금
                         </h2>
-
 
                         <p id="heroProfileTitle">
                             강사
                         </p>
 
-
                     </div>
 
-
                 </div>
-
 
             </div>
 
@@ -279,12 +244,9 @@
             id="about"
         >
 
-
             <div class="section-inner">
 
-
                 <div class="section-heading">
-
 
                     <div>
 
@@ -292,15 +254,12 @@
                             ABOUT
                         </p>
 
-
                         <h2>
                             고장금을 소개합니다
                         </h2>
 
                     </div>
 
-
-                    <!-- 관리자만 표시 -->
 
                     <button
                         type="button"
@@ -310,26 +269,44 @@
                         ✏️ 소개 수정
                     </button>
 
-
                 </div>
 
 
 
                 <div class="about-card">
 
+                    <!-- ==================================================
+                         아래 소개 사진
+                         사진이 없으면 🍽️ 표시
+                    =================================================== -->
 
-                    <div class="about-icon">
-                        🍽️
+                    <div
+                        class="about-profile-image-wrapper"
+                        id="aboutProfileImageWrapper"
+                    >
+
+                        <img
+                            id="aboutProfileImage"
+                            class="about-profile-image hidden"
+                            src=""
+                            alt="고장금 소개 사진"
+                        >
+
+                        <div
+                            id="aboutProfileImagePlaceholder"
+                            class="about-profile-image-placeholder"
+                        >
+                            🍽️
+                        </div>
+
                     </div>
 
 
                     <div class="about-content">
 
-
                         <h3 id="profileName">
                             고장금
                         </h3>
-
 
                         <p
                             id="profileTitle"
@@ -337,7 +314,6 @@
                         >
                             강사
                         </p>
-
 
                         <p
                             id="profileIntro"
@@ -347,12 +323,9 @@
                             강사로 활동하고 있습니다.
                         </p>
 
-
                     </div>
 
-
                 </div>
-
 
             </div>
 
@@ -369,12 +342,9 @@
             id="certifications"
         >
 
-
             <div class="section-inner">
 
-
                 <div class="section-heading">
-
 
                     <div>
 
@@ -382,11 +352,9 @@
                             CERTIFICATIONS
                         </p>
 
-
                         <h2>
                             보유 자격
                         </h2>
-
 
                         <p class="section-description">
                             요리를 배우며 하나씩 쌓아온 기록입니다.
@@ -394,9 +362,6 @@
 
                     </div>
 
-
-
-                    <!-- 관리자만 표시 -->
 
                     <button
                         type="button"
@@ -406,15 +371,8 @@
                         ＋ 자격증 추가
                     </button>
 
-
                 </div>
 
-
-
-                <!--
-                    Supabase certifications 데이터가
-                    JavaScript로 이 안에 생성됩니다.
-                -->
 
                 <div
                     class="certification-grid"
@@ -422,9 +380,6 @@
                 >
                 </div>
 
-
-
-                <!-- 자격증 없음 -->
 
                 <div
                     class="empty-message hidden"
@@ -441,7 +396,6 @@
 
                 </div>
 
-
             </div>
 
         </section>
@@ -457,12 +411,9 @@
             id="career"
         >
 
-
             <div class="section-inner">
 
-
                 <div class="section-heading">
-
 
                     <div>
 
@@ -470,11 +421,9 @@
                             CAREER
                         </p>
 
-
                         <h2>
                             경력
                         </h2>
-
 
                         <p class="section-description">
                             배운 것을 다시 나누며 이어가고 있습니다.
@@ -482,9 +431,6 @@
 
                     </div>
 
-
-
-                    <!-- 관리자만 표시 -->
 
                     <button
                         type="button"
@@ -494,15 +440,8 @@
                         ＋ 경력 추가
                     </button>
 
-
                 </div>
 
-
-
-                <!--
-                    Supabase careers 데이터가
-                    JavaScript로 생성됩니다.
-                -->
 
                 <div
                     class="career-list"
@@ -510,9 +449,6 @@
                 >
                 </div>
 
-
-
-                <!-- 경력 없음 -->
 
                 <div
                     class="empty-message hidden"
@@ -529,7 +465,6 @@
 
                 </div>
 
-
             </div>
 
         </section>
@@ -542,9 +477,7 @@
 
         <section class="recipe-banner-section">
 
-
             <div class="recipe-banner">
-
 
                 <div class="recipe-banner-decoration">
                     🍳
@@ -553,25 +486,20 @@
 
                 <div class="recipe-banner-text">
 
-
                     <p class="section-eyebrow">
                         GO JANG GEUM'S RECIPES
                     </p>
 
-
                     <h2>
                         고장금 레시피
                     </h2>
-
 
                     <p>
                         직접 만들고 가르치며 쌓아온<br>
                         다양한 요리 레시피를 만나보세요.
                     </p>
 
-
                 </div>
-
 
 
                 <a
@@ -579,16 +507,15 @@
                     class="recipe-banner-button"
                 >
                     레시피 보러가기
+
                     <span>
                         →
                     </span>
                 </a>
 
-
             </div>
 
         </section>
-
 
     </main>
 
@@ -601,7 +528,7 @@
     <footer class="main-footer">
 
         <p>
-            🍳 고장금의 요리기록
+            🍴 고장금의 요리기록
         </p>
 
         <span>
@@ -613,7 +540,7 @@
 
 
     <!-- ==================================================
-         🔐 관리자 로그인 모달
+         관리자 로그인 모달
     =================================================== -->
 
     <div
@@ -621,15 +548,12 @@
         id="loginModal"
     >
 
-
         <div class="modal-overlay"></div>
 
 
         <div class="modal-content small-modal">
 
-
             <div class="modal-header">
-
 
                 <div>
 
@@ -637,18 +561,15 @@
                         ADMIN
                     </p>
 
-
                     <h2>
                         관리자 로그인
                     </h2>
-
 
                     <p>
                         홈페이지 내용을 관리하려면 로그인해주세요.
                     </p>
 
                 </div>
-
 
 
                 <button
@@ -659,20 +580,16 @@
                     ×
                 </button>
 
-
             </div>
 
 
-
             <form id="loginForm">
-
 
                 <div class="form-group">
 
                     <label for="loginEmail">
                         이메일
                     </label>
-
 
                     <input
                         type="email"
@@ -684,13 +601,11 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="loginPassword">
                         비밀번호
                     </label>
-
 
                     <input
                         type="password"
@@ -702,7 +617,6 @@
                 </div>
 
 
-
                 <button
                     type="submit"
                     class="modal-save-button full-button"
@@ -710,9 +624,7 @@
                     로그인
                 </button>
 
-
             </form>
-
 
         </div>
 
@@ -721,7 +633,7 @@
 
 
     <!-- ==================================================
-         ✏️ 프로필 수정 모달
+         프로필 수정 모달
     =================================================== -->
 
     <div
@@ -729,15 +641,12 @@
         id="profileModal"
     >
 
-
         <div class="modal-overlay"></div>
 
 
-        <div class="modal-content">
-
+        <div class="modal-content profile-edit-modal-content">
 
             <div class="modal-header">
-
 
                 <div>
 
@@ -745,18 +654,15 @@
                         PROFILE
                     </p>
 
-
                     <h2>
                         소개 수정
                     </h2>
-
 
                     <p>
                         메인 홈페이지에 표시될 내용을 수정합니다.
                     </p>
 
                 </div>
-
 
 
                 <button
@@ -767,20 +673,19 @@
                     ×
                 </button>
 
-
             </div>
 
 
 
             <form id="profileForm">
 
+                <!-- 이름 -->
 
                 <div class="form-group">
 
                     <label for="profileNameInput">
                         이름
                     </label>
-
 
                     <input
                         type="text"
@@ -791,13 +696,13 @@
                 </div>
 
 
+                <!-- 소개 제목 -->
 
                 <div class="form-group">
 
                     <label for="profileTitleInput">
                         소개 제목
                     </label>
-
 
                     <input
                         type="text"
@@ -808,13 +713,13 @@
                 </div>
 
 
+                <!-- 소개글 -->
 
                 <div class="form-group">
 
                     <label for="profileIntroInput">
                         소개글
                     </label>
-
 
                     <textarea
                         id="profileIntroInput"
@@ -826,38 +731,199 @@
 
 
 
-                <!--
-                    현재 profile 테이블의 image_url을
-                    수정할 수 있도록 준비해둔 필드.
+                <!-- ==================================================
+                     ① 위쪽 대표 프로필 사진
+                =================================================== -->
 
-                    나중에 이미지 직접 업로드 기능으로
-                    바꿀 수도 있습니다.
-                -->
+                <div class="profile-photo-editor-section">
 
-                <div class="form-group">
+                    <div class="profile-photo-editor-heading">
 
-                    <label for="profileImageInput">
-                        프로필 사진 주소
-                    </label>
+                        <div>
+
+                            <h3>
+                                상단 대표 사진
+                            </h3>
+
+                            <p>
+                                메인 첫 화면 오른쪽 프로필 카드에 표시됩니다.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
-                    <input
-                        type="url"
-                        id="profileImageInput"
-                        placeholder="https://..."
+                    <div class="form-group">
+
+                        <label for="heroImageInput">
+                            사진 선택
+                        </label>
+
+                        <input
+                            type="file"
+                            id="heroImageInput"
+                            accept="image/*"
+                        >
+
+                        <p class="form-help">
+                            선택한 사진은 1:1 비율로 편집할 수 있어요.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- 상단 사진 미리보기 -->
+
+                    <div
+                        class="profile-edit-preview"
+                        id="heroImagePreviewWrapper"
                     >
 
+                        <div class="profile-edit-preview-frame">
 
-                    <p class="form-help">
-                        사진 기능은 나중에 직접 업로드 방식으로도 바꿀 수 있어요.
-                    </p>
+                            <img
+                                id="heroImagePreview"
+                                class="hidden"
+                                src=""
+                                alt="상단 대표 사진 미리보기"
+                            >
+
+                            <div
+                                id="heroImageEditPlaceholder"
+                                class="profile-edit-placeholder"
+                            >
+                                👩🏻‍🍳
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-image-buttons">
+
+                            <button
+                                type="button"
+                                id="editHeroImageButton"
+                                class="profile-image-edit-button hidden"
+                            >
+                                ✂️ 다시 편집
+                            </button>
+
+                            <button
+                                type="button"
+                                id="removeHeroImageButton"
+                                class="profile-image-remove-button hidden"
+                            >
+                                사진 삭제
+                            </button>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
 
 
-                <div class="modal-buttons">
+                <!-- ==================================================
+                     ② 아래 소개 영역 사진
+                =================================================== -->
 
+                <div class="profile-photo-editor-section">
+
+                    <div class="profile-photo-editor-heading">
+
+                        <div>
+
+                            <h3>
+                                소개 영역 사진
+                            </h3>
+
+                            <p>
+                                '고장금을 소개합니다' 영역에 표시됩니다.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="aboutImageInput">
+                            사진 선택
+                        </label>
+
+                        <input
+                            type="file"
+                            id="aboutImageInput"
+                            accept="image/*"
+                        >
+
+                        <p class="form-help">
+                            선택한 사진은 1:1 비율로 편집할 수 있어요.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- 소개 사진 미리보기 -->
+
+                    <div
+                        class="profile-edit-preview"
+                        id="aboutImagePreviewWrapper"
+                    >
+
+                        <div class="profile-edit-preview-frame">
+
+                            <img
+                                id="aboutImagePreview"
+                                class="hidden"
+                                src=""
+                                alt="소개 영역 사진 미리보기"
+                            >
+
+                            <div
+                                id="aboutImageEditPlaceholder"
+                                class="profile-edit-placeholder"
+                            >
+                                🍽️
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-image-buttons">
+
+                            <button
+                                type="button"
+                                id="editAboutImageButton"
+                                class="profile-image-edit-button hidden"
+                            >
+                                ✂️ 다시 편집
+                            </button>
+
+                            <button
+                                type="button"
+                                id="removeAboutImageButton"
+                                class="profile-image-remove-button hidden"
+                            >
+                                사진 삭제
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 저장 -->
+
+                <div class="modal-buttons">
 
                     <button
                         type="button"
@@ -867,7 +933,6 @@
                         취소
                     </button>
 
-
                     <button
                         type="submit"
                         class="modal-save-button"
@@ -875,12 +940,9 @@
                         저장
                     </button>
 
-
                 </div>
 
-
             </form>
-
 
         </div>
 
@@ -889,7 +951,163 @@
 
 
     <!-- ==================================================
-         🏅 자격증 추가 / 수정 모달
+         프로필 사진 1:1 편집 모달
+
+         상단/소개 사진 둘 다 이 편집창을 공유하고
+         JS에서 어느 사진을 편집 중인지 구분합니다.
+    =================================================== -->
+
+    <div
+        class="modal hidden"
+        id="profileCropModal"
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-content profile-crop-modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <p class="modal-eyebrow">
+                        IMAGE EDIT
+                    </p>
+
+                    <h2 id="profileCropModalTitle">
+                        사진 편집
+                    </h2>
+
+                    <p>
+                        정사각형 안에 원하는 부분을 맞춰주세요.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="closeProfileCropModalButton"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <div class="profile-crop-editor">
+
+                <div class="profile-crop-image-container">
+
+                    <img
+                        id="profileCropImage"
+                        src=""
+                        alt="편집할 사진"
+                    >
+
+                </div>
+
+
+
+                <!-- 확대 축소 -->
+
+                <div class="profile-crop-controls">
+
+                    <div class="profile-zoom-control">
+
+                        <span>
+                            🔍−
+                        </span>
+
+                        <input
+                            type="range"
+                            id="profileZoomSlider"
+                            min="0"
+                            max="100"
+                            value="0"
+                            step="1"
+                        >
+
+                        <span>
+                            🔍＋
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- 회전 -->
+
+                    <div class="profile-crop-tool-buttons">
+
+                        <button
+                            type="button"
+                            id="profileRotateLeftButton"
+                            class="profile-crop-tool-button"
+                        >
+                            ↶ 왼쪽 회전
+                        </button>
+
+                        <button
+                            type="button"
+                            id="profileRotateRightButton"
+                            class="profile-crop-tool-button"
+                        >
+                            ↷ 오른쪽 회전
+                        </button>
+
+                        <button
+                            type="button"
+                            id="profileResetCropButton"
+                            class="profile-crop-tool-button"
+                        >
+                            ↺ 처음으로
+                        </button>
+
+                    </div>
+
+
+                    <p class="profile-crop-guide">
+                        💡 사진을 마우스나 손가락으로 움직여 위치를 조절할 수 있어요.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="modal-buttons">
+
+                <button
+                    type="button"
+                    class="modal-cancel-button"
+                    id="cancelProfileCropButton"
+                >
+                    취소
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-save-button"
+                    id="applyProfileCropButton"
+                >
+                    ✂️ 자르기 완료
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         자격증 추가 / 수정 모달
     =================================================== -->
 
     <div
@@ -897,15 +1115,12 @@
         id="certificationModal"
     >
 
-
         <div class="modal-overlay"></div>
 
 
         <div class="modal-content small-modal">
 
-
             <div class="modal-header">
-
 
                 <div>
 
@@ -913,13 +1128,11 @@
                         CERTIFICATION
                     </p>
 
-
                     <h2 id="certificationModalTitle">
                         자격증 추가
                     </h2>
 
                 </div>
-
 
 
                 <button
@@ -930,15 +1143,11 @@
                     ×
                 </button>
 
-
             </div>
 
 
 
             <form id="certificationForm">
-
-
-                <!-- 수정 시 id 저장 -->
 
                 <input
                     type="hidden"
@@ -946,13 +1155,11 @@
                 >
 
 
-
                 <div class="form-group">
 
                     <label for="certificationName">
                         자격증명
                     </label>
-
 
                     <input
                         type="text"
@@ -964,19 +1171,16 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="certificationDate">
                         취득일
                     </label>
 
-
                     <input
                         type="date"
                         id="certificationDate"
                     >
-
 
                     <p class="form-help">
                         정확한 날짜를 모르면 비워두어도 됩니다.
@@ -985,13 +1189,11 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="certificationOrder">
                         표시 순서
                     </label>
-
 
                     <input
                         type="number"
@@ -1003,9 +1205,7 @@
                 </div>
 
 
-
                 <div class="modal-buttons">
-
 
                     <button
                         type="button"
@@ -1015,7 +1215,6 @@
                         취소
                     </button>
 
-
                     <button
                         type="submit"
                         class="modal-save-button"
@@ -1023,12 +1222,9 @@
                         저장
                     </button>
 
-
                 </div>
 
-
             </form>
-
 
         </div>
 
@@ -1037,7 +1233,7 @@
 
 
     <!-- ==================================================
-         💼 경력 추가 / 수정 모달
+         경력 추가 / 수정 모달
     =================================================== -->
 
     <div
@@ -1045,15 +1241,12 @@
         id="careerModal"
     >
 
-
         <div class="modal-overlay"></div>
 
 
         <div class="modal-content">
 
-
             <div class="modal-header">
-
 
                 <div>
 
@@ -1061,13 +1254,11 @@
                         CAREER
                     </p>
 
-
                     <h2 id="careerModalTitle">
                         경력 추가
                     </h2>
 
                 </div>
-
 
 
                 <button
@@ -1078,15 +1269,11 @@
                     ×
                 </button>
 
-
             </div>
 
 
 
             <form id="careerForm">
-
-
-                <!-- 수정용 id -->
 
                 <input
                     type="hidden"
@@ -1094,13 +1281,11 @@
                 >
 
 
-
                 <div class="form-group">
 
                     <label for="careerCompany">
                         기관 / 회사
                     </label>
-
 
                     <input
                         type="text"
@@ -1112,13 +1297,11 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="careerPosition">
                         직책 / 역할
                     </label>
-
 
                     <input
                         type="text"
@@ -1133,13 +1316,11 @@
 
                 <div class="form-row">
 
-
                     <div class="form-group">
 
                         <label for="careerStartDate">
                             시작일
                         </label>
-
 
                         <input
                             type="date"
@@ -1149,26 +1330,22 @@
                     </div>
 
 
-
                     <div class="form-group">
 
                         <label for="careerEndDate">
                             종료일
                         </label>
 
-
                         <input
                             type="date"
                             id="careerEndDate"
                         >
-
 
                         <p class="form-help">
                             현재 재직 중이면 비워주세요.
                         </p>
 
                     </div>
-
 
                 </div>
 
@@ -1180,7 +1357,6 @@
                         설명
                     </label>
 
-
                     <textarea
                         id="careerDescription"
                         rows="5"
@@ -1190,13 +1366,11 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="careerOrder">
                         표시 순서
                     </label>
-
 
                     <input
                         type="number"
@@ -1208,9 +1382,7 @@
                 </div>
 
 
-
                 <div class="modal-buttons">
-
 
                     <button
                         type="button"
@@ -1220,7 +1392,6 @@
                         취소
                     </button>
 
-
                     <button
                         type="submit"
                         class="modal-save-button"
@@ -1228,12 +1399,9 @@
                         저장
                     </button>
 
-
                 </div>
 
-
             </form>
-
 
         </div>
 
@@ -1257,17 +1425,18 @@
          JavaScript
     =================================================== -->
 
-    <!--
-        레시피 사이트와 같은 Supabase를 사용합니다.
-    -->
-
+    <!-- Supabase -->
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
 
+    <!-- Cropper.js -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"
+    ></script>
 
+    <!-- 메인 JS -->
     <script src="script.js"></script>
-
 
 </body>
 

@@ -24,6 +24,9 @@ const ADMIN_UIDS = [
     "b923c3dd-cdf9-4a46-afe7-de4672671848"
 ];
 
+const PROFILE_BUCKET =
+    "profile-images";
+
 let isAdmin = false;
 
 
@@ -39,12 +42,66 @@ let careers = [];
 
 
 // ==================================================
+// 📸 프로필 사진 편집 상태
+// ==================================================
+
+let profileCropper = null;
+
+/*
+    현재 편집 중인 사진
+
+    hero
+    → 상단 대표 사진
+
+    about
+    → 소개 영역 사진
+*/
+
+let currentCropTarget = null;
+
+
+/*
+    새로 자른 사진 Blob
+*/
+
+let heroImageBlob = null;
+
+let aboutImageBlob = null;
+
+
+/*
+    새 사진의 미리보기 URL
+*/
+
+let heroPreviewUrl = null;
+
+let aboutPreviewUrl = null;
+
+
+/*
+    기존 사진을 삭제할지 여부
+*/
+
+let removeHeroImage = false;
+
+let removeAboutImage = false;
+
+
+/*
+    Cropper 확대 초기 비율
+*/
+
+let cropInitialRatio = 1;
+
+
+// ==================================================
 // HTML 요소
 // ==================================================
 
-// --------------------------
+
+// ==================================================
 // 로그인
-// --------------------------
+// ==================================================
 
 const loginButton =
     document.getElementById(
@@ -82,9 +139,9 @@ const loginPassword =
     );
 
 
-// --------------------------
-// 프로필
-// --------------------------
+// ==================================================
+// 프로필 기본 정보
+// ==================================================
 
 const heroProfileName =
     document.getElementById(
@@ -111,20 +168,45 @@ const profileIntro =
         "profileIntro"
     );
 
-const profileImage =
-    document.getElementById(
-        "profileImage"
-    );
-
-const profileImagePlaceholder =
-    document.getElementById(
-        "profileImagePlaceholder"
-    );
-
 const editProfileButton =
     document.getElementById(
         "editProfileButton"
     );
+
+
+// ==================================================
+// 상단 HERO 사진
+// ==================================================
+
+const heroProfileImage =
+    document.getElementById(
+        "heroProfileImage"
+    );
+
+const heroProfileImagePlaceholder =
+    document.getElementById(
+        "heroProfileImagePlaceholder"
+    );
+
+
+// ==================================================
+// 아래 소개 사진
+// ==================================================
+
+const aboutProfileImage =
+    document.getElementById(
+        "aboutProfileImage"
+    );
+
+const aboutProfileImagePlaceholder =
+    document.getElementById(
+        "aboutProfileImagePlaceholder"
+    );
+
+
+// ==================================================
+// 프로필 수정 모달
+// ==================================================
 
 const profileModal =
     document.getElementById(
@@ -161,15 +243,125 @@ const profileIntroInput =
         "profileIntroInput"
     );
 
-const profileImageInput =
+
+// ==================================================
+// 상단 사진 관리
+// ==================================================
+
+const heroImageInput =
     document.getElementById(
-        "profileImageInput"
+        "heroImageInput"
+    );
+
+const heroImagePreview =
+    document.getElementById(
+        "heroImagePreview"
+    );
+
+const heroImageEditPlaceholder =
+    document.getElementById(
+        "heroImageEditPlaceholder"
+    );
+
+const editHeroImageButton =
+    document.getElementById(
+        "editHeroImageButton"
+    );
+
+const removeHeroImageButton =
+    document.getElementById(
+        "removeHeroImageButton"
     );
 
 
-// --------------------------
+// ==================================================
+// 소개 사진 관리
+// ==================================================
+
+const aboutImageInput =
+    document.getElementById(
+        "aboutImageInput"
+    );
+
+const aboutImagePreview =
+    document.getElementById(
+        "aboutImagePreview"
+    );
+
+const aboutImageEditPlaceholder =
+    document.getElementById(
+        "aboutImageEditPlaceholder"
+    );
+
+const editAboutImageButton =
+    document.getElementById(
+        "editAboutImageButton"
+    );
+
+const removeAboutImageButton =
+    document.getElementById(
+        "removeAboutImageButton"
+    );
+
+
+// ==================================================
+// 프로필 사진 Cropper
+// ==================================================
+
+const profileCropModal =
+    document.getElementById(
+        "profileCropModal"
+    );
+
+const profileCropModalTitle =
+    document.getElementById(
+        "profileCropModalTitle"
+    );
+
+const profileCropImage =
+    document.getElementById(
+        "profileCropImage"
+    );
+
+const profileZoomSlider =
+    document.getElementById(
+        "profileZoomSlider"
+    );
+
+const profileRotateLeftButton =
+    document.getElementById(
+        "profileRotateLeftButton"
+    );
+
+const profileRotateRightButton =
+    document.getElementById(
+        "profileRotateRightButton"
+    );
+
+const profileResetCropButton =
+    document.getElementById(
+        "profileResetCropButton"
+    );
+
+const applyProfileCropButton =
+    document.getElementById(
+        "applyProfileCropButton"
+    );
+
+const cancelProfileCropButton =
+    document.getElementById(
+        "cancelProfileCropButton"
+    );
+
+const closeProfileCropModalButton =
+    document.getElementById(
+        "closeProfileCropModalButton"
+    );
+
+
+// ==================================================
 // 자격증
-// --------------------------
+// ==================================================
 
 const certificationList =
     document.getElementById(
@@ -232,9 +424,9 @@ const certificationOrder =
     );
 
 
-// --------------------------
+// ==================================================
 // 경력
-// --------------------------
+// ==================================================
 
 const careerList =
     document.getElementById(
@@ -312,9 +504,9 @@ const careerOrder =
     );
 
 
-// --------------------------
+// ==================================================
 // 토스트
-// --------------------------
+// ==================================================
 
 const toast =
     document.getElementById(
@@ -369,12 +561,10 @@ function formatDate(dateString) {
         return "";
     }
 
-
     const date =
         new Date(
             `${dateString}T00:00:00`
         );
-
 
     if (
         Number.isNaN(
@@ -384,7 +574,6 @@ function formatDate(dateString) {
 
         return dateString;
     }
-
 
     return new Intl.DateTimeFormat(
         "ko-KR",
@@ -413,23 +602,19 @@ function formatCareerPeriod(
                 return "";
             }
 
-
             const [
                 year,
                 month
             ] =
                 dateString.split("-");
 
-
             if (!year) {
                 return "";
             }
 
-
             if (!month) {
                 return year;
             }
-
 
             return `${year}.${month}`;
         };
@@ -439,7 +624,6 @@ function formatCareerPeriod(
         formatMonth(
             startDate
         );
-
 
     const end =
         endDate
@@ -456,7 +640,6 @@ function formatCareerPeriod(
             : "재직 중";
     }
 
-
     return `${start} ~ ${end}`;
 }
 
@@ -469,77 +652,41 @@ function getCertificationIcon(
     name = ""
 ) {
 
-    if (
-        name.includes("복어")
-    ) {
-
+    if (name.includes("복어")) {
         return "🐡";
     }
 
-
-    if (
-        name.includes("떡")
-    ) {
-
+    if (name.includes("떡")) {
         return "🍡";
     }
 
-
-    if (
-        name.includes("제빵")
-    ) {
-
+    if (name.includes("제빵")) {
         return "🥐";
     }
 
-
-    if (
-        name.includes("제과")
-    ) {
-
+    if (name.includes("제과")) {
         return "🧁";
     }
 
-
-    if (
-        name.includes("중식")
-    ) {
-
+    if (name.includes("중식")) {
         return "🥟";
     }
 
-
-    if (
-        name.includes("양식")
-    ) {
-
+    if (name.includes("양식")) {
         return "🍝";
     }
 
-
-    if (
-        name.includes("일식")
-    ) {
-
+    if (name.includes("일식")) {
         return "🍣";
     }
 
-
-    if (
-        name.includes("조주")
-    ) {
-
+    if (name.includes("조주")) {
         return "🍹";
     }
 
-
-    if (
-        name.includes("한식")
-    ) {
-
+    if (name.includes("한식")) {
         return "🍚";
     }
-
 
     return "🏅";
 }
@@ -555,11 +702,9 @@ function openModal(modal) {
         return;
     }
 
-
     modal
         .classList
         .remove("hidden");
-
 
     document.body
         .classList
@@ -573,11 +718,9 @@ function closeModal(modal) {
         return;
     }
 
-
     modal
         .classList
         .add("hidden");
-
 
     restoreBodyScroll();
 }
@@ -588,10 +731,10 @@ function restoreBodyScroll() {
     const modals = [
         loginModal,
         profileModal,
+        profileCropModal,
         certificationModal,
         careerModal
     ];
-
 
     const anyOpen =
         modals.some(
@@ -601,7 +744,6 @@ function restoreBodyScroll() {
                     "hidden"
                 )
         );
-
 
     document.body
         .classList
@@ -647,11 +789,9 @@ async function loadProfile() {
             error
         );
 
-
         showToast(
             "소개 정보를 불러오지 못했어요."
         );
-
 
         return;
     }
@@ -659,7 +799,6 @@ async function loadProfile() {
 
     profileData =
         data || null;
-
 
     renderProfile();
 }
@@ -675,71 +814,228 @@ function renderProfile() {
         profileData?.name ||
         "고장금";
 
-
     const title =
         profileData?.title ||
-        "조리 강사";
-
+        "강사";
 
     const intro =
         profileData?.intro ||
-        "현재 광주제일직업전문학원에서 조리 분야 강사로 활동하고 있습니다.";
+        "현재 광주제일직업전문학원에서 강사로 활동하고 있습니다.";
 
 
-    const imageUrl =
+    /*
+        기존 image_url이 있으면
+        상단 사진 임시 호환용으로 사용
+    */
+
+    const heroUrl =
+        profileData?.hero_image_url ||
         profileData?.image_url ||
+        "";
+
+    const aboutUrl =
+        profileData?.about_image_url ||
         "";
 
 
     heroProfileName.textContent =
         name;
 
-
     heroProfileTitle.textContent =
         title;
-
 
     profileName.textContent =
         name;
 
-
     profileTitle.textContent =
         title;
-
 
     profileIntro.textContent =
         intro;
 
 
-    if (imageUrl) {
+    // --------------------------
+    // 상단 사진
+    // --------------------------
 
-        profileImage.src =
-            imageUrl;
+    if (heroUrl) {
 
+        heroProfileImage.src =
+            heroUrl;
 
-        profileImage
+        heroProfileImage
             .classList
             .remove("hidden");
 
-
-        profileImagePlaceholder
+        heroProfileImagePlaceholder
             .classList
             .add("hidden");
 
     } else {
 
-        profileImage.src =
+        heroProfileImage.src =
             "";
 
-
-        profileImage
+        heroProfileImage
             .classList
             .add("hidden");
 
-
-        profileImagePlaceholder
+        heroProfileImagePlaceholder
             .classList
             .remove("hidden");
+    }
+
+
+    // --------------------------
+    // 소개 사진
+    // --------------------------
+
+    if (aboutUrl) {
+
+        aboutProfileImage.src =
+            aboutUrl;
+
+        aboutProfileImage
+            .classList
+            .remove("hidden");
+
+        aboutProfileImagePlaceholder
+            .classList
+            .add("hidden");
+
+    } else {
+
+        aboutProfileImage.src =
+            "";
+
+        aboutProfileImage
+            .classList
+            .add("hidden");
+
+        aboutProfileImagePlaceholder
+            .classList
+            .remove("hidden");
+    }
+}
+
+
+// ==================================================
+// 관리자 프로필 미리보기
+// ==================================================
+
+function renderProfileEditPreviews() {
+
+    const heroUrl =
+        heroPreviewUrl ||
+        profileData?.hero_image_url ||
+        profileData?.image_url ||
+        "";
+
+    const aboutUrl =
+        aboutPreviewUrl ||
+        profileData?.about_image_url ||
+        "";
+
+
+    // --------------------------
+    // 상단
+    // --------------------------
+
+    if (
+        heroUrl &&
+        !removeHeroImage
+    ) {
+
+        heroImagePreview.src =
+            heroUrl;
+
+        heroImagePreview
+            .classList
+            .remove("hidden");
+
+        heroImageEditPlaceholder
+            .classList
+            .add("hidden");
+
+        editHeroImageButton
+            .classList
+            .remove("hidden");
+
+        removeHeroImageButton
+            .classList
+            .remove("hidden");
+
+    } else {
+
+        heroImagePreview.src =
+            "";
+
+        heroImagePreview
+            .classList
+            .add("hidden");
+
+        heroImageEditPlaceholder
+            .classList
+            .remove("hidden");
+
+        editHeroImageButton
+            .classList
+            .add("hidden");
+
+        removeHeroImageButton
+            .classList
+            .add("hidden");
+    }
+
+
+    // --------------------------
+    // 소개
+    // --------------------------
+
+    if (
+        aboutUrl &&
+        !removeAboutImage
+    ) {
+
+        aboutImagePreview.src =
+            aboutUrl;
+
+        aboutImagePreview
+            .classList
+            .remove("hidden");
+
+        aboutImageEditPlaceholder
+            .classList
+            .add("hidden");
+
+        editAboutImageButton
+            .classList
+            .remove("hidden");
+
+        removeAboutImageButton
+            .classList
+            .remove("hidden");
+
+    } else {
+
+        aboutImagePreview.src =
+            "";
+
+        aboutImagePreview
+            .classList
+            .add("hidden");
+
+        aboutImageEditPlaceholder
+            .classList
+            .remove("hidden");
+
+        editAboutImageButton
+            .classList
+            .add("hidden");
+
+        removeAboutImageButton
+            .classList
+            .add("hidden");
     }
 }
 
@@ -764,21 +1060,42 @@ function openProfileModal() {
         profileData?.name ||
         "고장금";
 
-
     profileTitleInput.value =
         profileData?.title ||
         "";
-
 
     profileIntroInput.value =
         profileData?.intro ||
         "";
 
 
-    profileImageInput.value =
-        profileData?.image_url ||
+    /*
+        새 편집 상태 초기화
+    */
+
+    heroImageBlob = null;
+    aboutImageBlob = null;
+
+    removeHeroImage = false;
+    removeAboutImage = false;
+
+    clearObjectUrl(
+        "hero"
+    );
+
+    clearObjectUrl(
+        "about"
+    );
+
+
+    heroImageInput.value =
         "";
 
+    aboutImageInput.value =
+        "";
+
+
+    renderProfileEditPreviews();
 
     openModal(
         profileModal
@@ -787,7 +1104,879 @@ function openProfileModal() {
 
 
 // ==================================================
-// 프로필 저장
+// Object URL 정리
+// ==================================================
+
+function clearObjectUrl(target) {
+
+    if (
+        target === "hero" &&
+        heroPreviewUrl
+    ) {
+
+        URL.revokeObjectURL(
+            heroPreviewUrl
+        );
+
+        heroPreviewUrl = null;
+    }
+
+
+    if (
+        target === "about" &&
+        aboutPreviewUrl
+    ) {
+
+        URL.revokeObjectURL(
+            aboutPreviewUrl
+        );
+
+        aboutPreviewUrl = null;
+    }
+}
+
+
+// ==================================================
+// 📸 파일 선택
+// ==================================================
+
+heroImageInput.addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        openCropperFromFile(
+            file,
+            "hero"
+        );
+    }
+);
+
+
+aboutImageInput.addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        openCropperFromFile(
+            file,
+            "about"
+        );
+    }
+);
+
+
+// ==================================================
+// 파일 검사
+// ==================================================
+
+function validateImageFile(file) {
+
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        showToast(
+            "이미지 파일만 선택할 수 있어요."
+        );
+
+        return false;
+    }
+
+
+    const maxSize =
+        10 * 1024 * 1024;
+
+
+    if (
+        file.size >
+        maxSize
+    ) {
+
+        showToast(
+            "사진은 10MB 이하로 선택해주세요."
+        );
+
+        return false;
+    }
+
+
+    return true;
+}
+
+
+// ==================================================
+// 파일 → Cropper
+// ==================================================
+
+function openCropperFromFile(
+    file,
+    target
+) {
+
+    if (
+        !validateImageFile(
+            file
+        )
+    ) {
+
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        event => {
+
+            openProfileCropper(
+                event.target.result,
+                target
+            );
+        };
+
+
+    reader.readAsDataURL(
+        file
+    );
+}
+
+
+// ==================================================
+// 기존 사진 다시 편집
+// ==================================================
+
+editHeroImageButton.addEventListener(
+    "click",
+    () => {
+
+        const source =
+            heroPreviewUrl ||
+            profileData?.hero_image_url ||
+            profileData?.image_url ||
+            "";
+
+        if (!source) {
+            return;
+        }
+
+        openProfileCropper(
+            source,
+            "hero"
+        );
+    }
+);
+
+
+editAboutImageButton.addEventListener(
+    "click",
+    () => {
+
+        const source =
+            aboutPreviewUrl ||
+            profileData?.about_image_url ||
+            "";
+
+        if (!source) {
+            return;
+        }
+
+        openProfileCropper(
+            source,
+            "about"
+        );
+    }
+);
+
+
+// ==================================================
+// Cropper 열기
+// ==================================================
+
+function openProfileCropper(
+    imageSource,
+    target
+) {
+
+    currentCropTarget =
+        target;
+
+
+    if (
+        profileCropper
+    ) {
+
+        profileCropper.destroy();
+
+        profileCropper = null;
+    }
+
+
+    profileZoomSlider.value =
+        0;
+
+
+    profileCropModalTitle.textContent =
+        target === "hero"
+            ? "상단 대표 사진 편집"
+            : "소개 영역 사진 편집";
+
+
+    /*
+        Supabase URL을 편집할 때
+        Canvas CORS 문제 예방
+    */
+
+    if (
+        imageSource.startsWith(
+            "http"
+        )
+    ) {
+
+        profileCropImage.crossOrigin =
+            "anonymous";
+
+    } else {
+
+        profileCropImage.removeAttribute(
+            "crossorigin"
+        );
+    }
+
+
+    profileCropImage.onload =
+        () => {
+
+            openModal(
+                profileCropModal
+            );
+
+
+            setTimeout(
+                () => {
+
+                    profileCropper =
+                        new Cropper(
+                            profileCropImage,
+                            {
+
+                                aspectRatio: 1,
+
+                                viewMode: 1,
+
+                                dragMode: "move",
+
+                                autoCropArea: 0.9,
+
+                                responsive: true,
+
+                                restore: false,
+
+                                guides: true,
+
+                                center: true,
+
+                                highlight: false,
+
+                                background: false,
+
+                                movable: true,
+
+                                rotatable: true,
+
+                                scalable: false,
+
+                                zoomable: true,
+
+                                zoomOnTouch: true,
+
+                                zoomOnWheel: true,
+
+                                cropBoxMovable: false,
+
+                                cropBoxResizable: false,
+
+                                toggleDragModeOnDblclick:
+                                    false,
+
+                                ready() {
+
+                                    const imageData =
+                                        profileCropper
+                                            .getImageData();
+
+                                    cropInitialRatio =
+                                        imageData.ratio ||
+                                        1;
+
+                                    profileZoomSlider.value =
+                                        0;
+                                }
+                            }
+                        );
+
+                },
+
+                50
+            );
+        };
+
+
+    /*
+        같은 src를 다시 선택해도
+        load가 발생하도록 초기화
+    */
+
+    profileCropImage.src =
+        "";
+
+    setTimeout(
+        () => {
+
+            profileCropImage.src =
+                imageSource;
+
+        },
+
+        10
+    );
+}
+
+
+// ==================================================
+// 확대 / 축소
+// ==================================================
+
+profileZoomSlider.addEventListener(
+    "input",
+    () => {
+
+        if (!profileCropper) {
+            return;
+        }
+
+
+        const sliderValue =
+            Number(
+                profileZoomSlider.value
+            );
+
+
+        /*
+            0 → 기본 크기
+            100 → 기본 크기의 약 3배
+        */
+
+        const multiplier =
+            1 +
+            sliderValue / 50;
+
+
+        profileCropper.zoomTo(
+            cropInitialRatio *
+            multiplier
+        );
+    }
+);
+
+
+// ==================================================
+// 회전
+// ==================================================
+
+profileRotateLeftButton.addEventListener(
+    "click",
+    () => {
+
+        profileCropper?.rotate(
+            -90
+        );
+    }
+);
+
+
+profileRotateRightButton.addEventListener(
+    "click",
+    () => {
+
+        profileCropper?.rotate(
+            90
+        );
+    }
+);
+
+
+// ==================================================
+// Cropper 초기화
+// ==================================================
+
+profileResetCropButton.addEventListener(
+    "click",
+    () => {
+
+        if (!profileCropper) {
+            return;
+        }
+
+
+        profileCropper.reset();
+
+        profileZoomSlider.value =
+            0;
+
+
+        setTimeout(
+            () => {
+
+                const imageData =
+                    profileCropper
+                        .getImageData();
+
+                cropInitialRatio =
+                    imageData.ratio ||
+                    1;
+
+            },
+
+            20
+        );
+    }
+);
+
+
+// ==================================================
+// 1:1 자르기 완료
+// ==================================================
+
+applyProfileCropButton.addEventListener(
+    "click",
+    () => {
+
+        if (
+            !profileCropper ||
+            !currentCropTarget
+        ) {
+
+            return;
+        }
+
+
+        const canvas =
+            profileCropper
+                .getCroppedCanvas(
+                    {
+
+                        width: 1000,
+
+                        height: 1000,
+
+                        imageSmoothingEnabled:
+                            true,
+
+                        imageSmoothingQuality:
+                            "high"
+
+                    }
+                );
+
+
+        if (!canvas) {
+
+            showToast(
+                "사진을 편집하지 못했어요."
+            );
+
+            return;
+        }
+
+
+        canvas.toBlob(
+            blob => {
+
+                if (!blob) {
+
+                    showToast(
+                        "사진을 처리하지 못했어요."
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    currentCropTarget ===
+                    "hero"
+                ) {
+
+                    heroImageBlob =
+                        blob;
+
+                    removeHeroImage =
+                        false;
+
+                    clearObjectUrl(
+                        "hero"
+                    );
+
+                    heroPreviewUrl =
+                        URL.createObjectURL(
+                            blob
+                        );
+
+                } else {
+
+                    aboutImageBlob =
+                        blob;
+
+                    removeAboutImage =
+                        false;
+
+                    clearObjectUrl(
+                        "about"
+                    );
+
+                    aboutPreviewUrl =
+                        URL.createObjectURL(
+                            blob
+                        );
+                }
+
+
+                renderProfileEditPreviews();
+
+
+                closeProfileCropper();
+
+
+                showToast(
+                    "사진 편집이 완료됐어요 ✂️"
+                );
+            },
+
+            "image/webp",
+
+            0.9
+        );
+    }
+);
+
+
+// ==================================================
+// Cropper 닫기
+// ==================================================
+
+function closeProfileCropper() {
+
+    if (
+        profileCropper
+    ) {
+
+        profileCropper.destroy();
+
+        profileCropper = null;
+    }
+
+
+    currentCropTarget =
+        null;
+
+
+    profileCropImage.src =
+        "";
+
+
+    closeModal(
+        profileCropModal
+    );
+}
+
+
+closeProfileCropModalButton.addEventListener(
+    "click",
+    closeProfileCropper
+);
+
+
+cancelProfileCropButton.addEventListener(
+    "click",
+    closeProfileCropper
+);
+
+
+// ==================================================
+// 사진 삭제 예약
+// ==================================================
+
+removeHeroImageButton.addEventListener(
+    "click",
+    () => {
+
+        const answer =
+            confirm(
+                "상단 대표 사진을 삭제할까요?"
+            );
+
+        if (!answer) {
+            return;
+        }
+
+
+        heroImageBlob =
+            null;
+
+        clearObjectUrl(
+            "hero"
+        );
+
+        removeHeroImage =
+            true;
+
+        heroImageInput.value =
+            "";
+
+        renderProfileEditPreviews();
+    }
+);
+
+
+removeAboutImageButton.addEventListener(
+    "click",
+    () => {
+
+        const answer =
+            confirm(
+                "소개 영역 사진을 삭제할까요?"
+            );
+
+        if (!answer) {
+            return;
+        }
+
+
+        aboutImageBlob =
+            null;
+
+        clearObjectUrl(
+            "about"
+        );
+
+        removeAboutImage =
+            true;
+
+        aboutImageInput.value =
+            "";
+
+        renderProfileEditPreviews();
+    }
+);
+
+
+// ==================================================
+// ☁️ Storage 사진 업로드
+// ==================================================
+
+async function uploadProfileImage(
+    blob,
+    target
+) {
+
+    const folder =
+        target === "hero"
+            ? "hero"
+            : "about";
+
+
+    const randomName =
+        `${Date.now()}-${crypto.randomUUID()}.webp`;
+
+
+    const filePath =
+        `${folder}/${randomName}`;
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .storage
+
+            .from(
+                PROFILE_BUCKET
+            )
+
+            .upload(
+                filePath,
+                blob,
+                {
+
+                    contentType:
+                        "image/webp",
+
+                    cacheControl:
+                        "3600",
+
+                    upsert:
+                        false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "프로필 사진 업로드 실패:",
+            error
+        );
+
+        throw error;
+    }
+
+
+    const {
+        data
+    } =
+        supabaseClient
+
+            .storage
+
+            .from(
+                PROFILE_BUCKET
+            )
+
+            .getPublicUrl(
+                filePath
+            );
+
+
+    return {
+        publicUrl:
+            data.publicUrl,
+
+        filePath
+    };
+}
+
+
+// ==================================================
+// Storage URL → 파일 경로
+// ==================================================
+
+function getProfileStoragePath(
+    publicUrl
+) {
+
+    if (!publicUrl) {
+        return null;
+    }
+
+
+    const marker =
+        `/storage/v1/object/public/${PROFILE_BUCKET}/`;
+
+
+    const index =
+        publicUrl.indexOf(
+            marker
+        );
+
+
+    if (index === -1) {
+        return null;
+    }
+
+
+    const path =
+        publicUrl.substring(
+            index +
+            marker.length
+        );
+
+
+    try {
+
+        return decodeURIComponent(
+            path.split("?")[0]
+        );
+
+    } catch {
+
+        return path.split("?")[0];
+    }
+}
+
+
+// ==================================================
+// 기존 Storage 사진 삭제
+// ==================================================
+
+async function deleteStoredProfileImage(
+    publicUrl
+) {
+
+    const path =
+        getProfileStoragePath(
+            publicUrl
+        );
+
+
+    if (!path) {
+
+        /*
+            예전 image_url이 외부 URL인 경우
+            Storage 파일이 아니므로 삭제하지 않음
+        */
+
+        return;
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+
+            .storage
+
+            .from(
+                PROFILE_BUCKET
+            )
+
+            .remove(
+                [
+                    path
+                ]
+            );
+
+
+    if (error) {
+
+        console.error(
+            "기존 프로필 사진 삭제 실패:",
+            error
+        );
+    }
+}
+
+
+// ==================================================
+// 💾 프로필 저장
 // ==================================================
 
 profileForm.addEventListener(
@@ -817,78 +2006,277 @@ profileForm.addEventListener(
         }
 
 
-        const profileUpdate = {
+        /*
+            현재 저장된 주소
+        */
 
-            name:
-                profileNameInput
-                    .value
-                    .trim(),
-
-            title:
-                profileTitleInput
-                    .value
-                    .trim() ||
-                null,
-
-            intro:
-                profileIntroInput
-                    .value
-                    .trim() ||
-                null,
-
-            image_url:
-                profileImageInput
-                    .value
-                    .trim() ||
-                null
-        };
+        const oldHeroUrl =
+            profileData
+                ?.hero_image_url ||
+            profileData
+                ?.image_url ||
+            null;
 
 
-        const {
-            error
-        } =
-            await supabaseClient
+        const oldAboutUrl =
+            profileData
+                ?.about_image_url ||
+            null;
 
-                .from("profile")
 
-                .update(
-                    profileUpdate
-                )
+        let newHeroUrl =
+            profileData
+                ?.hero_image_url ||
+            profileData
+                ?.image_url ||
+            null;
 
-                .eq(
-                    "id",
-                    profileData.id
+
+        let newAboutUrl =
+            profileData
+                ?.about_image_url ||
+            null;
+
+
+        let uploadedHero =
+            null;
+
+        let uploadedAbout =
+            null;
+
+
+        try {
+
+            // --------------------------
+            // 상단 새 사진 업로드
+            // --------------------------
+
+            if (heroImageBlob) {
+
+                uploadedHero =
+                    await uploadProfileImage(
+                        heroImageBlob,
+                        "hero"
+                    );
+
+                newHeroUrl =
+                    uploadedHero.publicUrl;
+            }
+
+
+            // --------------------------
+            // 소개 새 사진 업로드
+            // --------------------------
+
+            if (aboutImageBlob) {
+
+                uploadedAbout =
+                    await uploadProfileImage(
+                        aboutImageBlob,
+                        "about"
+                    );
+
+                newAboutUrl =
+                    uploadedAbout.publicUrl;
+            }
+
+
+            // --------------------------
+            // 삭제 예약
+            // --------------------------
+
+            if (removeHeroImage) {
+
+                newHeroUrl =
+                    null;
+            }
+
+
+            if (removeAboutImage) {
+
+                newAboutUrl =
+                    null;
+            }
+
+
+            // --------------------------
+            // profile 테이블 저장
+            // --------------------------
+
+            const profileUpdate = {
+
+                name:
+                    profileNameInput
+                        .value
+                        .trim(),
+
+                title:
+                    profileTitleInput
+                        .value
+                        .trim() ||
+                    null,
+
+                intro:
+                    profileIntroInput
+                        .value
+                        .trim() ||
+                    null,
+
+                hero_image_url:
+                    newHeroUrl,
+
+                about_image_url:
+                    newAboutUrl
+            };
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+
+                    .from(
+                        "profile"
+                    )
+
+                    .update(
+                        profileUpdate
+                    )
+
+                    .eq(
+                        "id",
+                        profileData.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "프로필 수정 실패:",
+                    error
                 );
 
 
-        if (error) {
+                /*
+                    DB 저장에 실패했으면
+                    방금 새로 올린 사진은 삭제
+                */
+
+                if (
+                    uploadedHero?.publicUrl
+                ) {
+
+                    await deleteStoredProfileImage(
+                        uploadedHero.publicUrl
+                    );
+                }
+
+
+                if (
+                    uploadedAbout?.publicUrl
+                ) {
+
+                    await deleteStoredProfileImage(
+                        uploadedAbout.publicUrl
+                    );
+                }
+
+
+                showToast(
+                    "소개를 수정하지 못했어요."
+                );
+
+                return;
+            }
+
+
+            // --------------------------
+            // DB 저장 성공 후
+            // 기존 사진 정리
+            // --------------------------
+
+            if (
+                oldHeroUrl &&
+                (
+                    heroImageBlob ||
+                    removeHeroImage
+                ) &&
+                oldHeroUrl !==
+                    newHeroUrl
+            ) {
+
+                await deleteStoredProfileImage(
+                    oldHeroUrl
+                );
+            }
+
+
+            if (
+                oldAboutUrl &&
+                (
+                    aboutImageBlob ||
+                    removeAboutImage
+                ) &&
+                oldAboutUrl !==
+                    newAboutUrl
+            ) {
+
+                await deleteStoredProfileImage(
+                    oldAboutUrl
+                );
+            }
+
+
+            // --------------------------
+            // 임시 데이터 초기화
+            // --------------------------
+
+            heroImageBlob =
+                null;
+
+            aboutImageBlob =
+                null;
+
+            removeHeroImage =
+                false;
+
+            removeAboutImage =
+                false;
+
+            clearObjectUrl(
+                "hero"
+            );
+
+            clearObjectUrl(
+                "about"
+            );
+
+
+            closeModal(
+                profileModal
+            );
+
+
+            showToast(
+                "소개를 수정했어요 ✨"
+            );
+
+
+            await loadProfile();
+
+
+        } catch (error) {
 
             console.error(
-                "프로필 수정 실패:",
+                "프로필 저장 중 오류:",
                 error
             );
 
 
             showToast(
-                "소개를 수정하지 못했어요."
+                "사진 저장 중 오류가 발생했어요."
             );
-
-
-            return;
         }
-
-
-        closeModal(
-            profileModal
-        );
-
-
-        showToast(
-            "소개를 수정했어요 ✨"
-        );
-
-
-        await loadProfile();
     }
 );
 
@@ -934,11 +2322,9 @@ async function loadCertifications() {
             error
         );
 
-
         showToast(
             "자격증 정보를 불러오지 못했어요."
         );
-
 
         return;
     }
@@ -946,7 +2332,6 @@ async function loadCertifications() {
 
     certifications =
         data || [];
-
 
     renderCertifications();
 }
@@ -969,7 +2354,6 @@ function renderCertifications() {
         certificationEmpty
             .classList
             .remove("hidden");
-
 
         return;
     }
@@ -1084,7 +2468,7 @@ function renderCertifications() {
 
 
 // ==================================================
-// 자격증 추가창
+// 자격증 추가
 // ==================================================
 
 function openNewCertification() {
@@ -1101,15 +2485,12 @@ function openNewCertification() {
 
     certificationForm.reset();
 
-
     certificationId.value =
         "";
-
 
     certificationModalTitle
         .textContent =
         "자격증 추가";
-
 
     openModal(
         certificationModal
@@ -1118,7 +2499,7 @@ function openNewCertification() {
 
 
 // ==================================================
-// 자격증 수정창
+// 자격증 수정
 // ==================================================
 
 function editCertification(id) {
@@ -1143,28 +2524,23 @@ function editCertification(id) {
     certificationId.value =
         certification.id;
 
-
     certificationName.value =
         certification.name ||
         "";
-
 
     certificationDate.value =
         certification
             .acquired_date ||
         "";
 
-
     certificationOrder.value =
         certification
             .sort_order ??
         "";
 
-
     certificationModalTitle
         .textContent =
         "자격증 수정";
-
 
     openModal(
         certificationModal
@@ -1373,7 +2749,6 @@ async function deleteCertification(
             "자격증을 삭제하지 못했어요."
         );
 
-
         return;
     }
 
@@ -1388,7 +2763,7 @@ async function deleteCertification(
 
 
 // ==================================================
-// 자격증 카드 버튼 이벤트
+// 자격증 카드 버튼
 // ==================================================
 
 certificationList
@@ -1488,11 +2863,9 @@ async function loadCareers() {
             error
         );
 
-
         showToast(
             "경력 정보를 불러오지 못했어요."
         );
-
 
         return;
     }
@@ -1500,7 +2873,6 @@ async function loadCareers() {
 
     careers =
         data || [];
-
 
     renderCareers();
 }
@@ -1523,7 +2895,6 @@ function renderCareers() {
         careerEmpty
             .classList
             .remove("hidden");
-
 
         return;
     }
@@ -1683,15 +3054,12 @@ function openNewCareer() {
 
     careerForm.reset();
 
-
     careerId.value =
         "";
-
 
     careerModalTitle
         .textContent =
         "경력 추가";
-
 
     openModal(
         careerModal
@@ -1725,41 +3093,33 @@ function editCareer(id) {
     careerId.value =
         career.id;
 
-
     careerCompany.value =
         career.company ||
         "";
-
 
     careerPosition.value =
         career.position ||
         "";
 
-
     careerStartDate.value =
         career.start_date ||
         "";
-
 
     careerEndDate.value =
         career.end_date ||
         "";
 
-
     careerDescription.value =
         career.description ||
         "";
-
 
     careerOrder.value =
         career.sort_order ??
         "";
 
-
     careerModalTitle
         .textContent =
         "경력 수정";
-
 
     openModal(
         careerModal
@@ -1881,7 +3241,6 @@ careerForm.addEventListener(
                 "경력을 저장하지 못했어요."
             );
 
-
             return;
         }
 
@@ -1964,7 +3323,6 @@ async function deleteCareer(id) {
             "경력을 삭제하지 못했어요."
         );
 
-
         return;
     }
 
@@ -1979,7 +3337,7 @@ async function deleteCareer(id) {
 
 
 // ==================================================
-// 경력 카드 버튼 이벤트
+// 경력 카드 버튼
 // ==================================================
 
 careerList
@@ -2013,7 +3371,9 @@ careerList
                 "edit-career"
             ) {
 
-                editCareer(id);
+                editCareer(
+                    id
+                );
             }
 
 
@@ -2022,7 +3382,9 @@ careerList
                 "delete-career"
             ) {
 
-                deleteCareer(id);
+                deleteCareer(
+                    id
+                );
             }
         }
     );
@@ -2057,7 +3419,6 @@ function closeLoginModal() {
         loginModal
     );
 
-
     loginForm.reset();
 }
 
@@ -2078,7 +3439,6 @@ loginForm.addEventListener(
                 .value
                 .trim();
 
-
         const password =
             loginPassword
                 .value;
@@ -2092,10 +3452,12 @@ loginForm.addEventListener(
 
                 .auth
 
-                .signInWithPassword({
-                    email,
-                    password
-                });
+                .signInWithPassword(
+                    {
+                        email,
+                        password
+                    }
+                );
 
 
         if (error) {
@@ -2109,7 +3471,6 @@ loginForm.addEventListener(
             showToast(
                 "이메일 또는 비밀번호를 확인해주세요."
             );
-
 
             return;
         }
@@ -2135,7 +3496,6 @@ loginForm.addEventListener(
                 "관리자 계정이 아니에요."
             );
 
-
             return;
         }
 
@@ -2145,7 +3505,6 @@ loginForm.addEventListener(
 
 
         closeLoginModal();
-
 
         updateAdminScreen();
 
@@ -2184,7 +3543,6 @@ async function logoutAdmin() {
         showToast(
             "로그아웃하지 못했어요."
         );
-
 
         return;
     }
@@ -2298,11 +3656,6 @@ function updateAdminScreen() {
     }
 
 
-    /*
-        관리자 로그인/로그아웃 직후
-        카드의 수정/삭제 버튼도 다시 그리기
-    */
-
     renderCertifications();
 
     renderCareers();
@@ -2339,8 +3692,9 @@ supabaseClient.auth
 
 
 // ==================================================
-// 각 버튼 연결
+// 버튼 연결
 // ==================================================
+
 
 // 로그인
 
@@ -2480,6 +3834,11 @@ cancelCareerButton
     ],
 
     [
+        profileCropModal,
+        closeProfileCropper
+    ],
+
+    [
         certificationModal,
         () =>
             closeModal(
@@ -2526,6 +3885,22 @@ document.addEventListener(
             event.key !==
             "Escape"
         ) {
+
+            return;
+        }
+
+
+        /*
+            사진 편집창부터 닫기
+        */
+
+        if (
+            !profileCropModal
+                .classList
+                .contains("hidden")
+        ) {
+
+            closeProfileCropper();
 
             return;
         }
@@ -2626,24 +4001,16 @@ function showToast(message) {
 
 async function startApp() {
 
-    /*
-        로그인부터 확인해야
-        관리자 버튼 표시 여부를 먼저 결정 가능
-    */
-
     await checkAdminLogin();
 
 
-    /*
-        프로필 / 자격증 / 경력을
-        동시에 가져오기
-    */
-
-    await Promise.all([
-        loadProfile(),
-        loadCertifications(),
-        loadCareers()
-    ]);
+    await Promise.all(
+        [
+            loadProfile(),
+            loadCertifications(),
+            loadCareers()
+        ]
+    );
 }
 
 
