@@ -1767,3 +1767,35 @@ a {
     }
 
 }
+/* ==================================================
+   📱 모바일 HERO 제목 줄바꿈 최종 수정
+================================================== */
+
+@media (max-width: 650px) {
+
+    .hero-text h1 {
+        font-size: clamp(32px, 9.3vw, 40px);
+        line-height: 1.25;
+        letter-spacing: -1.8px;
+    }
+
+    .hero-second-line {
+        display: block;
+        white-space: nowrap;
+    }
+
+    .hero-second-line strong {
+        white-space: nowrap;
+    }
+}
+
+
+/* 아주 작은 휴대폰 */
+@media (max-width: 380px) {
+
+    .hero-text h1 {
+        font-size: 31px;
+        letter-spacing: -1.5px;
+    }
+
+}
